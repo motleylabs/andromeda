@@ -46,11 +46,11 @@ type TimeSeries struct {
 }
 
 type TrendParams struct {
-	Period  string
-	SortBy  string
-	OrderBy string
-	Limit   int32
-	Offset  int32
+	Period  string `json:"period"`
+	SortBy  string `json:"sort_by"`
+	OrderBy string `json:"order_by"`
+	Limit   int    `json:"limit"`
+	Offset  int    `json:"offset"`
 }
 
 type TimeSeriesParams struct {

@@ -11,6 +11,6 @@ func CollectionRouter(r *gin.RouterGroup) {
 	c := r.Group("/collections")
 	c.Use()
 	{
-		c.GET("/trend", collectionController.GetTrend)
+		c.POST("/trend", collectionController.GetTrend)
 	}
 }
