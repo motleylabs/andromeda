@@ -24,9 +24,9 @@ type ProjectStat struct {
 	Volume1Day           *int     `json:"volume_1day"`
 	Volume7Day           *int     `json:"volume_7day"`
 	Volume1M             *int     `json:"volume_1m"`
-	Volume1DayChange     *int     `json:"volume_1day_change,omitempty"`
-	Volume7DayChange     *int     `json:"volume_7day_change,omitempty"`
-	Volume1MChange       *int     `json:"volume_1m_change,omitempty"`
+	Volume1DayChange     *float64 `json:"volume_1day_change,omitempty"`
+	Volume7DayChange     *float64 `json:"volume_7day_change,omitempty"`
+	Volume1MChange       *float64 `json:"volume_1m_change,omitempty"`
 	FloorPrice1Day       *float64 `json:"floor_price"`
 	FloorPrice7Day       *float64 `json:"floor_price_7day,omitempty"`
 	FloorPrice1M         *float64 `json:"floor_price_1m,omitempty"`
@@ -36,4 +36,9 @@ type ProjectStat struct {
 	Listed1Day           *int     `json:"num_of_token_listed"`
 	TokenHolders         *int     `json:"num_of_token_holders"`
 	Project              Project  `json:"project"`
+}
+
+type ProjectStatRes struct {
+	PaginationInfo common.PaginationInfo `json:"pagination_info"`
+	ProjectStats   []ProjectStat         `json:"project_stats"`
 }

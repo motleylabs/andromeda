@@ -12,7 +12,10 @@ func GetProvider() entrance.DataProvider {
 	var dataProvider entrance.DataProvider
 
 	// get trends data
-	if strings.ToLower(provider) == "solsniper" {
+	switch strings.ToLower(provider) {
+	case "hyperspace":
+		dataProvider = hyperspace.Hyperspace{}
+	default:
 		dataProvider = hyperspace.Hyperspace{}
 	}
 

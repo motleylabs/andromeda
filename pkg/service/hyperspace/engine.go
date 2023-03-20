@@ -2,19 +2,20 @@ package hyperspace
 
 import (
 	"andromeda/pkg/service/entrance/types"
+	"andromeda/pkg/service/hyperspace/collection"
 )
 
 type Hyperspace struct{}
 
-func (Hyperspace) GetCollectionTrends(*types.TrendParams) ([]types.Trend, error) {
-	return []types.Trend{}, nil
+func (Hyperspace) GetCollectionTrends(params *types.TrendParams) (*types.TrendRes, error) {
+	return collection.GetTrends(params)
 }
 
-func (Hyperspace) GetCollectionStat(string) (*types.Statistics, error) {
+func (Hyperspace) GetCollectionStat(address string) (*types.Statistics, error) {
 	return nil, nil
 }
 
-func (Hyperspace) GetCollectionTimeSeries(*types.TimeSeriesParams) ([]types.TimeSeries, error) {
+func (Hyperspace) GetCollectionTimeSeries(params *types.TimeSeriesParams) ([]types.TimeSeries, error) {
 	return []types.TimeSeries{}, nil
 }
 

@@ -6,7 +6,7 @@ import (
 
 type DataProvider interface {
 	// for collection
-	GetCollectionTrends(*types.TrendParams) ([]types.Trend, error)
+	GetCollectionTrends(*types.TrendParams) (*types.TrendRes, error)
 	GetCollectionStat(string) (*types.Statistics, error)
 	GetCollectionTimeSeries(*types.TimeSeriesParams) ([]types.TimeSeries, error)
 	GetCollectionNFTs(string, string) ([]types.NFT, error)

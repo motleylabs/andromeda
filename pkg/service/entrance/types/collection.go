@@ -31,6 +31,11 @@ type Trend struct {
 	Collection      Collection `json:"collection"`
 }
 
+type TrendRes struct {
+	Trends      []Trend `json:"trends"`
+	HasNextPage bool    `json:"has_next_page"`
+}
+
 type Statistics struct {
 	Floor1D   string  `json:"floor1d"`
 	Volume30D string  `json:"volume30d"`

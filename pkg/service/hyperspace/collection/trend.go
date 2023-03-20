@@ -8,7 +8,7 @@ import (
 	"fmt"
 )
 
-func GetTrends(params *types.TrendParams) ([]types.Trend, error) {
+func GetTrends(params *types.TrendParams) (*types.TrendRes, error) {
 	if params == nil {
 		return nil, fmt.Errorf("no trend params")
 	}
@@ -23,14 +23,17 @@ func GetTrends(params *types.TrendParams) ([]types.Trend, error) {
 		return nil, err
 	}
 
-	var projectStats []ProjectStat
+	var projectStats ProjectStatRes
 	if err := json.Unmarshal(res, &projectStats); err != nil {
 		return nil, err
 	}
 
-	trends := ConvertStatistics(projectStats)
+	trendRes := types.TrendRes{
+		HasNextPage: projectStats.PaginationInfo.HasNextPage,
+		Trends:      ConvertStatistics(projectStats.ProjectStats),
+	}
 
-	return trends, nil
+	return &trendRes, nil
 }
 
 func ConvertStatistics(stats []ProjectStat) []types.Trend {
@@ -79,9 +82,17 @@ func GetOrderField(input *types.TrendParams) common.OrderConfig {
 		orderFieldName = "listed"
 	}
 
+	periodSuffix := "1day"
+	switch input.Period {
+	case "7d":
+		periodSuffix = "7day"
+	case "1m":
+		periodSuffix = "1m"
+	}
+
 	return common.OrderConfig{
-		FieldName: orderFieldName,
-		SortOrder: input.OrderBy,
+		FieldName: fmt.Sprintf("%s_%s", orderFieldName, periodSuffix),
+		SortOrder: input.SortBy,
 	}
 }
 
