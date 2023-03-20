@@ -25,7 +25,7 @@ type ProjectStat struct {
 	Volume7Day           *int     `json:"volume_7day"`
 	Volume1M             *int     `json:"volume_1m"`
 	Volume1DayChange     *int     `json:"volume_1day_change,omitempty"`
-	Volume7DayChange     *int     `json:"volume_1day_change,omitempty"`
+	Volume7DayChange     *int     `json:"volume_7day_change,omitempty"`
 	Volume1MChange       *int     `json:"volume_1m_change,omitempty"`
 	FloorPrice1Day       *float64 `json:"floor_price"`
 	FloorPrice7Day       *float64 `json:"floor_price_7day,omitempty"`
