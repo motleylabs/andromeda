@@ -51,6 +51,26 @@ func (ctrl Collection) GetNFTs(c *gin.Context) {
 	c.JSON(http.StatusOK, nfts)
 }
 
+func (ctrl Collection) GetTimeSeries(c *gin.Context) {
+	var params types.TimeSeriesParams
+	if err := c.ShouldBindJSON(&params); err != nil {
+		log.Printf("Collection GetTimeSeries >> ShouldBindJSON; %s", err.Error())
+		c.AbortWithStatus(http.StatusBadRequest)
+		return
+	}
+
+	dataProvider := utils.GetProvider()
+	series, err := dataProvider.GetCollectionTimeSeries(&params)
+
+	if err != nil {
+		log.Printf("Collection GetTimeSeries >> DataProvder GetCollectionTimeSeries; %s", err.Error())
+		c.AbortWithStatus(http.StatusInternalServerError)
+		return
+	}
+
+	c.JSON(http.StatusOK, series)
+}
+
 func (ctrl Collection) GetDetail(c *gin.Context) {
 	address := c.Param("address")
 

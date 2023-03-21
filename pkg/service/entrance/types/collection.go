@@ -54,8 +54,14 @@ type TrendRes struct {
 }
 
 type TimeSeries struct {
-	TimeStamp string `json:"timestamp"`
-	Value     string `json:"value"`
+	Timestamp  string `json:"timestamp"`
+	FloorPrice string `json:"floorPrice"`
+	Listed     int    `json:"listed"`
+}
+
+type TimeSeriesRes struct {
+	Series      []TimeSeries `json:"series"`
+	HasNextPage bool         `json:"has_next_page"`
 }
 
 type TrendParams struct {
@@ -67,11 +73,12 @@ type TrendParams struct {
 }
 
 type TimeSeriesParams struct {
-	Collection  string
-	Mode        string
-	FromTime    int64
-	ToTime      int64
-	Granularity string
+	Address     string `json:"collection"`
+	FromTime    int    `json:"start_timestamp"`
+	ToTime      int    `json:"end_timestamp"`
+	Granularity string `json:"time_granularity"`
+	Limit       int    `json:"limit"`
+	Offset      int    `json:"offset"`
 }
 
 type NFTParams struct {

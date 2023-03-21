@@ -15,8 +15,8 @@ func (Hyperspace) GetCollectionDetail(address string) (*types.Collection, error)
 	return collection.GetDetail(address)
 }
 
-func (Hyperspace) GetCollectionTimeSeries(params *types.TimeSeriesParams) ([]types.TimeSeries, error) {
-	return []types.TimeSeries{}, nil
+func (Hyperspace) GetCollectionTimeSeries(params *types.TimeSeriesParams) (*types.TimeSeriesRes, error) {
+	return collection.GetTimeSeries(params)
 }
 
 func (Hyperspace) GetCollectionNFTs(params *types.NFTParams) (*types.NFTRes, error) {

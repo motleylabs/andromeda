@@ -21,6 +21,9 @@ type Conditions struct {
 	ProjectIDs               *[]string `json:"project_ids,omitempty"`
 	ExcludeProjectAttributes *bool     `json:"exclude_project_attributes,omitempty"`
 	IsVerified               *bool     `json:"is_verified,omitempty"`
+	StartTimestamp           *int      `json:"start_timestamp,omitempty"`
+	EndTimestamp             *int      `json:"end_timestamp,omitempty"`
+	TimeGranularity          *string   `json:"time_granularity,omitempty"`
 }
 
 type Condition struct {
