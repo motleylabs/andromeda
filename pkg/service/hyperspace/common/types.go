@@ -1,5 +1,7 @@
 package common
 
+import "andromeda/pkg/service/entrance/types"
+
 type OrderConfig struct {
 	FieldName string `json:"field_name"`
 	SortOrder string `json:"sort_order"`
@@ -11,7 +13,8 @@ type PaginationConfig struct {
 }
 
 type ProjectIDItem struct {
-	ProjectID string `json:"project_id"`
+	ProjectID  string             `json:"project_id"`
+	Attributes *[]types.Attribute `json:"attributes,omitempty"`
 }
 
 type Conditions struct {

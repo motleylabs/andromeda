@@ -79,9 +79,14 @@ func GetTraits(attributes *map[string]interface{}) []types.Trait {
 }
 
 func GetNFTParams(input *types.NFTParams) *common.StatParams {
+	var attributes *[]types.Attribute
+	if len(input.Attributes) > 0 {
+		attributes = &input.Attributes
+	}
 	projectIDs := []common.ProjectIDItem{
 		{
-			ProjectID: input.Address,
+			ProjectID:  input.Address,
+			Attributes: attributes,
 		},
 	}
 	return &common.StatParams{
