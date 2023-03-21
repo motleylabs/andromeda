@@ -14,10 +14,14 @@ type ProjectIDItem struct {
 	ProjectID string `json:"project_id"`
 }
 
+type Conditions struct {
+	ProjectIDs               *[]string `json:"project_ids,omitempty"`
+	ExcludeProjectAttributes *bool     `json:"exclude_project_attributes,omitempty"`
+	IsVerified               *bool     `json:"is_verified,omitempty"`
+}
+
 type Condition struct {
-	ProjectIDs               *[]ProjectIDItem `json:"project_ids,omitempty"`
-	ExcludeProjectAttributes *bool            `json:"exclude_project_attributes,omitempty"`
-	IsVerified               *bool            `json:"is_verified,omitempty"`
+	ProjectIDs *[]ProjectIDItem `json:"project_ids,omitempty"`
 }
 
 type PaginationInfo struct {
@@ -28,7 +32,8 @@ type PaginationInfo struct {
 }
 
 type StatParams struct {
+	Conditions     *Conditions       `json:"conditions,omitempty"`
 	Condition      *Condition        `json:"condition,omitempty"`
-	OrderBy        OrderConfig       `json:"order_by"`
+	OrderBy        *OrderConfig      `json:"order_by,omitempty"`
 	PaginationInfo *PaginationConfig `json:"pagination_info,omitempty"`
 }

@@ -11,8 +11,8 @@ func (Hyperspace) GetCollectionTrends(params *types.TrendParams) (*types.TrendRe
 	return collection.GetTrends(params)
 }
 
-func (Hyperspace) GetCollectionStat(address string) (*types.Statistics, error) {
-	return nil, nil
+func (Hyperspace) GetCollectionDetail(address string) (*types.Collection, error) {
+	return collection.GetDetail(address)
 }
 
 func (Hyperspace) GetCollectionTimeSeries(params *types.TimeSeriesParams) ([]types.TimeSeries, error) {

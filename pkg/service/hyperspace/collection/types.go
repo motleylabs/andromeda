@@ -10,12 +10,12 @@ type Project struct {
 	DisplayName string `json:"display_name"`
 	ImgURL      string `json:"img_url"`
 	Description string `json:"description"`
-	Supply      int    `json:"supply"`
+	Supply      int64  `json:"supply"`
 }
 
 type ProjectStat struct {
 	ProjectID            string   `json:"project_id"`
-	MarketCap            *int     `json:"market_cap"`
+	MarketCap            *float64 `json:"market_cap"`
 	Volume1Day           *int     `json:"volume_1day"`
 	Volume7Day           *int     `json:"volume_7day"`
 	Volume1M             *int     `json:"volume_1m"`

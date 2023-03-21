@@ -1,12 +1,13 @@
 package types
 
 type Collection struct {
-	ID                        string `json:"id"`
-	Name                      string `json:"name"`
-	VerifiedCollectionAddress string `json:"verifiedCollectionAddress"`
-	Description               string `json:"description"`
-	Image                     string `json:"image"`
-	Symbol                    string `json:"symbol"`
+	ID                        string      `json:"id"`
+	Name                      string      `json:"name"`
+	VerifiedCollectionAddress string      `json:"verifiedCollectionAddress"`
+	Description               string      `json:"description"`
+	Image                     string      `json:"image"`
+	Symbol                    string      `json:"symbol"`
+	Statistics                *Statistics `json:"statistics,omitempty"`
 }
 
 type Trend struct {

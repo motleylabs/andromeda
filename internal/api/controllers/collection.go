@@ -50,3 +50,17 @@ func (ctrl Collection) GetNFTs(c *gin.Context) {
 
 	c.JSON(http.StatusOK, nfts)
 }
+
+func (ctrl Collection) GetDetail(c *gin.Context) {
+	address := c.Param("address")
+
+	dataProvider := utils.GetProvider()
+	collection, err := dataProvider.GetCollectionDetail(address)
+	if err != nil {
+		log.Printf("Collection GetDetail >> DataProvder GetDetail; %s", err.Error())
+		c.AbortWithStatus(http.StatusBadRequest)
+		return
+	}
+
+	c.JSON(http.StatusOK, collection)
+}

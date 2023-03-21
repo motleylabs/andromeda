@@ -93,7 +93,7 @@ func GetNFTParams(input *types.NFTParams) *common.StatParams {
 	}
 }
 
-func GetNFTOrderField(input *types.NFTParams) common.OrderConfig {
+func GetNFTOrderField(input *types.NFTParams) *common.OrderConfig {
 	orderFieldName := "lowest_listing_price"
 
 	switch input.SortBy {
@@ -101,7 +101,7 @@ func GetNFTOrderField(input *types.NFTParams) common.OrderConfig {
 		orderFieldName = "lowest_listing_block_timestamp"
 	}
 
-	return common.OrderConfig{
+	return &common.OrderConfig{
 		FieldName: orderFieldName,
 		SortOrder: input.Order,
 	}

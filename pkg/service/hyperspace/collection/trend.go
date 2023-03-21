@@ -68,7 +68,7 @@ func ConvertStatistics(stats []ProjectStat) []types.Trend {
 func GetProjectStatParams(input *types.TrendParams) *common.StatParams {
 	excludeProjectAttr := true
 	return &common.StatParams{
-		Condition: &common.Condition{
+		Conditions: &common.Conditions{
 			ExcludeProjectAttributes: &excludeProjectAttr,
 		},
 		OrderBy:        GetOrderField(input),
@@ -76,7 +76,7 @@ func GetProjectStatParams(input *types.TrendParams) *common.StatParams {
 	}
 }
 
-func GetOrderField(input *types.TrendParams) common.OrderConfig {
+func GetOrderField(input *types.TrendParams) *common.OrderConfig {
 	orderFieldName := "floor_price"
 
 	switch input.SortBy {
@@ -94,7 +94,7 @@ func GetOrderField(input *types.TrendParams) common.OrderConfig {
 		periodSuffix = "1m"
 	}
 
-	return common.OrderConfig{
+	return &common.OrderConfig{
 		FieldName: fmt.Sprintf("%s_%s", orderFieldName, periodSuffix),
 		SortOrder: input.Order,
 	}
