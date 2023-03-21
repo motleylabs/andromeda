@@ -1,5 +1,20 @@
 package types
 
+type Statistics struct {
+	Floor1D   string  `json:"floor1d"`
+	Volume30D string  `json:"volume30d"`
+	Listed1D  string  `json:"listed1d"`
+	Holders   int64   `json:"holders"`
+	MarketCap float64 `json:"marketCap"`
+	Supply    int64   `json:"supply"`
+}
+
+type Attribute struct {
+	Name   string   `json:"name"`
+	Type   string   `json:"type"`
+	Values []string `json:"values"`
+}
+
 type Collection struct {
 	ID                        string      `json:"id"`
 	Name                      string      `json:"name"`
@@ -8,6 +23,7 @@ type Collection struct {
 	Image                     string      `json:"image"`
 	Symbol                    string      `json:"symbol"`
 	Statistics                *Statistics `json:"statistics,omitempty"`
+	Attributes                []Attribute `json:"attributes"`
 }
 
 type Trend struct {
@@ -35,15 +51,6 @@ type Trend struct {
 type TrendRes struct {
 	Trends      []Trend `json:"trends"`
 	HasNextPage bool    `json:"has_next_page"`
-}
-
-type Statistics struct {
-	Floor1D   string  `json:"floor1d"`
-	Volume30D string  `json:"volume30d"`
-	Listed1D  string  `json:"listed1d"`
-	Holders   int64   `json:"holders"`
-	MarketCap float64 `json:"marketCap"`
-	Supply    int64   `json:"supply"`
 }
 
 type TimeSeries struct {

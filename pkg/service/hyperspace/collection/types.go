@@ -1,16 +1,18 @@
 package collection
 
 import (
+	"andromeda/pkg/service/entrance/types"
 	"andromeda/pkg/service/hyperspace/common"
 )
 
 type Project struct {
-	ProjectID   string `json:"project_id"`
-	IsVerified  bool   `json:"is_verified"`
-	DisplayName string `json:"display_name"`
-	ImgURL      string `json:"img_url"`
-	Description string `json:"description"`
-	Supply      int64  `json:"supply"`
+	ProjectID   string             `json:"project_id"`
+	IsVerified  bool               `json:"is_verified"`
+	DisplayName string             `json:"display_name"`
+	ImgURL      string             `json:"img_url"`
+	Description string             `json:"description"`
+	Supply      int64              `json:"supply"`
+	Attributes  *[]types.Attribute `json:"project_attributes"`
 }
 
 type ProjectStat struct {

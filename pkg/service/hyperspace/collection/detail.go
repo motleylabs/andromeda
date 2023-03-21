@@ -12,7 +12,7 @@ func GetDetail(address string) (*types.Collection, error) {
 	projectIDs := []string{
 		address,
 	}
-	excludeProjectAttr := true
+	excludeProjectAttr := false
 	projectStatParams := common.StatParams{
 		Conditions: &common.Conditions{
 			ProjectIDs:               &projectIDs,
@@ -39,8 +39,6 @@ func GetDetail(address string) (*types.Collection, error) {
 		return nil, fmt.Errorf("invalid project id")
 	}
 
-	fmt.Println(projectStats.ProjectStats[0].ProjectID)
-
 	return ConvertProjectStat(&projectStats.ProjectStats[0]), nil
 }
 
@@ -53,6 +51,11 @@ func ConvertProjectStat(projectStat *ProjectStat) *types.Collection {
 	marketCap := float64(0)
 	if projectStat.MarketCap != nil {
 		marketCap = *projectStat.MarketCap
+	}
+
+	attributes := []types.Attribute{}
+	if projectStat.Project.Attributes != nil {
+		attributes = *projectStat.Project.Attributes
 	}
 
 	stat := types.Statistics{
@@ -70,6 +73,7 @@ func ConvertProjectStat(projectStat *ProjectStat) *types.Collection {
 	collection.Image = projectStat.Project.ImgURL
 	collection.Name = projectStat.Project.DisplayName
 	collection.Statistics = &stat
+	collection.Attributes = attributes
 
 	return &collection
 }

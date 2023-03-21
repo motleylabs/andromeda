@@ -30,11 +30,6 @@ type NFT struct {
 	MoonRank      int      `json:"moonrankRank"`
 }
 
-type Attribute struct {
-	TraitType string   `json:"traitType"`
-	Values    []string `json:"values"`
-}
-
 type NFTRes struct {
 	NFTs        []NFT `json:"nfts"`
 	HasNextPage bool  `json:"has_next_page"`
