@@ -51,11 +51,11 @@ type TimeSeries struct {
 }
 
 type TrendParams struct {
-	Period  string `json:"period"`
-	SortBy  string `json:"sort_by"`
-	OrderBy string `json:"order_by"`
-	Limit   int    `json:"limit"`
-	Offset  int    `json:"offset"`
+	Period string `json:"period"`
+	SortBy string `json:"sort_by"`
+	Order  string `json:"order"`
+	Limit  int    `json:"limit"`
+	Offset int    `json:"offset"`
 }
 
 type TimeSeriesParams struct {
@@ -64,4 +64,13 @@ type TimeSeriesParams struct {
 	FromTime    int64
 	ToTime      int64
 	Granularity string
+}
+
+type NFTParams struct {
+	Address    string      `json:"collection"`
+	Attributes []Attribute `json:"attributes,omitempty"`
+	SortBy     string      `json:"sort_by"`
+	Order      string      `json:"order"`
+	Limit      int         `json:"limit"`
+	Offset     int         `json:"offset"`
 }

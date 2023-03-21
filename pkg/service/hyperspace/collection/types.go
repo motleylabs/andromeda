@@ -4,11 +4,6 @@ import (
 	"andromeda/pkg/service/hyperspace/common"
 )
 
-type ProjectStatParam struct {
-	OrderBy        common.OrderConfig       `json:"order_by"`
-	PaginationInfo *common.PaginationConfig `json:"pagination_info,omitempty"`
-}
-
 type Project struct {
 	ProjectID   string `json:"project_id"`
 	IsVerified  bool   `json:"is_verified"`
@@ -41,4 +36,30 @@ type ProjectStat struct {
 type ProjectStatRes struct {
 	PaginationInfo common.PaginationInfo `json:"pagination_info"`
 	ProjectStats   []ProjectStat         `json:"project_stats"`
+}
+
+type LastSaleMPA struct {
+	UserAddress    string  `json:"user_address"`
+	Price          float64 `json:"price"`
+	Signature      string  `json:"signature"`
+	BlockTimestamp int64   `json:"block_timestamp"`
+}
+
+type MarketPlaceSnapshot struct {
+	TokenAddress   string                 `json:"token_address"`
+	Name           string                 `json:"name"`
+	RankeEst       int                    `json:"rank_est"`
+	MoonRank       int                    `json:"moonrank"`
+	MetadataURI    string                 `json:"meta_data_uri"`
+	MetadataImg    string                 `json:"meta_data_img"`
+	Attributes     map[string]interface{} `json:"attributes"`
+	LastSaleMPA    *LastSaleMPA           `json:"last_sale_mpa"`
+	CreatorRoyalty int                    `json:"creator_royalty"`
+	NFTStandard    string                 `json:"nft_standard"`
+	Owner          string                 `json:"owner"`
+}
+
+type ProjectNFTsRes struct {
+	PaginationInfo       common.PaginationInfo `json:"pagination_info"`
+	MarketPlaceSnapshots []MarketPlaceSnapshot `json:"market_place_snapshots"`
 }

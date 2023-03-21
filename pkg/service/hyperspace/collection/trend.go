@@ -65,8 +65,12 @@ func ConvertStatistics(stats []ProjectStat) []types.Trend {
 	return trends
 }
 
-func GetProjectStatParams(input *types.TrendParams) *ProjectStatParam {
-	return &ProjectStatParam{
+func GetProjectStatParams(input *types.TrendParams) *common.StatParams {
+	excludeProjectAttr := true
+	return &common.StatParams{
+		Condition: &common.Condition{
+			ExcludeProjectAttributes: &excludeProjectAttr,
+		},
 		OrderBy:        GetOrderField(input),
 		PaginationInfo: GetPaginationInfo(input),
 	}
@@ -75,7 +79,7 @@ func GetProjectStatParams(input *types.TrendParams) *ProjectStatParam {
 func GetOrderField(input *types.TrendParams) common.OrderConfig {
 	orderFieldName := "floor_price"
 
-	switch input.OrderBy {
+	switch input.SortBy {
 	case "volume":
 		orderFieldName = "volume"
 	case "listed":
@@ -92,7 +96,7 @@ func GetOrderField(input *types.TrendParams) common.OrderConfig {
 
 	return common.OrderConfig{
 		FieldName: fmt.Sprintf("%s_%s", orderFieldName, periodSuffix),
-		SortOrder: input.SortBy,
+		SortOrder: input.Order,
 	}
 }
 

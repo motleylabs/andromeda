@@ -9,7 +9,7 @@ type DataProvider interface {
 	GetCollectionTrends(*types.TrendParams) (*types.TrendRes, error)
 	GetCollectionStat(string) (*types.Statistics, error)
 	GetCollectionTimeSeries(*types.TimeSeriesParams) ([]types.TimeSeries, error)
-	GetCollectionNFTs(string, string) ([]types.NFT, error)
+	GetCollectionNFTs(*types.NFTParams) (*types.NFTRes, error)
 	GetCollectionActivities(*types.ActivityParams) (*types.ActivityResult, error)
 
 	// for nft
