@@ -7,5 +7,6 @@ func APIRouter(r *gin.Engine) {
 	{
 		CollectionRouter(api)
 		NFTRouter(api)
+		UserRouter(api)
 	}
 }

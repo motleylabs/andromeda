@@ -9,7 +9,7 @@ type CollectedCollection struct {
 	FloorPrice     float64 `json:"floorPrice"`
 }
 
-type WalletNFT struct {
+type UserNFT struct {
 	Collections     []CollectedCollection `json:"collections"`
 	NFTs            []NFT                 `json:"nfts"`
 	SumTotalHolding float64               `json:"sumTotalHolding"`

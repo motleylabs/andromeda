@@ -36,10 +36,10 @@ func (Hyperspace) GetNFTActivities(params *types.ActivityParams) (*types.Activit
 	return nft.GetActivities(params)
 }
 
-func (Hyperspace) GetWalletNFTs(address string) (*types.WalletNFT, error) {
+func (Hyperspace) GetUserNFTs(address string) (*types.UserNFT, error) {
 	return nil, nil
 }
 
-func (Hyperspace) GetWalletActivities(address string) ([]types.Activity, error) {
+func (Hyperspace) GetUserActivities(address string) ([]types.Activity, error) {
 	return []types.Activity{}, nil
 }
