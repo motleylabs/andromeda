@@ -50,18 +50,20 @@ type Trend struct {
 
 type TrendRes struct {
 	Trends      []Trend `json:"trends"`
-	HasNextPage bool    `json:"has_next_page"`
+	HasNextPage bool    `json:"hasNextPage"`
 }
 
 type TimeSeries struct {
 	Timestamp  string `json:"timestamp"`
 	FloorPrice string `json:"floorPrice"`
 	Listed     int    `json:"listed"`
+	Holders    int    `json:"holders"`
+	Volume     int    `json:"volume"`
 }
 
 type TimeSeriesRes struct {
 	Series      []TimeSeries `json:"series"`
-	HasNextPage bool         `json:"has_next_page"`
+	HasNextPage bool         `json:"hasNextPage"`
 }
 
 type TrendParams struct {

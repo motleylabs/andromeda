@@ -84,3 +84,23 @@ func (ctrl Collection) GetDetail(c *gin.Context) {
 
 	c.JSON(http.StatusOK, collection)
 }
+
+func (ctrl Collection) GetActivities(c *gin.Context) {
+	var params types.ActivityParams
+	if err := c.ShouldBindJSON(&params); err != nil {
+		log.Printf("Collection GetActivities >> ShouldBindJSON; %s", err.Error())
+		c.AbortWithStatus(http.StatusBadRequest)
+		return
+	}
+
+	dataProvider := utils.GetProvider()
+	activityRes, err := dataProvider.GetCollectionActivities(&params)
+
+	if err != nil {
+		log.Printf("Collection GetTimeSeries >> DataProvder GetCollectionTimeSeries; %s", err.Error())
+		c.AbortWithStatus(http.StatusInternalServerError)
+		return
+	}
+
+	c.JSON(http.StatusOK, activityRes)
+}

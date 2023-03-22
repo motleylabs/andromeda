@@ -39,8 +39,8 @@ func main() {
 	s := &http.Server{
 		Addr:           ":" + os.Getenv("PORT"),
 		Handler:        r,
-		ReadTimeout:    30 * time.Second,
-		WriteTimeout:   30 * time.Second,
+		ReadTimeout:    60 * time.Second,
+		WriteTimeout:   60 * time.Second,
 		MaxHeaderBytes: 1 << 20,
 	}
 

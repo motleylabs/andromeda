@@ -10,7 +10,7 @@ import (
 
 func GetTimeSeries(params *types.TimeSeriesParams) (*types.TimeSeriesRes, error) {
 	if params == nil {
-		return nil, fmt.Errorf("no trend params")
+		return nil, fmt.Errorf("no series params")
 	}
 	projectStatParams := GetProjectHistParams(params)
 	payload, err := json.Marshal(projectStatParams)
@@ -43,10 +43,17 @@ func ConvertHistEntries(entries []ProjectStatHistEntry) []types.TimeSeries {
 		if entries[index].NumOfTokenListed != nil {
 			listed = *entries[index].NumOfTokenListed
 		}
+		holders := 0
+		if entries[index].NumOfTokenHolders != nil {
+			holders = *entries[index].NumOfTokenHolders
+		}
+
 		series[index] = types.TimeSeries{
 			Timestamp:  fmt.Sprintf("%d", entries[index].Timestamp),
 			FloorPrice: common.GetLamportsFromPointer(entries[index].FloorPrice),
 			Listed:     listed,
+			Holders:    holders,
+			Volume:     entries[index].Volume,
 		}
 	}
 

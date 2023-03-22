@@ -32,5 +32,5 @@ type NFT struct {
 
 type NFTRes struct {
 	NFTs        []NFT `json:"nfts"`
-	HasNextPage bool  `json:"has_next_page"`
+	HasNextPage bool  `json:"hasNextPage"`
 }

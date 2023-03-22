@@ -27,28 +27,27 @@ func (activityType ActivityType) String() string {
 }
 
 type Activity struct {
-	Symbol                    string       `json:"symbol"`
-	Mint                      string       `json:"mint"`
-	Name                      string       `json:"name"`
-	Image                     string       `json:"image"`
-	Owner                     string       `json:"owner"`
-	MarketPlace               string       `json:"marketplace"`
-	Price                     *string      `json:"price"`
-	ActivityType              ActivityType `json:"activityType"`
-	MarketPlaceProgramAddress string       `json:"martketplaceProgramAddress"`
-	CreatedAt                 string       `json:"createdAt"`
-	Signature                 string       `json:"signature"`
+	Symbol                    string  `json:"symbol"`
+	Mint                      string  `json:"mint"`
+	Name                      string  `json:"name"`
+	Image                     string  `json:"image"`
+	Owner                     string  `json:"owner"`
+	MarketPlace               string  `json:"marketplace"`
+	Price                     *string `json:"price"`
+	ActivityType              string  `json:"activityType"`
+	MarketPlaceProgramAddress string  `json:"martketplaceProgramAddress"`
+	CreatedAt                 string  `json:"createdAt"`
+	Signature                 string  `json:"signature"`
 }
 
-type ActivityResult struct {
-	Activities []Activity `json:"activities"`
-	LastToken  *string    `json:"lastToken"`
+type ActivityRes struct {
+	Activities  []Activity `json:"activities"`
+	HasNextPage bool       `json:"hasNextPage"`
 }
 
 type ActivityParams struct {
-	Address       *string
-	Limit         int
-	Offset        *int
-	Next          *string
-	ActivityTypes []ActivityType
+	Address       string   `json:"collection"`
+	Limit         int      `json:"limit"`
+	Offset        int      `json:"offset"`
+	ActivityTypes []string `json:"activityTypes"`
 }

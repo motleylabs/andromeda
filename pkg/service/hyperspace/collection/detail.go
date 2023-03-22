@@ -39,10 +39,10 @@ func GetDetail(address string) (*types.Collection, error) {
 		return nil, fmt.Errorf("invalid project id")
 	}
 
-	return ConvertProjectStat(&projectStats.ProjectStats[0]), nil
+	return convertProjectStat(&projectStats.ProjectStats[0]), nil
 }
 
-func ConvertProjectStat(projectStat *ProjectStat) *types.Collection {
+func convertProjectStat(projectStat *ProjectStat) *types.Collection {
 	holders := int64(0)
 	if projectStat.TokenHolders != nil {
 		holders = int64(*projectStat.TokenHolders)

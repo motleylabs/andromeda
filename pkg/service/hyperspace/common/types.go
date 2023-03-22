@@ -30,6 +30,11 @@ type Condition struct {
 	ProjectIDs *[]ProjectIDItem `json:"project_ids,omitempty"`
 }
 
+type ActivityCondition struct {
+	Projects   []ProjectIDItem `json:"projects"`
+	ByMPATypes []string        `json:"by_mpa_types"`
+}
+
 type PaginationInfo struct {
 	CurrentPageNumber int  `json:"current_page_number"`
 	CurrentPageSize   int  `json:"current_page_size"`
@@ -42,4 +47,9 @@ type StatParams struct {
 	Condition      *Condition        `json:"condition,omitempty"`
 	OrderBy        *OrderConfig      `json:"order_by,omitempty"`
 	PaginationInfo *PaginationConfig `json:"pagination_info,omitempty"`
+}
+
+type ActivityParams struct {
+	ActivityCondition ActivityCondition `json:"condition"`
+	PaginationInfo    *PaginationConfig `json:"pagination_info,omitempty"`
 }

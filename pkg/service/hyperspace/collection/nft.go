@@ -23,7 +23,7 @@ func GetNFTs(params *types.NFTParams) (*types.NFTRes, error) {
 		return nil, err
 	}
 
-	var nftRes ProjectNFTsRes
+	var nftRes ProjectSnapshotsRes
 	if err := json.Unmarshal(res, &nftRes); err != nil {
 		return nil, err
 	}

@@ -10,11 +10,11 @@ type DataProvider interface {
 	GetCollectionDetail(string) (*types.Collection, error)
 	GetCollectionTimeSeries(*types.TimeSeriesParams) (*types.TimeSeriesRes, error)
 	GetCollectionNFTs(*types.NFTParams) (*types.NFTRes, error)
-	GetCollectionActivities(*types.ActivityParams) (*types.ActivityResult, error)
+	GetCollectionActivities(*types.ActivityParams) (*types.ActivityRes, error)
 
 	// for nft
 	GetNFTDetail(string) (*types.NFT, error)
-	GetNFTActivities(*types.ActivityParams) (*types.ActivityResult, error)
+	GetNFTActivities(*types.ActivityParams) (*types.ActivityRes, error)
 
 	// for wallet
 	GetWalletNFTs(string) (*types.WalletNFT, error)

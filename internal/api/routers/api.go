@@ -6,5 +6,6 @@ func APIRouter(r *gin.Engine) {
 	api := r.Group("/api")
 	{
 		CollectionRouter(api)
+		NFTRouter(api)
 	}
 }

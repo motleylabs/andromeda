@@ -47,21 +47,33 @@ type LastSaleMPA struct {
 	BlockTimestamp int64   `json:"block_timestamp"`
 }
 
-type MarketPlaceSnapshot struct {
-	TokenAddress   string                 `json:"token_address"`
-	Name           string                 `json:"name"`
-	RankeEst       int                    `json:"rank_est"`
-	MoonRank       int                    `json:"moonrank"`
-	MetadataURI    string                 `json:"meta_data_uri"`
-	MetadataImg    string                 `json:"meta_data_img"`
-	Attributes     map[string]interface{} `json:"attributes"`
-	LastSaleMPA    *LastSaleMPA           `json:"last_sale_mpa"`
-	CreatorRoyalty int                    `json:"creator_royalty"`
-	NFTStandard    string                 `json:"nft_standard"`
-	Owner          string                 `json:"owner"`
+type MarketPlaceState struct {
+	BlockTimestamp       int      `json:"block_timestamp"`
+	Signature            string   `json:"signature"`
+	SellerAddress        *string  `json:"seller_address"`
+	BuyerAddress         string   `json:"buyer_address"`
+	Type                 string   `json:"type"`
+	MarketPlaceProgramID string   `json:"marketplace_program_id"`
+	Price                *float64 `json:"price"`
+	CreatedAt            string   `json:"created_at"`
 }
 
-type ProjectNFTsRes struct {
+type MarketPlaceSnapshot struct {
+	TokenAddress     string                 `json:"token_address"`
+	Name             string                 `json:"name"`
+	RankeEst         int                    `json:"rank_est"`
+	MoonRank         int                    `json:"moonrank"`
+	MetadataURI      string                 `json:"meta_data_uri"`
+	MetadataImg      string                 `json:"meta_data_img"`
+	Attributes       map[string]interface{} `json:"attributes"`
+	LastSaleMPA      *LastSaleMPA           `json:"last_sale_mpa"`
+	CreatorRoyalty   int                    `json:"creator_royalty"`
+	NFTStandard      string                 `json:"nft_standard"`
+	Owner            string                 `json:"owner"`
+	MarketPlaceState *MarketPlaceState      `json:"market_place_state"`
+}
+
+type ProjectSnapshotsRes struct {
 	PaginationInfo       common.PaginationInfo `json:"pagination_info"`
 	MarketPlaceSnapshots []MarketPlaceSnapshot `json:"market_place_snapshots"`
 }

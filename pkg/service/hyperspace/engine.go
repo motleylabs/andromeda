@@ -23,22 +23,22 @@ func (Hyperspace) GetCollectionNFTs(params *types.NFTParams) (*types.NFTRes, err
 	return collection.GetNFTs(params)
 }
 
-func (Hyperspace) GetCollectionActivities(*types.ActivityParams) (*types.ActivityResult, error) {
+func (Hyperspace) GetCollectionActivities(params *types.ActivityParams) (*types.ActivityRes, error) {
+	return collection.GetActivities(params)
+}
+
+func (Hyperspace) GetNFTDetail(address string) (*types.NFT, error) {
 	return nil, nil
 }
 
-func (Hyperspace) GetNFTDetail(string) (*types.NFT, error) {
+func (Hyperspace) GetNFTActivities(params *types.ActivityParams) (*types.ActivityRes, error) {
 	return nil, nil
 }
 
-func (Hyperspace) GetNFTActivities(*types.ActivityParams) (*types.ActivityResult, error) {
+func (Hyperspace) GetWalletNFTs(address string) (*types.WalletNFT, error) {
 	return nil, nil
 }
 
-func (Hyperspace) GetWalletNFTs(string) (*types.WalletNFT, error) {
-	return nil, nil
-}
-
-func (Hyperspace) GetWalletActivities(string) ([]types.Activity, error) {
+func (Hyperspace) GetWalletActivities(address string) ([]types.Activity, error) {
 	return []types.Activity{}, nil
 }
