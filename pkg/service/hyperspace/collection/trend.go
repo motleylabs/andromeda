@@ -12,7 +12,7 @@ func GetTrends(params *types.TrendParams) (*types.TrendRes, error) {
 	if params == nil {
 		return nil, fmt.Errorf("no trend params")
 	}
-	projectStatParams := GetProjectStatParams(params)
+	projectStatParams := getProjectStatParams(params)
 	payload, err := json.Marshal(projectStatParams)
 	if err != nil {
 		return nil, err
@@ -30,13 +30,13 @@ func GetTrends(params *types.TrendParams) (*types.TrendRes, error) {
 
 	trendRes := types.TrendRes{
 		HasNextPage: projectStats.PaginationInfo.HasNextPage,
-		Trends:      ConvertStatistics(projectStats.ProjectStats),
+		Trends:      convertStatistics(projectStats.ProjectStats),
 	}
 
 	return &trendRes, nil
 }
 
-func ConvertStatistics(stats []ProjectStat) []types.Trend {
+func convertStatistics(stats []ProjectStat) []types.Trend {
 	trends := make([]types.Trend, len(stats))
 
 	for index := range stats {
@@ -65,18 +65,18 @@ func ConvertStatistics(stats []ProjectStat) []types.Trend {
 	return trends
 }
 
-func GetProjectStatParams(input *types.TrendParams) *common.StatParams {
+func getProjectStatParams(input *types.TrendParams) *common.StatParams {
 	excludeProjectAttr := true
 	return &common.StatParams{
 		Conditions: &common.Conditions{
 			ExcludeProjectAttributes: &excludeProjectAttr,
 		},
-		OrderBy:        GetOrderField(input),
-		PaginationInfo: GetPaginationInfo(input),
+		OrderBy:        getOrderField(input),
+		PaginationInfo: getPaginationInfo(input),
 	}
 }
 
-func GetOrderField(input *types.TrendParams) *common.OrderConfig {
+func getOrderField(input *types.TrendParams) *common.OrderConfig {
 	orderFieldName := "floor_price"
 
 	switch input.SortBy {
@@ -100,7 +100,7 @@ func GetOrderField(input *types.TrendParams) *common.OrderConfig {
 	}
 }
 
-func GetPaginationInfo(input *types.TrendParams) *common.PaginationConfig {
+func getPaginationInfo(input *types.TrendParams) *common.PaginationConfig {
 	pageNumber := input.Offset/input.Limit + 1
 	pageSize := input.Limit
 

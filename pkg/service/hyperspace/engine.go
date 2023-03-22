@@ -3,6 +3,7 @@ package hyperspace
 import (
 	"andromeda/pkg/service/entrance/types"
 	"andromeda/pkg/service/hyperspace/collection"
+	"andromeda/pkg/service/hyperspace/nft"
 )
 
 type Hyperspace struct{}
@@ -28,11 +29,11 @@ func (Hyperspace) GetCollectionActivities(params *types.ActivityParams) (*types.
 }
 
 func (Hyperspace) GetNFTDetail(address string) (*types.NFT, error) {
-	return nil, nil
+	return nft.GetDetail(address)
 }
 
 func (Hyperspace) GetNFTActivities(params *types.ActivityParams) (*types.ActivityRes, error) {
-	return nil, nil
+	return nft.GetActivities(params)
 }
 
 func (Hyperspace) GetWalletNFTs(address string) (*types.WalletNFT, error) {

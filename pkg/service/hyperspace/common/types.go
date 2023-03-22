@@ -27,7 +27,8 @@ type Conditions struct {
 }
 
 type Condition struct {
-	ProjectIDs *[]ProjectIDItem `json:"project_ids,omitempty"`
+	ProjectIDs     *[]ProjectIDItem `json:"project_ids,omitempty"`
+	TokenAddresses *[]string        `json:"token_addresses,omitempty"`
 }
 
 type ActivityCondition struct {
@@ -52,4 +53,42 @@ type StatParams struct {
 type ActivityParams struct {
 	ActivityCondition ActivityCondition `json:"condition"`
 	PaginationInfo    *PaginationConfig `json:"pagination_info,omitempty"`
+}
+
+type LastSaleMPA struct {
+	UserAddress    string  `json:"user_address"`
+	Price          float64 `json:"price"`
+	Signature      string  `json:"signature"`
+	BlockTimestamp int64   `json:"block_timestamp"`
+}
+
+type MarketPlaceState struct {
+	BlockTimestamp       int      `json:"block_timestamp"`
+	Signature            string   `json:"signature"`
+	SellerAddress        *string  `json:"seller_address"`
+	BuyerAddress         string   `json:"buyer_address"`
+	Type                 string   `json:"type"`
+	MarketPlaceProgramID string   `json:"marketplace_program_id"`
+	Price                *float64 `json:"price"`
+	CreatedAt            string   `json:"created_at"`
+}
+
+type MarketPlaceSnapshot struct {
+	TokenAddress     string                 `json:"token_address"`
+	Name             string                 `json:"name"`
+	RankeEst         int                    `json:"rank_est"`
+	MoonRank         int                    `json:"moonrank"`
+	MetadataURI      string                 `json:"meta_data_uri"`
+	MetadataImg      string                 `json:"meta_data_img"`
+	Attributes       map[string]interface{} `json:"attributes"`
+	LastSaleMPA      *LastSaleMPA           `json:"last_sale_mpa"`
+	CreatorRoyalty   int                    `json:"creator_royalty"`
+	NFTStandard      string                 `json:"nft_standard"`
+	Owner            string                 `json:"owner"`
+	MarketPlaceState *MarketPlaceState      `json:"market_place_state"`
+}
+
+type ProjectSnapshotsRes struct {
+	PaginationInfo       PaginationInfo        `json:"pagination_info"`
+	MarketPlaceSnapshots []MarketPlaceSnapshot `json:"market_place_snapshots"`
 }

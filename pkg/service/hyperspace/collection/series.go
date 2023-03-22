@@ -12,7 +12,7 @@ func GetTimeSeries(params *types.TimeSeriesParams) (*types.TimeSeriesRes, error)
 	if params == nil {
 		return nil, fmt.Errorf("no series params")
 	}
-	projectStatParams := GetProjectHistParams(params)
+	projectStatParams := getProjectHistParams(params)
 	payload, err := json.Marshal(projectStatParams)
 	if err != nil {
 		return nil, err
@@ -29,13 +29,13 @@ func GetTimeSeries(params *types.TimeSeriesParams) (*types.TimeSeriesRes, error)
 	}
 
 	seriesRes := types.TimeSeriesRes{
-		Series:      ConvertHistEntries(historyRes.HistEntries),
+		Series:      convertHistEntries(historyRes.HistEntries),
 		HasNextPage: historyRes.PaginationInfo.HasNextPage,
 	}
 	return &seriesRes, nil
 }
 
-func ConvertHistEntries(entries []ProjectStatHistEntry) []types.TimeSeries {
+func convertHistEntries(entries []ProjectStatHistEntry) []types.TimeSeries {
 	series := make([]types.TimeSeries, len(entries))
 
 	for index := range entries {
@@ -60,7 +60,7 @@ func ConvertHistEntries(entries []ProjectStatHistEntry) []types.TimeSeries {
 	return series
 }
 
-func GetProjectHistParams(input *types.TimeSeriesParams) *common.StatParams {
+func getProjectHistParams(input *types.TimeSeriesParams) *common.StatParams {
 	projectIDs := []string{input.Address}
 	pageNumber := input.Offset/input.Limit + 1
 

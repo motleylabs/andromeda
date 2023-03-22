@@ -1,4 +1,4 @@
-package collection
+package nft
 
 import (
 	"andromeda/pkg/request"
@@ -12,7 +12,7 @@ func GetActivities(params *types.ActivityParams) (*types.ActivityRes, error) {
 	if params == nil {
 		return nil, fmt.Errorf("no activity params")
 	}
-	activityParams := getCollectionActivityParams(params)
+	activityParams := getNFTActivityParams(params)
 	payload, err := json.Marshal(activityParams)
 	if err != nil {
 		return nil, err
@@ -35,7 +35,7 @@ func GetActivities(params *types.ActivityParams) (*types.ActivityRes, error) {
 	return &activityRes, nil
 }
 
-func getCollectionActivityParams(input *types.ActivityParams) *common.ActivityParams {
+func getNFTActivityParams(input *types.ActivityParams) *common.ActivityParams {
 	projectIDs := []common.ProjectIDItem{
 		{
 			ProjectID: input.Address,
