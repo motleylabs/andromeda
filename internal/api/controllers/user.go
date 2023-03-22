@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"andromeda/internal/api/utils"
+	"andromeda/pkg/service/entrance/types"
 	"log"
 	"net/http"
 
@@ -25,10 +26,15 @@ func (ctrl User) GetNFTs(c *gin.Context) {
 }
 
 func (ctrl User) GetActivities(c *gin.Context) {
-	address := c.Query("address")
+	var params types.ActivityParams
+	if err := c.ShouldBindJSON(&params); err != nil {
+		log.Printf("User GetActivities >> ShouldBindJSON; %s", err.Error())
+		c.AbortWithStatus(http.StatusBadRequest)
+		return
+	}
 
 	dataProvider := utils.GetProvider()
-	activityRes, err := dataProvider.GetUserActivities(address)
+	activityRes, err := dataProvider.GetUserActivities(&params)
 
 	if err != nil {
 		log.Printf("User GetActivities >> DataProvder GetUserActivities; %s", err.Error())

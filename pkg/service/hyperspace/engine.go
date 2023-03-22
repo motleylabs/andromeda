@@ -4,6 +4,7 @@ import (
 	"andromeda/pkg/service/entrance/types"
 	"andromeda/pkg/service/hyperspace/collection"
 	"andromeda/pkg/service/hyperspace/nft"
+	"andromeda/pkg/service/hyperspace/user"
 )
 
 type Hyperspace struct{}
@@ -40,6 +41,6 @@ func (Hyperspace) GetUserNFTs(address string) (*types.UserNFT, error) {
 	return nil, nil
 }
 
-func (Hyperspace) GetUserActivities(address string) ([]types.Activity, error) {
-	return []types.Activity{}, nil
+func (Hyperspace) GetUserActivities(params *types.ActivityParams) (*types.ActivityRes, error) {
+	return user.GetActivities(params)
 }

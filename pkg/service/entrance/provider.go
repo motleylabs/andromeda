@@ -18,5 +18,5 @@ type DataProvider interface {
 
 	// for wallet
 	GetUserNFTs(string) (*types.UserNFT, error)
-	GetUserActivities(string) ([]types.Activity, error)
+	GetUserActivities(*types.ActivityParams) (*types.ActivityRes, error)
 }

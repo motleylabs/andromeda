@@ -45,7 +45,7 @@ func getCollectionActivityParams(input *types.ActivityParams) *common.ActivityPa
 
 	var activityParams = common.ActivityParams{
 		ActivityCondition: common.ActivityCondition{
-			Projects:   projectIDs,
+			Projects:   &projectIDs,
 			ByMPATypes: input.ActivityTypes,
 		},
 		PaginationInfo: &common.PaginationConfig{

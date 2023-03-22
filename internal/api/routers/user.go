@@ -12,6 +12,6 @@ func UserRouter(r *gin.RouterGroup) {
 	c.Use()
 	{
 		c.GET("/nfts", userController.GetNFTs)
-		c.GET("/activities", userController.GetActivities)
+		c.POST("/activities", userController.GetActivities)
 	}
 }

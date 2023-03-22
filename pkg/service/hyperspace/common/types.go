@@ -32,8 +32,10 @@ type Condition struct {
 }
 
 type ActivityCondition struct {
-	Projects   []ProjectIDItem `json:"projects"`
-	ByMPATypes []string        `json:"by_mpa_types"`
+	Projects      *[]ProjectIDItem `json:"projects,omitempty"`
+	SellerAddress *string          `json:"seller_address,omitempty"`
+	BuyerAddress  *string          `json:"buyer_address,omitempty"`
+	ByMPATypes    []string         `json:"by_mpa_types"`
 }
 
 type PaginationInfo struct {
