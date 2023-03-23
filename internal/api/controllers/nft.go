@@ -17,12 +17,26 @@ func (ctrl NFT) GetDetail(c *gin.Context) {
 	dataProvider := utils.GetProvider()
 	collection, err := dataProvider.GetNFTDetail(address)
 	if err != nil {
-		log.Printf("NFT GetDetail >> DataProvder GetDetail; %s", err.Error())
+		log.Printf("NFT GetDetail >> DataProvder GetNFTDetail; %s", err.Error())
 		c.AbortWithStatus(http.StatusBadRequest)
 		return
 	}
 
 	c.JSON(http.StatusOK, collection)
+}
+
+func (ctrl NFT) GetOffers(c *gin.Context) {
+	address := c.Query("address")
+
+	dataProvider := utils.GetProvider()
+	offers, err := dataProvider.GetNFTOffers(address)
+	if err != nil {
+		log.Printf("NFT GetOffers >> DataProvder GetNFTOffers; %s", err.Error())
+		c.AbortWithStatus(http.StatusBadRequest)
+		return
+	}
+
+	c.JSON(http.StatusOK, offers)
 }
 
 func (ctrl NFT) GetActivities(c *gin.Context) {
@@ -37,7 +51,7 @@ func (ctrl NFT) GetActivities(c *gin.Context) {
 	activityRes, err := dataProvider.GetNFTActivities(&params)
 
 	if err != nil {
-		log.Printf("NFT GetTimeSeries >> DataProvder GetNFTTimeSeries; %s", err.Error())
+		log.Printf("NFT GetTimeSeries >> DataProvder GetNFTActivities; %s", err.Error())
 		c.AbortWithStatus(http.StatusInternalServerError)
 		return
 	}

@@ -12,6 +12,7 @@ func NFTRouter(r *gin.RouterGroup) {
 	c.Use()
 	{
 		c.GET("/detail/:address", nftController.GetDetail)
+		c.GET("/offers", nftController.GetOffers)
 		c.POST("/activities", nftController.GetActivities)
 	}
 }

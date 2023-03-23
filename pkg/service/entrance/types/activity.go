@@ -64,5 +64,5 @@ type ActivityParams struct {
 	Address       string   `json:"address"`
 	Limit         int      `json:"limit"`
 	Offset        int      `json:"offset"`
-	ActivityTypes []string `json:"activityTypes"`
+	ActivityTypes []string `json:"activityTypes,omitempty"`
 }

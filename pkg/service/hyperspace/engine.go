@@ -37,10 +37,18 @@ func (Hyperspace) GetNFTActivities(params *types.ActivityParams) (*types.NFTActi
 	return nft.GetActivities(params)
 }
 
+func (Hyperspace) GetNFTOffers(address string) ([]types.NFTActivity, error) {
+	return nft.GetOffers(address)
+}
+
 func (Hyperspace) GetUserNFTs(address string) (*types.UserNFT, error) {
 	return nil, nil
 }
 
 func (Hyperspace) GetUserActivities(params *types.ActivityParams) (*types.ActivityRes, error) {
 	return user.GetActivities(params)
+}
+
+func (Hyperspace) GetUserOffers(params *types.ActivityParams) (*types.NFTActivityRes, error) {
+	return nil, nil
 }
