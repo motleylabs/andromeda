@@ -49,6 +49,6 @@ func (Hyperspace) GetUserActivities(params *types.ActivityParams) (*types.Activi
 	return user.GetActivities(params)
 }
 
-func (Hyperspace) GetUserOffers(params *types.ActivityParams) (*types.NFTActivityRes, error) {
-	return nil, nil
+func (Hyperspace) GetUserOffers(params *types.ActivityParams) (*types.ActivityRes, error) {
+	return user.GetOffers(params)
 }
