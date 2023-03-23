@@ -8,7 +8,7 @@ import (
 	"fmt"
 )
 
-func GetActivities(params *types.ActivityParams) (*types.ActivityRes, error) {
+func GetActivities(params *types.ActivityParams) (*types.NFTActivityRes, error) {
 	if params == nil {
 		return nil, fmt.Errorf("no activity params")
 	}
@@ -18,40 +18,45 @@ func GetActivities(params *types.ActivityParams) (*types.ActivityRes, error) {
 		return nil, err
 	}
 
-	res, err := request.ProcessPost(fmt.Sprintf("%s/get-project-history", common.ENDPOINT), payload)
+	res, err := request.ProcessPost(fmt.Sprintf("%s/get-market-place-actions-by-token", common.ENDPOINT), payload)
 	if err != nil {
 		return nil, err
 	}
 
-	var snapshots common.ProjectSnapshotsRes
-	if err := json.Unmarshal(res, &snapshots); err != nil {
+	var activities []NFTActivities
+	if err := json.Unmarshal(res, &activities); err != nil {
 		return nil, err
 	}
 
-	activityRes := types.ActivityRes{
-		Activities:  common.ConvertActivitySnapshots(snapshots.MarketPlaceSnapshots),
-		HasNextPage: snapshots.PaginationInfo.HasNextPage,
+	if len(activities) == 0 {
+		return nil, fmt.Errorf("unexpected error")
+	}
+
+	activityRes := types.NFTActivityRes{
+		Activities:  common.ConvertNFTActivity(activities[0].MarketPlaceActions),
+		HasNextPage: false,
 	}
 	return &activityRes, nil
 }
 
-func getNFTActivityParams(input *types.ActivityParams) *common.ActivityParams {
-	projectIDs := []common.ProjectIDItem{
-		{
-			ProjectID: input.Address,
-		},
+func getNFTActivityParams(input *types.ActivityParams) *common.StatParams {
+	tokenAddress := []string{input.Address}
+	orderConfig := common.OrderConfig{
+		FieldName: "block_timestamp",
+		SortOrder: "DESC",
 	}
-	pageNumber := input.Offset/input.Limit + 1
 
-	var activityParams = common.ActivityParams{
-		ActivityCondition: common.ActivityCondition{
-			Projects:   &projectIDs,
-			ByMPATypes: input.ActivityTypes,
+	var actionType *string
+	if len(input.ActivityTypes) > 0 {
+		actionType = &input.ActivityTypes[0]
+	}
+
+	var activityParams = common.StatParams{
+		Condition: &common.Condition{
+			TokenAddresses: &tokenAddress,
+			ActionType:     actionType,
 		},
-		PaginationInfo: &common.PaginationConfig{
-			PageNumber: &pageNumber,
-			PageSize:   &input.Limit,
-		},
+		OrderBy: &orderConfig,
 	}
 	return &activityParams
 }

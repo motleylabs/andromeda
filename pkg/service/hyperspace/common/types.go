@@ -29,6 +29,7 @@ type Conditions struct {
 type Condition struct {
 	ProjectIDs     *[]ProjectIDItem `json:"project_ids,omitempty"`
 	TokenAddresses *[]string        `json:"token_addresses,omitempty"`
+	ActionType     *string          `json:"action_type,omitempty"`
 }
 
 type ActivityCondition struct {
@@ -68,7 +69,7 @@ type MarketPlaceState struct {
 	BlockTimestamp       int      `json:"block_timestamp"`
 	Signature            string   `json:"signature"`
 	SellerAddress        *string  `json:"seller_address"`
-	BuyerAddress         string   `json:"buyer_address"`
+	BuyerAddress         *string  `json:"buyer_address"`
 	Type                 string   `json:"type"`
 	MarketPlaceProgramID string   `json:"marketplace_program_id"`
 	Price                *float64 `json:"price"`
@@ -76,6 +77,7 @@ type MarketPlaceState struct {
 }
 
 type MarketPlaceSnapshot struct {
+	ProjectID        string                 `json:"project_id"`
 	TokenAddress     string                 `json:"token_address"`
 	Name             string                 `json:"name"`
 	RankeEst         int                    `json:"rank_est"`
@@ -88,6 +90,7 @@ type MarketPlaceSnapshot struct {
 	NFTStandard      string                 `json:"nft_standard"`
 	Owner            string                 `json:"owner"`
 	MarketPlaceState *MarketPlaceState      `json:"market_place_state"`
+	ProjectSlug      string                 `json:"project_slug"`
 }
 
 type ProjectSnapshotsRes struct {

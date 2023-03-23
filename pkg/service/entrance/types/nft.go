@@ -15,6 +15,7 @@ var TokenStandard = []string{
 }
 
 type NFT struct {
+	ProjectID     string   `json:"projectId"`
 	MintAddress   string   `json:"mintAddress"`
 	Symbol        string   `json:"symbol"`
 	URI           string   `json:"uri"`

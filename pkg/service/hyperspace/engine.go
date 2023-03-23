@@ -33,7 +33,7 @@ func (Hyperspace) GetNFTDetail(address string) (*types.NFT, error) {
 	return nft.GetDetail(address)
 }
 
-func (Hyperspace) GetNFTActivities(params *types.ActivityParams) (*types.ActivityRes, error) {
+func (Hyperspace) GetNFTActivities(params *types.ActivityParams) (*types.NFTActivityRes, error) {
 	return nft.GetActivities(params)
 }
 

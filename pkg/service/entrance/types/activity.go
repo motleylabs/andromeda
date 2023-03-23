@@ -31,8 +31,18 @@ type Activity struct {
 	Mint                      string  `json:"mint"`
 	Name                      string  `json:"name"`
 	Image                     string  `json:"image"`
-	Owner                     string  `json:"owner"`
-	MarketPlace               string  `json:"marketplace"`
+	Seller                    *string `json:"seller"`
+	Buyer                     *string `json:"buyer"`
+	Price                     *string `json:"price"`
+	ActivityType              string  `json:"activityType"`
+	MarketPlaceProgramAddress string  `json:"martketplaceProgramAddress"`
+	CreatedAt                 string  `json:"createdAt"`
+	Signature                 string  `json:"signature"`
+}
+
+type NFTActivity struct {
+	Seller                    *string `json:"seller"`
+	Buyer                     *string `json:"buyer"`
 	Price                     *string `json:"price"`
 	ActivityType              string  `json:"activityType"`
 	MarketPlaceProgramAddress string  `json:"martketplaceProgramAddress"`
@@ -43,6 +53,11 @@ type Activity struct {
 type ActivityRes struct {
 	Activities  []Activity `json:"activities"`
 	HasNextPage bool       `json:"hasNextPage"`
+}
+
+type NFTActivityRes struct {
+	Activities  []NFTActivity `json:"activities"`
+	HasNextPage bool          `json:"hasNextPage"`
 }
 
 type ActivityParams struct {

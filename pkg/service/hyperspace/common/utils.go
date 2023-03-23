@@ -62,7 +62,9 @@ func ConvertNFTSnapshot(snapshot *MarketPlaceSnapshot) *types.NFT {
 	traits := GetTraits(&snapshot.Attributes)
 
 	nft := types.NFT{
+		ProjectID:     snapshot.ProjectID,
 		Name:          &snapshot.Name,
+		Symbol:        snapshot.ProjectSlug,
 		Image:         snapshot.MetadataImg,
 		LastSold:      lastSold,
 		MintAddress:   snapshot.TokenAddress,
@@ -83,17 +85,34 @@ func ConvertActivitySnapshots(snapshots []MarketPlaceSnapshot) []types.Activity 
 		activities[index].Name = snapshots[index].Name
 		activities[index].Image = snapshots[index].MetadataImg
 		activities[index].Mint = snapshots[index].TokenAddress
-		activities[index].Owner = snapshots[index].Owner
 
 		if snapshots[index].MarketPlaceState != nil {
 			price := GetLamportsFromPointer(snapshots[index].MarketPlaceState.Price)
 			activities[index].MarketPlaceProgramAddress = snapshots[index].MarketPlaceState.MarketPlaceProgramID
 			activities[index].Signature = snapshots[index].MarketPlaceState.Signature
 			activities[index].CreatedAt = snapshots[index].MarketPlaceState.CreatedAt
+			activities[index].Seller = snapshots[index].MarketPlaceState.SellerAddress
+			activities[index].Buyer = snapshots[index].MarketPlaceState.BuyerAddress
 			activities[index].ActivityType = snapshots[index].MarketPlaceState.Type
 			activities[index].Price = &price
 		}
 
+	}
+	return activities
+}
+
+func ConvertNFTActivity(states []MarketPlaceState) []types.NFTActivity {
+	activities := make([]types.NFTActivity, len(states))
+
+	for index := range states {
+		price := GetLamportsFromPointer(states[index].Price)
+		activities[index].MarketPlaceProgramAddress = states[index].MarketPlaceProgramID
+		activities[index].Signature = states[index].Signature
+		activities[index].CreatedAt = states[index].CreatedAt
+		activities[index].Seller = states[index].SellerAddress
+		activities[index].Buyer = states[index].BuyerAddress
+		activities[index].ActivityType = states[index].Type
+		activities[index].Price = &price
 	}
 	return activities
 }
