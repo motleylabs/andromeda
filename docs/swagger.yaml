@@ -33,7 +33,7 @@ definitions:
           type: string
         type: array
       address:
-        example: 8xBMPGAj5NzAwRmdfEcksDcZyexr87AAmD6LWwKG7Dqq
+        example: target address
         type: string
       limit:
         example: 10
@@ -519,4 +519,56 @@ paths:
       summary: Get NFT offers
       tags:
       - nfts
+  /users/activities:
+    post:
+      consumes:
+      - application/json
+      description: get the activities with related to the wallet
+      parameters:
+      - description: Search parameters
+        in: body
+        name: params
+        required: true
+        schema:
+          $ref: '#/definitions/types.ActivityParams'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/types.ActivityRes'
+        "400":
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+      summary: Get user activities
+      tags:
+      - users
+  /users/offers:
+    post:
+      consumes:
+      - application/json
+      description: get the offers with related to the wallet
+      parameters:
+      - description: Search parameters
+        in: body
+        name: params
+        required: true
+        schema:
+          $ref: '#/definitions/types.ActivityParams'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/types.ActivityRes'
+        "400":
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+      summary: Get user offers
+      tags:
+      - users
 swagger: "2.0"

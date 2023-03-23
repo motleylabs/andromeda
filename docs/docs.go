@@ -327,6 +327,86 @@ const docTemplate = `{
                     }
                 }
             }
+        },
+        "/users/activities": {
+            "post": {
+                "description": "get the activities with related to the wallet",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "users"
+                ],
+                "summary": "Get user activities",
+                "parameters": [
+                    {
+                        "description": "Search parameters",
+                        "name": "params",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/types.ActivityParams"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/types.ActivityRes"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/users/offers": {
+            "post": {
+                "description": "get the offers with related to the wallet",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "users"
+                ],
+                "summary": "Get user offers",
+                "parameters": [
+                    {
+                        "description": "Search parameters",
+                        "name": "params",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/types.ActivityParams"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/types.ActivityRes"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -382,7 +462,7 @@ const docTemplate = `{
                 },
                 "address": {
                     "type": "string",
-                    "example": "8xBMPGAj5NzAwRmdfEcksDcZyexr87AAmD6LWwKG7Dqq"
+                    "example": "target address"
                 },
                 "limit": {
                     "type": "integer",
