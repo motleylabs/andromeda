@@ -214,6 +214,119 @@ const docTemplate = `{
                     }
                 }
             }
+        },
+        "/nfts/activities": {
+            "post": {
+                "description": "get the activities with related to the NFT",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "nfts"
+                ],
+                "summary": "Get NFT activities",
+                "parameters": [
+                    {
+                        "description": "Search parameters",
+                        "name": "params",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/types.ActivityParams"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/types.NFTActivityRes"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/nfts/detail/{address}": {
+            "get": {
+                "description": "get detail information about the NFT",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "nfts"
+                ],
+                "summary": "Get NFT detail",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "NFT address",
+                        "name": "address",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/types.NFT"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/nfts/offers": {
+            "get": {
+                "description": "get the offers with related to the NFT",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "nfts"
+                ],
+                "summary": "Get NFT offers",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "NFT address",
+                        "name": "address",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/types.NFTActivity"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -396,6 +509,46 @@ const docTemplate = `{
                 },
                 "uri": {
                     "type": "string"
+                }
+            }
+        },
+        "types.NFTActivity": {
+            "type": "object",
+            "properties": {
+                "activityType": {
+                    "type": "string"
+                },
+                "buyer": {
+                    "type": "string"
+                },
+                "createdAt": {
+                    "type": "string"
+                },
+                "martketplaceProgramAddress": {
+                    "type": "string"
+                },
+                "price": {
+                    "type": "string"
+                },
+                "seller": {
+                    "type": "string"
+                },
+                "signature": {
+                    "type": "string"
+                }
+            }
+        },
+        "types.NFTActivityRes": {
+            "type": "object",
+            "properties": {
+                "activities": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/types.NFTActivity"
+                    }
+                },
+                "hasNextPage": {
+                    "type": "boolean"
                 }
             }
         },

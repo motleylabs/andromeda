@@ -120,6 +120,32 @@ definitions:
       uri:
         type: string
     type: object
+  types.NFTActivity:
+    properties:
+      activityType:
+        type: string
+      buyer:
+        type: string
+      createdAt:
+        type: string
+      martketplaceProgramAddress:
+        type: string
+      price:
+        type: string
+      seller:
+        type: string
+      signature:
+        type: string
+    type: object
+  types.NFTActivityRes:
+    properties:
+      activities:
+        items:
+          $ref: '#/definitions/types.NFTActivity'
+        type: array
+      hasNextPage:
+        type: boolean
+    type: object
   types.NFTParams:
     properties:
       attributes:
@@ -419,4 +445,78 @@ paths:
       summary: Get collection trends
       tags:
       - collections
+  /nfts/activities:
+    post:
+      consumes:
+      - application/json
+      description: get the activities with related to the NFT
+      parameters:
+      - description: Search parameters
+        in: body
+        name: params
+        required: true
+        schema:
+          $ref: '#/definitions/types.ActivityParams'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/types.NFTActivityRes'
+        "400":
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+      summary: Get NFT activities
+      tags:
+      - nfts
+  /nfts/detail/{address}:
+    get:
+      consumes:
+      - application/json
+      description: get detail information about the NFT
+      parameters:
+      - description: NFT address
+        in: path
+        name: address
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/types.NFT'
+        "500":
+          description: Internal Server Error
+      summary: Get NFT detail
+      tags:
+      - nfts
+  /nfts/offers:
+    get:
+      consumes:
+      - application/json
+      description: get the offers with related to the NFT
+      parameters:
+      - description: NFT address
+        in: query
+        name: address
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/types.NFTActivity'
+            type: array
+        "500":
+          description: Internal Server Error
+      summary: Get NFT offers
+      tags:
+      - nfts
 swagger: "2.0"

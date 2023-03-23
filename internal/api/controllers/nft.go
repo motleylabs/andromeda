@@ -11,20 +11,42 @@ import (
 
 type NFT struct{}
 
+// GetDetail godoc
+//
+// @Summary         Get NFT detail
+// @Description     get detail information about the NFT
+// @Tags            nfts
+// @Accept          json
+// @Produce         json
+// @Param           address  path          string true          "NFT address"
+// @Success		    200	     {object}	   types.NFT
+// @Failure         500
+// @Router          /nfts/detail/{address}     [get]
 func (ctrl NFT) GetDetail(c *gin.Context) {
 	address := c.Param("address")
 
 	dataProvider := utils.GetProvider()
-	collection, err := dataProvider.GetNFTDetail(address)
+	nft, err := dataProvider.GetNFTDetail(address)
 	if err != nil {
 		log.Printf("NFT GetDetail >> DataProvder GetNFTDetail; %s", err.Error())
-		c.AbortWithStatus(http.StatusBadRequest)
+		c.AbortWithStatus(http.StatusInternalServerError)
 		return
 	}
 
-	c.JSON(http.StatusOK, collection)
+	c.JSON(http.StatusOK, nft)
 }
 
+// GetOffers godoc
+//
+// @Summary         Get NFT offers
+// @Description     get the offers with related to the NFT
+// @Tags            nfts
+// @Accept          json
+// @Produce         json
+// @Param           address  query         string true         "NFT address"
+// @Success		    200	     {object}	   []types.NFTActivity
+// @Failure         500
+// @Router          /nfts/offers     [get]
 func (ctrl NFT) GetOffers(c *gin.Context) {
 	address := c.Query("address")
 
@@ -32,13 +54,25 @@ func (ctrl NFT) GetOffers(c *gin.Context) {
 	offers, err := dataProvider.GetNFTOffers(address)
 	if err != nil {
 		log.Printf("NFT GetOffers >> DataProvder GetNFTOffers; %s", err.Error())
-		c.AbortWithStatus(http.StatusBadRequest)
+		c.AbortWithStatus(http.StatusInternalServerError)
 		return
 	}
 
 	c.JSON(http.StatusOK, offers)
 }
 
+// GetActivities godoc
+//
+// @Summary         Get NFT activities
+// @Description     get the activities with related to the NFT
+// @Tags            nfts
+// @Accept          json
+// @Produce         json
+// @Param           params   body          types.ActivityParams true        "Search parameters"
+// @Success		    200	     {object}	   types.NFTActivityRes
+// @Failure		    400
+// @Failure         500
+// @Router          /nfts/activities     [post]
 func (ctrl NFT) GetActivities(c *gin.Context) {
 	var params types.ActivityParams
 	if err := c.ShouldBindJSON(&params); err != nil {
