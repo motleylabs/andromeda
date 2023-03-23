@@ -11,6 +11,18 @@ import (
 
 type Collection struct{}
 
+// GetTrends godoc
+//
+// @Summary         Get collection trends
+// @Description     get trending collections
+// @Tags            collections
+// @Accept          json
+// @Produce         json
+// @Param           params   body          types.TrendParams true         "Search parameters"
+// @Success		    200	     {object}	   types.TrendRes
+// @Failure		    400
+// @Failure         500
+// @Router          /collections/trend     [post]
 func (ctrl Collection) GetTrends(c *gin.Context) {
 	var params types.TrendParams
 	if err := c.ShouldBindJSON(&params); err != nil {
@@ -31,6 +43,18 @@ func (ctrl Collection) GetTrends(c *gin.Context) {
 	c.JSON(http.StatusOK, trends)
 }
 
+// GetNFTs godoc
+//
+// @Summary         Get collection NFTs
+// @Description     get the list of NFTs of the collection
+// @Tags            collections
+// @Accept          json
+// @Produce         json
+// @Param           params   body          types.NFTParams true        "Search parameters"
+// @Success		    200	     {object}	   types.NFTRes
+// @Failure		    400
+// @Failure         500
+// @Router          /collections/nfts     [post]
 func (ctrl Collection) GetNFTs(c *gin.Context) {
 	var params types.NFTParams
 	if err := c.ShouldBindJSON(&params); err != nil {
@@ -51,6 +75,18 @@ func (ctrl Collection) GetNFTs(c *gin.Context) {
 	c.JSON(http.StatusOK, nfts)
 }
 
+// GetTimeSeries godoc
+//
+// @Summary         Get collection historical data
+// @Description     get the historical stats for the collection
+// @Tags            collections
+// @Accept          json
+// @Produce         json
+// @Param           params   body          types.TimeSeriesParams true        "Search parameters"
+// @Success		    200	     {object}	   types.TimeSeriesRes
+// @Failure		    400
+// @Failure         500
+// @Router          /collections/series     [post]
 func (ctrl Collection) GetTimeSeries(c *gin.Context) {
 	var params types.TimeSeriesParams
 	if err := c.ShouldBindJSON(&params); err != nil {
@@ -71,6 +107,17 @@ func (ctrl Collection) GetTimeSeries(c *gin.Context) {
 	c.JSON(http.StatusOK, series)
 }
 
+// GetDetail godoc
+//
+// @Summary         Get collection detail
+// @Description     get collection detail information with the address
+// @Tags            collections
+// @Accept          json
+// @Produce         json
+// @Param           address  path          string true                     "Collection Address"
+// @Success		    200	     {object}	   types.Collection
+// @Failure         500
+// @Router          /collections/detail/{address} [get]
 func (ctrl Collection) GetDetail(c *gin.Context) {
 	address := c.Param("address")
 
@@ -78,13 +125,25 @@ func (ctrl Collection) GetDetail(c *gin.Context) {
 	collection, err := dataProvider.GetCollectionDetail(address)
 	if err != nil {
 		log.Printf("Collection GetDetail >> DataProvder GetDetail; %s", err.Error())
-		c.AbortWithStatus(http.StatusBadRequest)
+		c.AbortWithStatus(http.StatusInternalServerError)
 		return
 	}
 
 	c.JSON(http.StatusOK, collection)
 }
 
+// GetActivities godoc
+//
+// @Summary         Get collection activities
+// @Description     get the activities with related to the collection
+// @Tags            collections
+// @Accept          json
+// @Produce         json
+// @Param           params   body          types.ActivityParams true        "Search parameters"
+// @Success		    200	     {object}	   types.ActivityRes
+// @Failure		    400
+// @Failure         500
+// @Router          /collections/activities     [post]
 func (ctrl Collection) GetActivities(c *gin.Context) {
 	var params types.ActivityParams
 	if err := c.ShouldBindJSON(&params); err != nil {

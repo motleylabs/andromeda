@@ -61,8 +61,8 @@ type NFTActivityRes struct {
 }
 
 type ActivityParams struct {
-	Address       string   `json:"address"`
-	Limit         int      `json:"limit"`
-	Offset        int      `json:"offset"`
-	ActivityTypes []string `json:"activityTypes,omitempty"`
+	Address       string   `json:"address" example:"8xBMPGAj5NzAwRmdfEcksDcZyexr87AAmD6LWwKG7Dqq"`
+	Limit         int      `json:"limit" example:"10"`
+	Offset        int      `json:"offset" example:"0"`
+	ActivityTypes []string `json:"activityTypes,omitempty" example:"LISTING"`
 }
