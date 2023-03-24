@@ -24,11 +24,11 @@ func main() {
 
 	if err := godotenv.Load(); err != nil {
 		log.Printf("Dotenv Load; %s", err.Error())
-		return
 	}
 
 	// set mode
 	if os.Getenv("ENV") == "PRODUCTION" {
+		log.Printf("now production mode")
 		gin.SetMode(gin.ReleaseMode)
 	}
 
