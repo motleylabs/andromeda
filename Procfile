@@ -1,1 +1,1 @@
-web: andromeda
+web: ./andromeda
