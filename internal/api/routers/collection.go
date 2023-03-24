@@ -13,7 +13,7 @@ func CollectionRouter(r *gin.RouterGroup) {
 	{
 		c.GET("/detail/:address", collectionController.GetDetail)
 		c.POST("/trend", collectionController.GetTrends)
-		c.POST("/nft", collectionController.GetNFTs)
+		c.POST("/nfts", collectionController.GetNFTs)
 		c.POST("/series", collectionController.GetTimeSeries)
 		c.POST("/activities", collectionController.GetActivities)
 	}

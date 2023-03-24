@@ -1,0 +1,574 @@
+definitions:
+  types.Activity:
+    properties:
+      activityType:
+        type: string
+      buyer:
+        type: string
+      createdAt:
+        type: string
+      image:
+        type: string
+      martketplaceProgramAddress:
+        type: string
+      mint:
+        type: string
+      name:
+        type: string
+      price:
+        type: string
+      seller:
+        type: string
+      signature:
+        type: string
+      symbol:
+        type: string
+    type: object
+  types.ActivityParams:
+    properties:
+      activityTypes:
+        example:
+        - LISTING
+        items:
+          type: string
+        type: array
+      address:
+        example: target address
+        type: string
+      limit:
+        example: 10
+        type: integer
+      offset:
+        example: 0
+        type: integer
+    type: object
+  types.ActivityRes:
+    properties:
+      activities:
+        items:
+          $ref: '#/definitions/types.Activity'
+        type: array
+      hasNextPage:
+        type: boolean
+    type: object
+  types.Attribute:
+    properties:
+      name:
+        example: Background
+        type: string
+      type:
+        example: CATEGORY
+        type: string
+      values:
+        example:
+        - Vivid-tangerine
+        items:
+          type: string
+        type: array
+    type: object
+  types.Collection:
+    properties:
+      attributes:
+        items:
+          $ref: '#/definitions/types.Attribute'
+        type: array
+      description:
+        type: string
+      id:
+        type: string
+      image:
+        type: string
+      name:
+        type: string
+      statistics:
+        $ref: '#/definitions/types.Statistics'
+      symbol:
+        type: string
+      verifiedCollectionAddress:
+        type: string
+    type: object
+  types.NFT:
+    properties:
+      description:
+        type: string
+      image:
+        type: string
+      lastSold:
+        type: string
+      listingType:
+        type: string
+      mintAddress:
+        type: string
+      moonrankRank:
+        type: integer
+      name:
+        type: string
+      owner:
+        type: string
+      projectId:
+        type: string
+      sellerFeeBasisPoints:
+        type: integer
+      symbol:
+        type: string
+      tokenStandard:
+        type: string
+      traits:
+        items:
+          $ref: '#/definitions/types.Trait'
+        type: array
+      uri:
+        type: string
+    type: object
+  types.NFTActivity:
+    properties:
+      activityType:
+        type: string
+      buyer:
+        type: string
+      createdAt:
+        type: string
+      martketplaceProgramAddress:
+        type: string
+      price:
+        type: string
+      seller:
+        type: string
+      signature:
+        type: string
+    type: object
+  types.NFTActivityRes:
+    properties:
+      activities:
+        items:
+          $ref: '#/definitions/types.NFTActivity'
+        type: array
+      hasNextPage:
+        type: boolean
+    type: object
+  types.NFTParams:
+    properties:
+      attributes:
+        items:
+          $ref: '#/definitions/types.Attribute'
+        type: array
+      collection:
+        example: 8xBMPGAj5NzAwRmdfEcksDcZyexr87AAmD6LWwKG7Dqq
+        type: string
+      limit:
+        example: 10
+        type: integer
+      offset:
+        example: 0
+        type: integer
+      order:
+        example: ASC|DESC
+        type: string
+      sort_by:
+        example: lowest_listing_block_timestamp
+        type: string
+    type: object
+  types.NFTRes:
+    properties:
+      hasNextPage:
+        type: boolean
+      nfts:
+        items:
+          $ref: '#/definitions/types.NFT'
+        type: array
+    type: object
+  types.Statistics:
+    properties:
+      floor1d:
+        type: string
+      holders:
+        type: integer
+      listed1d:
+        type: string
+      marketCap:
+        type: number
+      supply:
+        type: integer
+      volume30d:
+        type: string
+    type: object
+  types.TimeSeries:
+    properties:
+      floorPrice:
+        type: string
+      holders:
+        type: integer
+      listed:
+        type: integer
+      timestamp:
+        type: string
+      volume:
+        type: integer
+    type: object
+  types.TimeSeriesParams:
+    properties:
+      collection:
+        example: 8xBMPGAj5NzAwRmdfEcksDcZyexr87AAmD6LWwKG7Dqq
+        type: string
+      end_timestamp:
+        example: 1679410436
+        type: integer
+      limit:
+        example: 10
+        type: integer
+      offset:
+        example: 0
+        type: integer
+      start_timestamp:
+        example: 1671128400
+        type: integer
+      time_granularity:
+        example: PER_HOUR|PER_DAY
+        type: string
+    type: object
+  types.TimeSeriesRes:
+    properties:
+      hasNextPage:
+        type: boolean
+      series:
+        items:
+          $ref: '#/definitions/types.TimeSeries'
+        type: array
+    type: object
+  types.Trait:
+    properties:
+      rarity:
+        type: number
+      traitType:
+        type: string
+      value:
+        type: string
+    type: object
+  types.Trend:
+    properties:
+      changeFloor1d:
+        type: integer
+      changeFloor7d:
+        type: integer
+      changeFloor30d:
+        type: integer
+      changeListed1d:
+        type: integer
+      changeListed7d:
+        type: integer
+      changeListed30d:
+        type: integer
+      changeVolume1d:
+        type: integer
+      changeVolume7d:
+        type: integer
+      changeVolume30d:
+        type: integer
+      collection:
+        $ref: '#/definitions/types.Collection'
+      floor1d:
+        type: string
+      floor7d:
+        type: string
+      floor30d:
+        type: string
+      listed1d:
+        type: string
+      listed7d:
+        type: string
+      listed30d:
+        type: string
+      volume1d:
+        type: string
+      volume7d:
+        type: string
+      volume30d:
+        type: string
+    type: object
+  types.TrendParams:
+    properties:
+      limit:
+        example: 10
+        type: integer
+      offset:
+        example: 0
+        type: integer
+      order:
+        example: ASC|DESC
+        type: string
+      period:
+        example: 1d|7d|1m
+        type: string
+      sort_by:
+        example: floor_price|volume|listed
+        type: string
+    type: object
+  types.TrendRes:
+    properties:
+      hasNextPage:
+        type: boolean
+      trends:
+        items:
+          $ref: '#/definitions/types.Trend'
+        type: array
+    type: object
+info:
+  contact:
+    email: support@swagger.io
+    name: API Support
+    url: http://www.swagger.io/support
+paths:
+  /collections/activities:
+    post:
+      consumes:
+      - application/json
+      description: get the activities with related to the collection
+      parameters:
+      - description: Search parameters
+        in: body
+        name: params
+        required: true
+        schema:
+          $ref: '#/definitions/types.ActivityParams'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/types.ActivityRes'
+        "400":
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+      summary: Get collection activities
+      tags:
+      - collections
+  /collections/detail/{address}:
+    get:
+      consumes:
+      - application/json
+      description: get collection detail information with the address
+      parameters:
+      - description: Collection Address
+        in: path
+        name: address
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/types.Collection'
+        "500":
+          description: Internal Server Error
+      summary: Get collection detail
+      tags:
+      - collections
+  /collections/nfts:
+    post:
+      consumes:
+      - application/json
+      description: get the list of NFTs of the collection
+      parameters:
+      - description: Search parameters
+        in: body
+        name: params
+        required: true
+        schema:
+          $ref: '#/definitions/types.NFTParams'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/types.NFTRes'
+        "400":
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+      summary: Get collection NFTs
+      tags:
+      - collections
+  /collections/series:
+    post:
+      consumes:
+      - application/json
+      description: get the historical stats for the collection
+      parameters:
+      - description: Search parameters
+        in: body
+        name: params
+        required: true
+        schema:
+          $ref: '#/definitions/types.TimeSeriesParams'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/types.TimeSeriesRes'
+        "400":
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+      summary: Get collection historical data
+      tags:
+      - collections
+  /collections/trend:
+    post:
+      consumes:
+      - application/json
+      description: get trending collections
+      parameters:
+      - description: Search parameters
+        in: body
+        name: params
+        required: true
+        schema:
+          $ref: '#/definitions/types.TrendParams'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/types.TrendRes'
+        "400":
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+      summary: Get collection trends
+      tags:
+      - collections
+  /nfts/activities:
+    post:
+      consumes:
+      - application/json
+      description: get the activities with related to the NFT
+      parameters:
+      - description: Search parameters
+        in: body
+        name: params
+        required: true
+        schema:
+          $ref: '#/definitions/types.ActivityParams'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/types.NFTActivityRes'
+        "400":
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+      summary: Get NFT activities
+      tags:
+      - nfts
+  /nfts/detail/{address}:
+    get:
+      consumes:
+      - application/json
+      description: get detail information about the NFT
+      parameters:
+      - description: NFT address
+        in: path
+        name: address
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/types.NFT'
+        "500":
+          description: Internal Server Error
+      summary: Get NFT detail
+      tags:
+      - nfts
+  /nfts/offers:
+    get:
+      consumes:
+      - application/json
+      description: get the offers with related to the NFT
+      parameters:
+      - description: NFT address
+        in: query
+        name: address
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/types.NFTActivity'
+            type: array
+        "500":
+          description: Internal Server Error
+      summary: Get NFT offers
+      tags:
+      - nfts
+  /users/activities:
+    post:
+      consumes:
+      - application/json
+      description: get the activities with related to the wallet
+      parameters:
+      - description: Search parameters
+        in: body
+        name: params
+        required: true
+        schema:
+          $ref: '#/definitions/types.ActivityParams'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/types.ActivityRes'
+        "400":
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+      summary: Get user activities
+      tags:
+      - users
+  /users/offers:
+    post:
+      consumes:
+      - application/json
+      description: get the offers with related to the wallet
+      parameters:
+      - description: Search parameters
+        in: body
+        name: params
+        required: true
+        schema:
+          $ref: '#/definitions/types.ActivityParams'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/types.ActivityRes'
+        "400":
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+      summary: Get user offers
+      tags:
+      - users
+swagger: "2.0"

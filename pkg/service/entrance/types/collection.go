@@ -10,9 +10,9 @@ type Statistics struct {
 }
 
 type Attribute struct {
-	Name   string   `json:"name"`
-	Type   string   `json:"type"`
-	Values []string `json:"values"`
+	Name   string   `json:"name" example:"Background"`
+	Type   string   `json:"type" example:"CATEGORY"`
+	Values []string `json:"values" example:"Vivid-tangerine"`
 }
 
 type Collection struct {
@@ -67,27 +67,27 @@ type TimeSeriesRes struct {
 }
 
 type TrendParams struct {
-	Period string `json:"period"`
-	SortBy string `json:"sort_by"`
-	Order  string `json:"order"`
-	Limit  int    `json:"limit"`
-	Offset int    `json:"offset"`
+	Period string `json:"period" example:"1d|7d|1m"`
+	SortBy string `json:"sort_by" example:"floor_price|volume|listed"`
+	Order  string `json:"order" example:"ASC|DESC"`
+	Limit  int    `json:"limit" example:"10"`
+	Offset int    `json:"offset" example:"0"`
 }
 
 type TimeSeriesParams struct {
-	Address     string `json:"collection"`
-	FromTime    int    `json:"start_timestamp"`
-	ToTime      int    `json:"end_timestamp"`
-	Granularity string `json:"time_granularity"`
-	Limit       int    `json:"limit"`
-	Offset      int    `json:"offset"`
+	Address     string `json:"collection" example:"8xBMPGAj5NzAwRmdfEcksDcZyexr87AAmD6LWwKG7Dqq"`
+	FromTime    int    `json:"start_timestamp" example:"1671128400"`
+	ToTime      int    `json:"end_timestamp" example:"1679410436"`
+	Granularity string `json:"time_granularity" example:"PER_HOUR|PER_DAY"`
+	Limit       int    `json:"limit" example:"10"`
+	Offset      int    `json:"offset" example:"0"`
 }
 
 type NFTParams struct {
-	Address    string      `json:"collection"`
+	Address    string      `json:"collection" example:"8xBMPGAj5NzAwRmdfEcksDcZyexr87AAmD6LWwKG7Dqq"`
 	Attributes []Attribute `json:"attributes,omitempty"`
-	SortBy     string      `json:"sort_by"`
-	Order      string      `json:"order"`
-	Limit      int         `json:"limit"`
-	Offset     int         `json:"offset"`
+	SortBy     string      `json:"sort_by" example:"lowest_listing_block_timestamp"`
+	Order      string      `json:"order" example:"ASC|DESC"`
+	Limit      int         `json:"limit" example:"10"`
+	Offset     int         `json:"offset" example:"0"`
 }

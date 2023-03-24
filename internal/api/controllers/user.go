@@ -25,6 +25,18 @@ func (ctrl User) GetNFTs(c *gin.Context) {
 	c.JSON(http.StatusOK, nftRes)
 }
 
+// GetActivities godoc
+//
+// @Summary         Get user activities
+// @Description     get the activities with related to the wallet
+// @Tags            users
+// @Accept          json
+// @Produce         json
+// @Param           params   body          types.ActivityParams true        "Search parameters"
+// @Success		    200	     {object}	   types.ActivityRes
+// @Failure		    400
+// @Failure         500
+// @Router          /users/activities     [post]
 func (ctrl User) GetActivities(c *gin.Context) {
 	var params types.ActivityParams
 	if err := c.ShouldBindJSON(&params); err != nil {
@@ -45,6 +57,18 @@ func (ctrl User) GetActivities(c *gin.Context) {
 	c.JSON(http.StatusOK, activityRes)
 }
 
+// Getoffers godoc
+//
+// @Summary         Get user offers
+// @Description     get the offers with related to the wallet
+// @Tags            users
+// @Accept          json
+// @Produce         json
+// @Param           params   body          types.ActivityParams true        "Search parameters"
+// @Success		    200	     {object}	   types.ActivityRes
+// @Failure		    400
+// @Failure         500
+// @Router          /users/offers     [post]
 func (ctrl User) GetOffers(c *gin.Context) {
 	var params types.ActivityParams
 	if err := c.ShouldBindJSON(&params); err != nil {
