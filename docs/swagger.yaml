@@ -299,8 +299,8 @@ definitions:
       period:
         example: 1d|7d|1m
         type: string
-      sort_by:
-        example: floor_price|volume|listed
+      sortBy:
+        example: volume
         type: string
     type: object
   types.TrendRes:

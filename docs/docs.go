@@ -858,9 +858,9 @@ const docTemplate = `{
                     "type": "string",
                     "example": "1d|7d|1m"
                 },
-                "sort_by": {
+                "sortBy": {
                     "type": "string",
-                    "example": "floor_price|volume|listed"
+                    "example": "volume"
                 }
             }
         },

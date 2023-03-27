@@ -68,7 +68,7 @@ type TimeSeriesRes struct {
 
 type TrendParams struct {
 	Period string `json:"period" example:"1d|7d|1m"`
-	SortBy string `json:"sort_by" example:"floor_price|volume|listed"`
+	SortBy string `json:"sortBy" example:"volume"`
 	Order  string `json:"order" example:"ASC|DESC"`
 	Limit  int    `json:"limit" example:"10"`
 	Offset int    `json:"offset" example:"0"`
