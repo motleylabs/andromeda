@@ -164,7 +164,7 @@ definitions:
       order:
         example: ASC|DESC
         type: string
-      sort_by:
+      sortBy:
         example: lowest_listing_block_timestamp
         type: string
     type: object
@@ -210,7 +210,7 @@ definitions:
       collection:
         example: 8xBMPGAj5NzAwRmdfEcksDcZyexr87AAmD6LWwKG7Dqq
         type: string
-      end_timestamp:
+      endTimestamp:
         example: 1679410436
         type: integer
       limit:
@@ -219,10 +219,10 @@ definitions:
       offset:
         example: 0
         type: integer
-      start_timestamp:
+      startTimestamp:
         example: 1671128400
         type: integer
-      time_granularity:
+      timeGranularity:
         example: PER_HOUR|PER_DAY
         type: string
     type: object

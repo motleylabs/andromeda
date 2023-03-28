@@ -657,7 +657,7 @@ const docTemplate = `{
                     "type": "string",
                     "example": "ASC|DESC"
                 },
-                "sort_by": {
+                "sortBy": {
                     "type": "string",
                     "example": "lowest_listing_block_timestamp"
                 }
@@ -727,7 +727,7 @@ const docTemplate = `{
                     "type": "string",
                     "example": "8xBMPGAj5NzAwRmdfEcksDcZyexr87AAmD6LWwKG7Dqq"
                 },
-                "end_timestamp": {
+                "endTimestamp": {
                     "type": "integer",
                     "example": 1679410436
                 },
@@ -739,11 +739,11 @@ const docTemplate = `{
                     "type": "integer",
                     "example": 0
                 },
-                "start_timestamp": {
+                "startTimestamp": {
                     "type": "integer",
                     "example": 1671128400
                 },
-                "time_granularity": {
+                "timeGranularity": {
                     "type": "string",
                     "example": "PER_HOUR|PER_DAY"
                 }

@@ -47,8 +47,6 @@ func convertStatistics(stats []ProjectStat) []types.Trend {
 
 		// floor price
 		trends[index].Floor1D = common.GetLamportsFromPointer(stats[index].FloorPrice1Day)
-		trends[index].Floor7D = common.GetLamportsFromPointer(stats[index].FloorPrice7Day)
-		trends[index].Floor30D = common.GetLamportsFromPointer(stats[index].FloorPrice1M)
 
 		// listing
 		trends[index].Listed1D = common.GetFromIntPointer(stats[index].Listed1Day)

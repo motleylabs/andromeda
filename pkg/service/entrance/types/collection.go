@@ -28,23 +28,23 @@ type Collection struct {
 
 type Trend struct {
 	Floor1D         string     `json:"floor1d"`
-	Floor7D         string     `json:"floor7d"`
-	Floor30D        string     `json:"floor30d"`
+	Floor7D         string     `json:"floor7d,omitempty"`
+	Floor30D        string     `json:"floor30d,omitempty"`
 	Volume1D        string     `json:"volume1d"`
 	Volume7D        string     `json:"volume7d"`
 	Volume30D       string     `json:"volume30d"`
 	Listed1D        string     `json:"listed1d"`
-	Listed7D        string     `json:"listed7d"`
-	Listed30D       string     `json:"listed30d"`
+	Listed7D        string     `json:"listed7d,omitempty"`
+	Listed30D       string     `json:"listed30d,omitempty"`
 	ChangeFloor1D   int32      `json:"changeFloor1d"`
-	ChangeFloor7D   int32      `json:"changeFloor7d"`
-	ChangeFloor30D  int32      `json:"changeFloor30d"`
+	ChangeFloor7D   int32      `json:"changeFloor7d,omitempty"`
+	ChangeFloor30D  int32      `json:"changeFloor30d,omitempty"`
 	ChangeVolume1D  int32      `json:"changeVolume1d"`
-	ChangeVolume7D  int32      `json:"changeVolume7d"`
-	ChangeVolume30D int32      `json:"changeVolume30d"`
-	ChangeListed1D  int32      `json:"changeListed1d"`
-	ChangeListed7D  int32      `json:"changeListed7d"`
-	ChangeListed30D int32      `json:"changeListed30d"`
+	ChangeVolume7D  int32      `json:"changeVolume7d,omitempty"`
+	ChangeVolume30D int32      `json:"changeVolume30d,omitempty"`
+	ChangeListed1D  int32      `json:"changeListed1d,omitempty"`
+	ChangeListed7D  int32      `json:"changeListed7d,omitempty"`
+	ChangeListed30D int32      `json:"changeListed30d,omitempty"`
 	Collection      Collection `json:"collection"`
 }
 
@@ -76,9 +76,9 @@ type TrendParams struct {
 
 type TimeSeriesParams struct {
 	Address     string `json:"collection" example:"8xBMPGAj5NzAwRmdfEcksDcZyexr87AAmD6LWwKG7Dqq"`
-	FromTime    int    `json:"start_timestamp" example:"1671128400"`
-	ToTime      int    `json:"end_timestamp" example:"1679410436"`
-	Granularity string `json:"time_granularity" example:"PER_HOUR|PER_DAY"`
+	FromTime    int    `json:"startTimestamp" example:"1671128400"`
+	ToTime      int    `json:"endTimestamp" example:"1679410436"`
+	Granularity string `json:"timeGranularity" example:"PER_HOUR|PER_DAY"`
 	Limit       int    `json:"limit" example:"10"`
 	Offset      int    `json:"offset" example:"0"`
 }
@@ -86,7 +86,7 @@ type TimeSeriesParams struct {
 type NFTParams struct {
 	Address    string      `json:"collection" example:"8xBMPGAj5NzAwRmdfEcksDcZyexr87AAmD6LWwKG7Dqq"`
 	Attributes []Attribute `json:"attributes,omitempty"`
-	SortBy     string      `json:"sort_by" example:"lowest_listing_block_timestamp"`
+	SortBy     string      `json:"sortBy" example:"lowest_listing_block_timestamp"`
 	Order      string      `json:"order" example:"ASC|DESC"`
 	Limit      int         `json:"limit" example:"10"`
 	Offset     int         `json:"offset" example:"0"`
