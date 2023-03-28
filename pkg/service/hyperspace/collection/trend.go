@@ -44,9 +44,11 @@ func convertStatistics(stats []ProjectStat) []types.Trend {
 		trends[index].Volume1D = common.GetFromIntPointer(stats[index].Volume1Day)
 		trends[index].Volume7D = common.GetFromIntPointer(stats[index].Volume7Day)
 		trends[index].Volume30D = common.GetFromIntPointer(stats[index].Volume1M)
+		trends[index].ChangeVolume1D = stats[index].Volume1DayChange
 
 		// floor price
 		trends[index].Floor1D = common.GetLamportsFromPointer(stats[index].FloorPrice1Day)
+		trends[index].ChangeFloor1D = stats[index].FloorPrice1DayChange
 
 		// listing
 		trends[index].Listed1D = common.GetFromIntPointer(stats[index].Listed1Day)

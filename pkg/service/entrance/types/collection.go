@@ -36,15 +36,15 @@ type Trend struct {
 	Listed1D        string     `json:"listed1d"`
 	Listed7D        string     `json:"listed7d,omitempty"`
 	Listed30D       string     `json:"listed30d,omitempty"`
-	ChangeFloor1D   int32      `json:"changeFloor1d"`
-	ChangeFloor7D   int32      `json:"changeFloor7d,omitempty"`
-	ChangeFloor30D  int32      `json:"changeFloor30d,omitempty"`
-	ChangeVolume1D  int32      `json:"changeVolume1d"`
-	ChangeVolume7D  int32      `json:"changeVolume7d,omitempty"`
-	ChangeVolume30D int32      `json:"changeVolume30d,omitempty"`
-	ChangeListed1D  int32      `json:"changeListed1d,omitempty"`
-	ChangeListed7D  int32      `json:"changeListed7d,omitempty"`
-	ChangeListed30D int32      `json:"changeListed30d,omitempty"`
+	ChangeFloor1D   *float64   `json:"changeFloor1d"`
+	ChangeFloor7D   *float64   `json:"changeFloor7d,omitempty"`
+	ChangeFloor30D  *float64   `json:"changeFloor30d,omitempty"`
+	ChangeVolume1D  *float64   `json:"changeVolume1d"`
+	ChangeVolume7D  *float64   `json:"changeVolume7d,omitempty"`
+	ChangeVolume30D *float64   `json:"changeVolume30d,omitempty"`
+	ChangeListed1D  *float64   `json:"changeListed1d,omitempty"`
+	ChangeListed7D  *float64   `json:"changeListed7d,omitempty"`
+	ChangeListed30D *float64   `json:"changeListed30d,omitempty"`
 	Collection      Collection `json:"collection"`
 }
 

@@ -781,31 +781,31 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "changeFloor1d": {
-                    "type": "integer"
+                    "type": "number"
                 },
                 "changeFloor30d": {
-                    "type": "integer"
+                    "type": "number"
                 },
                 "changeFloor7d": {
-                    "type": "integer"
+                    "type": "number"
                 },
                 "changeListed1d": {
-                    "type": "integer"
+                    "type": "number"
                 },
                 "changeListed30d": {
-                    "type": "integer"
+                    "type": "number"
                 },
                 "changeListed7d": {
-                    "type": "integer"
+                    "type": "number"
                 },
                 "changeVolume1d": {
-                    "type": "integer"
+                    "type": "number"
                 },
                 "changeVolume30d": {
-                    "type": "integer"
+                    "type": "number"
                 },
                 "changeVolume7d": {
-                    "type": "integer"
+                    "type": "number"
                 },
                 "collection": {
                     "$ref": "#/definitions/types.Collection"
