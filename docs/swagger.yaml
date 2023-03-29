@@ -24,24 +24,6 @@ definitions:
       symbol:
         type: string
     type: object
-  types.ActivityParams:
-    properties:
-      activityTypes:
-        example:
-        - LISTING
-        items:
-          type: string
-        type: array
-      address:
-        example: target address
-        type: string
-      limit:
-        example: 10
-        type: integer
-      offset:
-        example: 0
-        type: integer
-    type: object
   types.ActivityRes:
     properties:
       activities:
@@ -556,17 +538,30 @@ paths:
       tags:
       - nfts
   /users/activities:
-    post:
+    get:
       consumes:
       - application/json
       description: get the activities with related to the wallet
       parameters:
-      - description: Search parameters
-        in: body
-        name: params
+      - description: Wallet address
+        in: query
+        name: address
         required: true
-        schema:
-          $ref: '#/definitions/types.ActivityParams'
+        type: string
+      - description: Limit
+        in: query
+        name: limit
+        required: true
+        type: integer
+      - description: Offset
+        in: query
+        name: offset
+        required: true
+        type: integer
+      - description: Activity types (['LISTING'])
+        in: query
+        name: activity_types
+        type: string
       produces:
       - application/json
       responses:
@@ -582,17 +577,26 @@ paths:
       tags:
       - users
   /users/offers:
-    post:
+    get:
       consumes:
       - application/json
       description: get the offers with related to the wallet
       parameters:
-      - description: Search parameters
-        in: body
-        name: params
+      - description: Wallet address
+        in: query
+        name: address
         required: true
-        schema:
-          $ref: '#/definitions/types.ActivityParams'
+        type: string
+      - description: Limit
+        in: query
+        name: limit
+        required: true
+        type: integer
+      - description: Offset
+        in: query
+        name: offset
+        required: true
+        type: integer
       produces:
       - application/json
       responses:

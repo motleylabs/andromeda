@@ -460,7 +460,7 @@ const docTemplate = `{
             }
         },
         "/users/activities": {
-            "post": {
+            "get": {
                 "description": "get the activities with related to the wallet",
                 "consumes": [
                     "application/json"
@@ -474,13 +474,31 @@ const docTemplate = `{
                 "summary": "Get user activities",
                 "parameters": [
                     {
-                        "description": "Search parameters",
-                        "name": "params",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/types.ActivityParams"
-                        }
+                        "type": "string",
+                        "description": "Wallet address",
+                        "name": "address",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Limit",
+                        "name": "limit",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Offset",
+                        "name": "offset",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Activity types (['LISTING'])",
+                        "name": "activity_types",
+                        "in": "query"
                     }
                 ],
                 "responses": {
@@ -500,7 +518,7 @@ const docTemplate = `{
             }
         },
         "/users/offers": {
-            "post": {
+            "get": {
                 "description": "get the offers with related to the wallet",
                 "consumes": [
                     "application/json"
@@ -514,13 +532,25 @@ const docTemplate = `{
                 "summary": "Get user offers",
                 "parameters": [
                     {
-                        "description": "Search parameters",
-                        "name": "params",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/types.ActivityParams"
-                        }
+                        "type": "string",
+                        "description": "Wallet address",
+                        "name": "address",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Limit",
+                        "name": "limit",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Offset",
+                        "name": "offset",
+                        "in": "query",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -576,32 +606,6 @@ const docTemplate = `{
                 },
                 "symbol": {
                     "type": "string"
-                }
-            }
-        },
-        "types.ActivityParams": {
-            "type": "object",
-            "properties": {
-                "activityTypes": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    },
-                    "example": [
-                        "LISTING"
-                    ]
-                },
-                "address": {
-                    "type": "string",
-                    "example": "target address"
-                },
-                "limit": {
-                    "type": "integer",
-                    "example": 10
-                },
-                "offset": {
-                    "type": "integer",
-                    "example": 0
                 }
             }
         },

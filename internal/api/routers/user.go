@@ -11,8 +11,8 @@ func UserRouter(r *gin.RouterGroup) {
 	c := r.Group("/users")
 	c.Use()
 	{
+		c.GET("/activities", userController.GetActivities)
 		c.GET("/nfts", userController.GetNFTs)
-		c.POST("/activities", userController.GetActivities)
-		c.POST("/offers", userController.GetOffers)
+		c.GET("/offers", userController.GetOffers)
 	}
 }
