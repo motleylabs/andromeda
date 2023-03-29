@@ -148,36 +148,6 @@ definitions:
       hasNextPage:
         type: boolean
     type: object
-  types.NFTParams:
-    properties:
-      attributes:
-        items:
-          $ref: '#/definitions/types.Attribute'
-        type: array
-      auctionHouse:
-        example: 6hW2rVdPUD5qn1amEvN3K9zkvgsCA34LqCvTPcpamQHc
-        type: string
-      collection:
-        example: 8xBMPGAj5NzAwRmdfEcksDcZyexr87AAmD6LWwKG7Dqq
-        type: string
-      limit:
-        example: 10
-        type: integer
-      listingOnly:
-        type: boolean
-      offset:
-        example: 0
-        type: integer
-      order:
-        example: ASC|DESC
-        type: string
-      program:
-        example: RwDDvPp7ta9qqUwxbBfShsNreBaSsKvFcHzMxfBC3Ki
-        type: string
-      sortBy:
-        example: lowest_listing_block_timestamp
-        type: string
-    type: object
   types.NFTRes:
     properties:
       hasNextPage:
@@ -214,27 +184,6 @@ definitions:
         type: string
       volume:
         type: integer
-    type: object
-  types.TimeSeriesParams:
-    properties:
-      collection:
-        example: 8xBMPGAj5NzAwRmdfEcksDcZyexr87AAmD6LWwKG7Dqq
-        type: string
-      endTimestamp:
-        example: 1679410436
-        type: integer
-      limit:
-        example: 10
-        type: integer
-      offset:
-        example: 0
-        type: integer
-      startTimestamp:
-        example: 1671128400
-        type: integer
-      timeGranularity:
-        example: PER_HOUR|PER_DAY
-        type: string
     type: object
   types.TimeSeriesRes:
     properties:
@@ -360,17 +309,53 @@ paths:
       tags:
       - collections
   /collections/nfts:
-    post:
+    get:
       consumes:
       - application/json
       description: get the list of NFTs of the collection
       parameters:
-      - description: Search parameters
-        in: body
-        name: params
+      - description: Collection Address
+        in: query
+        name: address
         required: true
-        schema:
-          $ref: '#/definitions/types.NFTParams'
+        type: string
+      - description: 'NFT attributes to filter ([{''name'': ''Tattoos'', ''type'':
+          ''CATEGORY'', ''values'': [''Barbwire'']}])'
+        in: query
+        name: attributes
+        type: string
+      - description: Only listed NFTs? (true|false)
+        in: query
+        name: listing_only
+        type: string
+      - description: Marketplace program address
+        in: query
+        name: program
+        type: string
+      - description: Auction house address
+        in: query
+        name: auction_house
+        type: string
+      - description: Sort By (lowest_listing_block_timestamp)
+        in: query
+        name: sort_by
+        required: true
+        type: string
+      - description: Order (ASC|DESC)
+        in: query
+        name: order
+        required: true
+        type: string
+      - description: Limit
+        in: query
+        name: limit
+        required: true
+        type: integer
+      - description: Offset
+        in: query
+        name: offset
+        required: true
+        type: integer
       produces:
       - application/json
       responses:
@@ -386,17 +371,41 @@ paths:
       tags:
       - collections
   /collections/series:
-    post:
+    get:
       consumes:
       - application/json
       description: get the historical stats for the collection
       parameters:
-      - description: Search parameters
-        in: body
-        name: params
+      - description: Collection address
+        in: query
+        name: address
         required: true
-        schema:
-          $ref: '#/definitions/types.TimeSeriesParams'
+        type: string
+      - description: Start timestamp
+        in: query
+        name: from_time
+        required: true
+        type: integer
+      - description: End timestamp
+        in: query
+        name: to_time
+        required: true
+        type: integer
+      - description: Granularity (PER_HOUR|PER_DAY)
+        in: query
+        name: granularity
+        required: true
+        type: string
+      - description: Limit
+        in: query
+        name: limit
+        required: true
+        type: integer
+      - description: Offset
+        in: query
+        name: offset
+        required: true
+        type: integer
       produces:
       - application/json
       responses:
@@ -436,12 +445,12 @@ paths:
         in: query
         name: limit
         required: true
-        type: string
+        type: integer
       - description: Offset
         in: query
         name: offset
         required: true
-        type: string
+        type: integer
       produces:
       - application/json
       responses:

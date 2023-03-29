@@ -21,8 +21,8 @@ type Collection struct{}
 // @Param           period   query         string  true         "Period (1d|7d|1m)"
 // @Param           sort_by  query         string  true         "Sort by (volume)"
 // @Param           order    query         string  true         "Order (ASC|DESC)"
-// @Param           limit    query         string  true         "Limit"
-// @Param           offset   query         string  true         "Offset"
+// @Param           limit    query         int     true         "Limit"
+// @Param           offset   query         int     true         "Offset"
 // @Success		    200	     {object}	   types.TrendRes
 // @Failure		    400
 // @Failure         500
@@ -54,15 +54,23 @@ func (ctrl Collection) GetTrends(c *gin.Context) {
 // @Tags            collections
 // @Accept          json
 // @Produce         json
-// @Param           params   body          types.NFTParams true        "Search parameters"
-// @Success		    200	     {object}	   types.NFTRes
+// @Param           address         query         string  true         "Collection Address"
+// @Param           attributes      query         string  false        "NFT attributes to filter ([{'name': 'Tattoos', 'type': 'CATEGORY', 'values': ['Barbwire']}])"
+// @Param           listing_only    query         string  false        "Only listed NFTs? (true|false)"
+// @Param           program         query         string  false        "Marketplace program address"
+// @Param           auction_house   query         string  false        "Auction house address"
+// @Param           sort_by         query         string  true         "Sort By (lowest_listing_block_timestamp)"
+// @Param           order           query         string  true         "Order (ASC|DESC)"
+// @Param           limit           query         int     true         "Limit"
+// @Param           offset          query         int     true         "Offset"
+// @Success		    200	            {object}	  types.NFTRes
 // @Failure		    400
 // @Failure         500
-// @Router          /collections/nfts     [post]
+// @Router          /collections/nfts     [get]
 func (ctrl Collection) GetNFTs(c *gin.Context) {
-	var params types.NFTParams
-	if err := c.ShouldBindJSON(&params); err != nil {
-		log.Printf("Collection GetNFTs >> ShouldBindJSON; %s", err.Error())
+	params, err := utils.GetNFTParams(c)
+	if err != nil {
+		log.Printf("Collection GetNFTs >> Util GetNFTParams; %s", err.Error())
 		c.AbortWithStatus(http.StatusBadRequest)
 		return
 	}
@@ -86,15 +94,20 @@ func (ctrl Collection) GetNFTs(c *gin.Context) {
 // @Tags            collections
 // @Accept          json
 // @Produce         json
-// @Param           params   body          types.TimeSeriesParams true        "Search parameters"
-// @Success		    200	     {object}	   types.TimeSeriesRes
+// @Param           address       query         string  true         "Collection address"
+// @Param           from_time     query         int     true         "Start timestamp"
+// @Param           to_time       query         int     true         "End timestamp"
+// @Param           granularity   query         string  true         "Granularity (PER_HOUR|PER_DAY)"
+// @Param           limit         query         int     true         "Limit"
+// @Param           offset        query         int     true         "Offset"
+// @Success		    200	          {object}	    types.TimeSeriesRes
 // @Failure		    400
 // @Failure         500
-// @Router          /collections/series     [post]
+// @Router          /collections/series     [get]
 func (ctrl Collection) GetTimeSeries(c *gin.Context) {
-	var params types.TimeSeriesParams
-	if err := c.ShouldBindJSON(&params); err != nil {
-		log.Printf("Collection GetTimeSeries >> ShouldBindJSON; %s", err.Error())
+	params, err := utils.GetTimeSeriesParams(c)
+	if err != nil {
+		log.Printf("Collection GetTimeSeries >> Util GetTimeSeriesParams; %s", err.Error())
 		c.AbortWithStatus(http.StatusBadRequest)
 		return
 	}

@@ -96,7 +96,7 @@ const docTemplate = `{
             }
         },
         "/collections/nfts": {
-            "post": {
+            "get": {
                 "description": "get the list of NFTs of the collection",
                 "consumes": [
                     "application/json"
@@ -110,13 +110,63 @@ const docTemplate = `{
                 "summary": "Get collection NFTs",
                 "parameters": [
                     {
-                        "description": "Search parameters",
-                        "name": "params",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/types.NFTParams"
-                        }
+                        "type": "string",
+                        "description": "Collection Address",
+                        "name": "address",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "NFT attributes to filter ([{'name': 'Tattoos', 'type': 'CATEGORY', 'values': ['Barbwire']}])",
+                        "name": "attributes",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Only listed NFTs? (true|false)",
+                        "name": "listing_only",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Marketplace program address",
+                        "name": "program",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Auction house address",
+                        "name": "auction_house",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Sort By (lowest_listing_block_timestamp)",
+                        "name": "sort_by",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Order (ASC|DESC)",
+                        "name": "order",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Limit",
+                        "name": "limit",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Offset",
+                        "name": "offset",
+                        "in": "query",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -136,7 +186,7 @@ const docTemplate = `{
             }
         },
         "/collections/series": {
-            "post": {
+            "get": {
                 "description": "get the historical stats for the collection",
                 "consumes": [
                     "application/json"
@@ -150,13 +200,46 @@ const docTemplate = `{
                 "summary": "Get collection historical data",
                 "parameters": [
                     {
-                        "description": "Search parameters",
-                        "name": "params",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/types.TimeSeriesParams"
-                        }
+                        "type": "string",
+                        "description": "Collection address",
+                        "name": "address",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Start timestamp",
+                        "name": "from_time",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "End timestamp",
+                        "name": "to_time",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Granularity (PER_HOUR|PER_DAY)",
+                        "name": "granularity",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Limit",
+                        "name": "limit",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Offset",
+                        "name": "offset",
+                        "in": "query",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -211,14 +294,14 @@ const docTemplate = `{
                         "required": true
                     },
                     {
-                        "type": "string",
+                        "type": "integer",
                         "description": "Limit",
                         "name": "limit",
                         "in": "query",
                         "required": true
                     },
                     {
-                        "type": "string",
+                        "type": "integer",
                         "description": "Offset",
                         "name": "offset",
                         "in": "query",
@@ -661,48 +744,6 @@ const docTemplate = `{
                 }
             }
         },
-        "types.NFTParams": {
-            "type": "object",
-            "properties": {
-                "attributes": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/types.Attribute"
-                    }
-                },
-                "auctionHouse": {
-                    "type": "string",
-                    "example": "6hW2rVdPUD5qn1amEvN3K9zkvgsCA34LqCvTPcpamQHc"
-                },
-                "collection": {
-                    "type": "string",
-                    "example": "8xBMPGAj5NzAwRmdfEcksDcZyexr87AAmD6LWwKG7Dqq"
-                },
-                "limit": {
-                    "type": "integer",
-                    "example": 10
-                },
-                "listingOnly": {
-                    "type": "boolean"
-                },
-                "offset": {
-                    "type": "integer",
-                    "example": 0
-                },
-                "order": {
-                    "type": "string",
-                    "example": "ASC|DESC"
-                },
-                "program": {
-                    "type": "string",
-                    "example": "RwDDvPp7ta9qqUwxbBfShsNreBaSsKvFcHzMxfBC3Ki"
-                },
-                "sortBy": {
-                    "type": "string",
-                    "example": "lowest_listing_block_timestamp"
-                }
-            }
-        },
         "types.NFTRes": {
             "type": "object",
             "properties": {
@@ -757,35 +798,6 @@ const docTemplate = `{
                 },
                 "volume": {
                     "type": "integer"
-                }
-            }
-        },
-        "types.TimeSeriesParams": {
-            "type": "object",
-            "properties": {
-                "collection": {
-                    "type": "string",
-                    "example": "8xBMPGAj5NzAwRmdfEcksDcZyexr87AAmD6LWwKG7Dqq"
-                },
-                "endTimestamp": {
-                    "type": "integer",
-                    "example": 1679410436
-                },
-                "limit": {
-                    "type": "integer",
-                    "example": 10
-                },
-                "offset": {
-                    "type": "integer",
-                    "example": 0
-                },
-                "startTimestamp": {
-                    "type": "integer",
-                    "example": 1671128400
-                },
-                "timeGranularity": {
-                    "type": "string",
-                    "example": "PER_HOUR|PER_DAY"
                 }
             }
         },
