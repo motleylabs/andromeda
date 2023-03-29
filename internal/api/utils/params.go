@@ -138,3 +138,17 @@ func GetActivityParams(c *gin.Context) (types.ActivityParams, error) {
 
 	return params, nil
 }
+
+func GetNFTActivityParams(c *gin.Context) (types.ActivityParams, error) {
+	var params types.ActivityParams
+	params.Address = c.Query("address")
+
+	activityTypes := c.Query("activity_types")
+	if activityTypes != "" {
+		if err := json.Unmarshal([]byte(activityTypes), &params.ActivityTypes); err != nil {
+			return params, err
+		}
+	}
+
+	return params, nil
+}

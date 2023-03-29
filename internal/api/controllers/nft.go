@@ -2,7 +2,6 @@ package controllers
 
 import (
 	"andromeda/internal/api/utils"
-	"andromeda/pkg/service/entrance/types"
 	"log"
 	"net/http"
 
@@ -21,7 +20,7 @@ type NFT struct{}
 // @Param           address  path          string true          "NFT address"
 // @Success		    200	     {object}	   types.NFT
 // @Failure         500
-// @Router          /nfts/detail/{address}     [get]
+// @Router          /nfts/{address}     [get]
 func (ctrl NFT) GetDetail(c *gin.Context) {
 	address := c.Param("address")
 
@@ -68,15 +67,16 @@ func (ctrl NFT) GetOffers(c *gin.Context) {
 // @Tags            nfts
 // @Accept          json
 // @Produce         json
-// @Param           params   body          types.ActivityParams true        "Search parameters"
-// @Success		    200	     {object}	   types.NFTActivityRes
+// @Param           address          query         string  true         "Collection address"
+// @Param           activity_types   query         string  false        "Activity types (['LISTING'])"
+// @Success		    200	             {object}	   types.NFTActivityRes
 // @Failure		    400
 // @Failure         500
-// @Router          /nfts/activities     [post]
+// @Router          /nfts/activities     [get]
 func (ctrl NFT) GetActivities(c *gin.Context) {
-	var params types.ActivityParams
-	if err := c.ShouldBindJSON(&params); err != nil {
-		log.Printf("NFT GetActivities >> ShouldBindJSON; %s", err.Error())
+	params, err := utils.GetNFTActivityParams(c)
+	if err != nil {
+		log.Printf("NFT GetActivities >> Util GetNFTActivityParams; %s", err.Error())
 		c.AbortWithStatus(http.StatusBadRequest)
 		return
 	}

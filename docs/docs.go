@@ -78,41 +78,6 @@ const docTemplate = `{
                 }
             }
         },
-        "/collections/detail/{address}": {
-            "get": {
-                "description": "get collection detail information with the address",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "collections"
-                ],
-                "summary": "Get collection detail",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Collection Address",
-                        "name": "address",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/types.Collection"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error"
-                    }
-                }
-            }
-        },
         "/collections/nfts": {
             "get": {
                 "description": "get the list of NFTs of the collection",
@@ -342,8 +307,43 @@ const docTemplate = `{
                 }
             }
         },
+        "/collections/{address}": {
+            "get": {
+                "description": "get collection detail information with the address",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "collections"
+                ],
+                "summary": "Get collection detail",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Collection Address",
+                        "name": "address",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/types.Collection"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
         "/nfts/activities": {
-            "post": {
+            "get": {
                 "description": "get the activities with related to the NFT",
                 "consumes": [
                     "application/json"
@@ -357,13 +357,17 @@ const docTemplate = `{
                 "summary": "Get NFT activities",
                 "parameters": [
                     {
-                        "description": "Search parameters",
-                        "name": "params",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/types.ActivityParams"
-                        }
+                        "type": "string",
+                        "description": "Collection address",
+                        "name": "address",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Activity types (['LISTING'])",
+                        "name": "activity_types",
+                        "in": "query"
                     }
                 ],
                 "responses": {
@@ -375,41 +379,6 @@ const docTemplate = `{
                     },
                     "400": {
                         "description": "Bad Request"
-                    },
-                    "500": {
-                        "description": "Internal Server Error"
-                    }
-                }
-            }
-        },
-        "/nfts/detail/{address}": {
-            "get": {
-                "description": "get detail information about the NFT",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "nfts"
-                ],
-                "summary": "Get NFT detail",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "NFT address",
-                        "name": "address",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/types.NFT"
-                        }
                     },
                     "500": {
                         "description": "Internal Server Error"
@@ -447,6 +416,41 @@ const docTemplate = `{
                             "items": {
                                 "$ref": "#/definitions/types.NFTActivity"
                             }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/nfts/{address}": {
+            "get": {
+                "description": "get detail information about the NFT",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "nfts"
+                ],
+                "summary": "Get NFT detail",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "NFT address",
+                        "name": "address",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/types.NFT"
                         }
                     },
                     "500": {

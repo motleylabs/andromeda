@@ -133,7 +133,7 @@ func (ctrl Collection) GetTimeSeries(c *gin.Context) {
 // @Param           address  path          string true                     "Collection Address"
 // @Success		    200	     {object}	   types.Collection
 // @Failure         500
-// @Router          /collections/detail/{address} [get]
+// @Router          /collections/{address} [get]
 func (ctrl Collection) GetDetail(c *gin.Context) {
 	address := c.Param("address")
 

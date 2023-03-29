@@ -259,6 +259,29 @@ info:
     name: API Support
     url: http://www.swagger.io/support
 paths:
+  /collections/{address}:
+    get:
+      consumes:
+      - application/json
+      description: get collection detail information with the address
+      parameters:
+      - description: Collection Address
+        in: path
+        name: address
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/types.Collection'
+        "500":
+          description: Internal Server Error
+      summary: Get collection detail
+      tags:
+      - collections
   /collections/activities:
     get:
       consumes:
@@ -296,29 +319,6 @@ paths:
         "500":
           description: Internal Server Error
       summary: Get collection activities
-      tags:
-      - collections
-  /collections/detail/{address}:
-    get:
-      consumes:
-      - application/json
-      description: get collection detail information with the address
-      parameters:
-      - description: Collection Address
-        in: path
-        name: address
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/types.Collection'
-        "500":
-          description: Internal Server Error
-      summary: Get collection detail
       tags:
       - collections
   /collections/nfts:
@@ -478,33 +478,7 @@ paths:
       summary: Get collection trends
       tags:
       - collections
-  /nfts/activities:
-    post:
-      consumes:
-      - application/json
-      description: get the activities with related to the NFT
-      parameters:
-      - description: Search parameters
-        in: body
-        name: params
-        required: true
-        schema:
-          $ref: '#/definitions/types.ActivityParams'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/types.NFTActivityRes'
-        "400":
-          description: Bad Request
-        "500":
-          description: Internal Server Error
-      summary: Get NFT activities
-      tags:
-      - nfts
-  /nfts/detail/{address}:
+  /nfts/{address}:
     get:
       consumes:
       - application/json
@@ -525,6 +499,35 @@ paths:
         "500":
           description: Internal Server Error
       summary: Get NFT detail
+      tags:
+      - nfts
+  /nfts/activities:
+    get:
+      consumes:
+      - application/json
+      description: get the activities with related to the NFT
+      parameters:
+      - description: Collection address
+        in: query
+        name: address
+        required: true
+        type: string
+      - description: Activity types (['LISTING'])
+        in: query
+        name: activity_types
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/types.NFTActivityRes'
+        "400":
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+      summary: Get NFT activities
       tags:
       - nfts
   /nfts/offers:
