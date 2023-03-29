@@ -21,7 +21,7 @@ const docTemplate = `{
     "basePath": "{{.BasePath}}",
     "paths": {
         "/collections/activities": {
-            "post": {
+            "get": {
                 "description": "get the activities with related to the collection",
                 "consumes": [
                     "application/json"
@@ -35,13 +35,31 @@ const docTemplate = `{
                 "summary": "Get collection activities",
                 "parameters": [
                     {
-                        "description": "Search parameters",
-                        "name": "params",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/types.ActivityParams"
-                        }
+                        "type": "string",
+                        "description": "Collection address",
+                        "name": "address",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Limit",
+                        "name": "limit",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Offset",
+                        "name": "offset",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Activity types (['LISTING'])",
+                        "name": "activity_types",
+                        "in": "query"
                     }
                 ],
                 "responses": {

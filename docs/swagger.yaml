@@ -260,17 +260,30 @@ info:
     url: http://www.swagger.io/support
 paths:
   /collections/activities:
-    post:
+    get:
       consumes:
       - application/json
       description: get the activities with related to the collection
       parameters:
-      - description: Search parameters
-        in: body
-        name: params
+      - description: Collection address
+        in: query
+        name: address
         required: true
-        schema:
-          $ref: '#/definitions/types.ActivityParams'
+        type: string
+      - description: Limit
+        in: query
+        name: limit
+        required: true
+        type: integer
+      - description: Offset
+        in: query
+        name: offset
+        required: true
+        type: integer
+      - description: Activity types (['LISTING'])
+        in: query
+        name: activity_types
+        type: string
       produces:
       - application/json
       responses:

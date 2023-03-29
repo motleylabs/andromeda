@@ -2,7 +2,6 @@ package controllers
 
 import (
 	"andromeda/internal/api/utils"
-	"andromeda/pkg/service/entrance/types"
 	"log"
 	"net/http"
 
@@ -156,15 +155,18 @@ func (ctrl Collection) GetDetail(c *gin.Context) {
 // @Tags            collections
 // @Accept          json
 // @Produce         json
-// @Param           params   body          types.ActivityParams true        "Search parameters"
-// @Success		    200	     {object}	   types.ActivityRes
+// @Param           address          query         string  true         "Collection address"
+// @Param           limit            query         int     true         "Limit"
+// @Param           offset           query         int     true         "Offset"
+// @Param           activity_types   query         string  false        "Activity types (['LISTING'])"
+// @Success		    200	             {object}	   types.ActivityRes
 // @Failure		    400
 // @Failure         500
-// @Router          /collections/activities     [post]
+// @Router          /collections/activities     [get]
 func (ctrl Collection) GetActivities(c *gin.Context) {
-	var params types.ActivityParams
-	if err := c.ShouldBindJSON(&params); err != nil {
-		log.Printf("Collection GetActivities >> ShouldBindJSON; %s", err.Error())
+	params, err := utils.GetActivityParams(c)
+	if err != nil {
+		log.Printf("Collection GetActivities >> Util GetActivityParams; %s", err.Error())
 		c.AbortWithStatus(http.StatusBadRequest)
 		return
 	}

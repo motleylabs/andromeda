@@ -112,3 +112,29 @@ func GetNFTParams(c *gin.Context) (types.NFTParams, error) {
 
 	return params, nil
 }
+
+func GetActivityParams(c *gin.Context) (types.ActivityParams, error) {
+	var params types.ActivityParams
+	params.Address = c.Query("address")
+
+	activityTypes := c.Query("activity_types")
+	if activityTypes != "" {
+		if err := json.Unmarshal([]byte(activityTypes), &params.ActivityTypes); err != nil {
+			return params, err
+		}
+	}
+
+	limit, err := strconv.Atoi(c.Query("limit"))
+	if err != nil {
+		return params, fmt.Errorf("limit param is not valid")
+	}
+	params.Limit = limit
+
+	offset, err := strconv.Atoi(c.Query("offset"))
+	if err != nil {
+		return params, fmt.Errorf("offset param is not valid")
+	}
+	params.Offset = offset
+
+	return params, nil
+}
