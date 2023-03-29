@@ -2,7 +2,6 @@ package controllers
 
 import (
 	"andromeda/internal/api/utils"
-	"andromeda/pkg/service/entrance/types"
 	"log"
 	"net/http"
 
@@ -18,15 +17,19 @@ type Collection struct{}
 // @Tags            collections
 // @Accept          json
 // @Produce         json
-// @Param           params   body          types.TrendParams true         "Search parameters"
+// @Param           period   query         string  true         "Period (1d|7d|1m)"
+// @Param           sort_by  query         string  true         "Sort by (volume)"
+// @Param           order    query         string  true         "Order (ASC|DESC)"
+// @Param           limit    query         int     true         "Limit"
+// @Param           offset   query         int     true         "Offset"
 // @Success		    200	     {object}	   types.TrendRes
 // @Failure		    400
 // @Failure         500
-// @Router          /collections/trend     [post]
+// @Router          /collections/trend     [get]
 func (ctrl Collection) GetTrends(c *gin.Context) {
-	var params types.TrendParams
-	if err := c.ShouldBindJSON(&params); err != nil {
-		log.Printf("Collection GetTrends >> ShouldBindJSON; %s", err.Error())
+	params, err := utils.GetTrendParams(c)
+	if err != nil {
+		log.Printf("Collection GetTrends >> Util GetTrendParams; %s", err.Error())
 		c.AbortWithStatus(http.StatusBadRequest)
 		return
 	}
@@ -50,15 +53,23 @@ func (ctrl Collection) GetTrends(c *gin.Context) {
 // @Tags            collections
 // @Accept          json
 // @Produce         json
-// @Param           params   body          types.NFTParams true        "Search parameters"
-// @Success		    200	     {object}	   types.NFTRes
+// @Param           address         query         string  true         "Collection Address"
+// @Param           attributes      query         string  false        "NFT attributes to filter ([{'name': 'Tattoos', 'type': 'CATEGORY', 'values': ['Barbwire']}])"
+// @Param           listing_only    query         string  false        "Only listed NFTs? (true|false)"
+// @Param           program         query         string  false        "Marketplace program address"
+// @Param           auction_house   query         string  false        "Auction house address"
+// @Param           sort_by         query         string  true         "Sort By (lowest_listing_block_timestamp)"
+// @Param           order           query         string  true         "Order (ASC|DESC)"
+// @Param           limit           query         int     true         "Limit"
+// @Param           offset          query         int     true         "Offset"
+// @Success		    200	            {object}	  types.NFTRes
 // @Failure		    400
 // @Failure         500
-// @Router          /collections/nfts     [post]
+// @Router          /collections/nfts     [get]
 func (ctrl Collection) GetNFTs(c *gin.Context) {
-	var params types.NFTParams
-	if err := c.ShouldBindJSON(&params); err != nil {
-		log.Printf("Collection GetNFTs >> ShouldBindJSON; %s", err.Error())
+	params, err := utils.GetNFTParams(c)
+	if err != nil {
+		log.Printf("Collection GetNFTs >> Util GetNFTParams; %s", err.Error())
 		c.AbortWithStatus(http.StatusBadRequest)
 		return
 	}
@@ -82,15 +93,20 @@ func (ctrl Collection) GetNFTs(c *gin.Context) {
 // @Tags            collections
 // @Accept          json
 // @Produce         json
-// @Param           params   body          types.TimeSeriesParams true        "Search parameters"
-// @Success		    200	     {object}	   types.TimeSeriesRes
+// @Param           address       query         string  true         "Collection address"
+// @Param           from_time     query         int     true         "Start timestamp"
+// @Param           to_time       query         int     true         "End timestamp"
+// @Param           granularity   query         string  true         "Granularity (PER_HOUR|PER_DAY)"
+// @Param           limit         query         int     true         "Limit"
+// @Param           offset        query         int     true         "Offset"
+// @Success		    200	          {object}	    types.TimeSeriesRes
 // @Failure		    400
 // @Failure         500
-// @Router          /collections/series     [post]
+// @Router          /collections/series     [get]
 func (ctrl Collection) GetTimeSeries(c *gin.Context) {
-	var params types.TimeSeriesParams
-	if err := c.ShouldBindJSON(&params); err != nil {
-		log.Printf("Collection GetTimeSeries >> ShouldBindJSON; %s", err.Error())
+	params, err := utils.GetTimeSeriesParams(c)
+	if err != nil {
+		log.Printf("Collection GetTimeSeries >> Util GetTimeSeriesParams; %s", err.Error())
 		c.AbortWithStatus(http.StatusBadRequest)
 		return
 	}
@@ -117,7 +133,7 @@ func (ctrl Collection) GetTimeSeries(c *gin.Context) {
 // @Param           address  path          string true                     "Collection Address"
 // @Success		    200	     {object}	   types.Collection
 // @Failure         500
-// @Router          /collections/detail/{address} [get]
+// @Router          /collections/{address} [get]
 func (ctrl Collection) GetDetail(c *gin.Context) {
 	address := c.Param("address")
 
@@ -139,15 +155,18 @@ func (ctrl Collection) GetDetail(c *gin.Context) {
 // @Tags            collections
 // @Accept          json
 // @Produce         json
-// @Param           params   body          types.ActivityParams true        "Search parameters"
-// @Success		    200	     {object}	   types.ActivityRes
+// @Param           address          query         string  true         "Collection address"
+// @Param           limit            query         int     true         "Limit"
+// @Param           offset           query         int     true         "Offset"
+// @Param           activity_types   query         string  false        "Activity types (['LISTING'])"
+// @Success		    200	             {object}	   types.ActivityRes
 // @Failure		    400
 // @Failure         500
-// @Router          /collections/activities     [post]
+// @Router          /collections/activities     [get]
 func (ctrl Collection) GetActivities(c *gin.Context) {
-	var params types.ActivityParams
-	if err := c.ShouldBindJSON(&params); err != nil {
-		log.Printf("Collection GetActivities >> ShouldBindJSON; %s", err.Error())
+	params, err := utils.GetActivityParams(c)
+	if err != nil {
+		log.Printf("Collection GetActivities >> Util GetActivityParams; %s", err.Error())
 		c.AbortWithStatus(http.StatusBadRequest)
 		return
 	}

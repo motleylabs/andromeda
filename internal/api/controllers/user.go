@@ -2,7 +2,6 @@ package controllers
 
 import (
 	"andromeda/internal/api/utils"
-	"andromeda/pkg/service/entrance/types"
 	"log"
 	"net/http"
 
@@ -32,15 +31,18 @@ func (ctrl User) GetNFTs(c *gin.Context) {
 // @Tags            users
 // @Accept          json
 // @Produce         json
-// @Param           params   body          types.ActivityParams true        "Search parameters"
-// @Success		    200	     {object}	   types.ActivityRes
+// @Param           address          query         string  true         "Wallet address"
+// @Param           limit            query         int     true         "Limit"
+// @Param           offset           query         int     true         "Offset"
+// @Param           activity_types   query         string  false        "Activity types (['LISTING'])"
+// @Success		    200	             {object}	   types.ActivityRes
 // @Failure		    400
 // @Failure         500
-// @Router          /users/activities     [post]
+// @Router          /users/activities     [get]
 func (ctrl User) GetActivities(c *gin.Context) {
-	var params types.ActivityParams
-	if err := c.ShouldBindJSON(&params); err != nil {
-		log.Printf("User GetActivities >> ShouldBindJSON; %s", err.Error())
+	params, err := utils.GetActivityParams(c)
+	if err != nil {
+		log.Printf("User GetActivities >> Util GetActivityParams; %s", err.Error())
 		c.AbortWithStatus(http.StatusBadRequest)
 		return
 	}
@@ -64,15 +66,17 @@ func (ctrl User) GetActivities(c *gin.Context) {
 // @Tags            users
 // @Accept          json
 // @Produce         json
-// @Param           params   body          types.ActivityParams true        "Search parameters"
-// @Success		    200	     {object}	   types.ActivityRes
+// @Param           address          query         string  true         "Wallet address"
+// @Param           limit            query         int     true         "Limit"
+// @Param           offset           query         int     true         "Offset"
+// @Success		    200	             {object}	   types.ActivityRes
 // @Failure		    400
 // @Failure         500
-// @Router          /users/offers     [post]
+// @Router          /users/offers     [get]
 func (ctrl User) GetOffers(c *gin.Context) {
-	var params types.ActivityParams
-	if err := c.ShouldBindJSON(&params); err != nil {
-		log.Printf("User GetOffers >> ShouldBindJSON; %s", err.Error())
+	params, err := utils.GetActivityParams(c)
+	if err != nil {
+		log.Printf("User GetOffers >> Util GetActivityParams; %s", err.Error())
 		c.AbortWithStatus(http.StatusBadRequest)
 		return
 	}

@@ -11,8 +11,8 @@ func NFTRouter(r *gin.RouterGroup) {
 	c := r.Group("/nfts")
 	c.Use()
 	{
-		c.GET("/detail/:address", nftController.GetDetail)
+		c.GET("/activities", nftController.GetActivities)
 		c.GET("/offers", nftController.GetOffers)
-		c.POST("/activities", nftController.GetActivities)
+		c.GET("/:address", nftController.GetDetail)
 	}
 }

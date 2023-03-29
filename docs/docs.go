@@ -21,7 +21,7 @@ const docTemplate = `{
     "basePath": "{{.BasePath}}",
     "paths": {
         "/collections/activities": {
-            "post": {
+            "get": {
                 "description": "get the activities with related to the collection",
                 "consumes": [
                     "application/json"
@@ -35,13 +35,31 @@ const docTemplate = `{
                 "summary": "Get collection activities",
                 "parameters": [
                     {
-                        "description": "Search parameters",
-                        "name": "params",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/types.ActivityParams"
-                        }
+                        "type": "string",
+                        "description": "Collection address",
+                        "name": "address",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Limit",
+                        "name": "limit",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Offset",
+                        "name": "offset",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Activity types (['LISTING'])",
+                        "name": "activity_types",
+                        "in": "query"
                     }
                 ],
                 "responses": {
@@ -60,7 +78,236 @@ const docTemplate = `{
                 }
             }
         },
-        "/collections/detail/{address}": {
+        "/collections/nfts": {
+            "get": {
+                "description": "get the list of NFTs of the collection",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "collections"
+                ],
+                "summary": "Get collection NFTs",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Collection Address",
+                        "name": "address",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "NFT attributes to filter ([{'name': 'Tattoos', 'type': 'CATEGORY', 'values': ['Barbwire']}])",
+                        "name": "attributes",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Only listed NFTs? (true|false)",
+                        "name": "listing_only",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Marketplace program address",
+                        "name": "program",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Auction house address",
+                        "name": "auction_house",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Sort By (lowest_listing_block_timestamp)",
+                        "name": "sort_by",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Order (ASC|DESC)",
+                        "name": "order",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Limit",
+                        "name": "limit",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Offset",
+                        "name": "offset",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/types.NFTRes"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/collections/series": {
+            "get": {
+                "description": "get the historical stats for the collection",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "collections"
+                ],
+                "summary": "Get collection historical data",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Collection address",
+                        "name": "address",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Start timestamp",
+                        "name": "from_time",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "End timestamp",
+                        "name": "to_time",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Granularity (PER_HOUR|PER_DAY)",
+                        "name": "granularity",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Limit",
+                        "name": "limit",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Offset",
+                        "name": "offset",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/types.TimeSeriesRes"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/collections/trend": {
+            "get": {
+                "description": "get trending collections",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "collections"
+                ],
+                "summary": "Get collection trends",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Period (1d|7d|1m)",
+                        "name": "period",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Sort by (volume)",
+                        "name": "sort_by",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Order (ASC|DESC)",
+                        "name": "order",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Limit",
+                        "name": "limit",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Offset",
+                        "name": "offset",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/types.TrendRes"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/collections/{address}": {
             "get": {
                 "description": "get collection detail information with the address",
                 "consumes": [
@@ -95,128 +342,8 @@ const docTemplate = `{
                 }
             }
         },
-        "/collections/nfts": {
-            "post": {
-                "description": "get the list of NFTs of the collection",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "collections"
-                ],
-                "summary": "Get collection NFTs",
-                "parameters": [
-                    {
-                        "description": "Search parameters",
-                        "name": "params",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/types.NFTParams"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/types.NFTRes"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request"
-                    },
-                    "500": {
-                        "description": "Internal Server Error"
-                    }
-                }
-            }
-        },
-        "/collections/series": {
-            "post": {
-                "description": "get the historical stats for the collection",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "collections"
-                ],
-                "summary": "Get collection historical data",
-                "parameters": [
-                    {
-                        "description": "Search parameters",
-                        "name": "params",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/types.TimeSeriesParams"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/types.TimeSeriesRes"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request"
-                    },
-                    "500": {
-                        "description": "Internal Server Error"
-                    }
-                }
-            }
-        },
-        "/collections/trend": {
-            "post": {
-                "description": "get trending collections",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "collections"
-                ],
-                "summary": "Get collection trends",
-                "parameters": [
-                    {
-                        "description": "Search parameters",
-                        "name": "params",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/types.TrendParams"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/types.TrendRes"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request"
-                    },
-                    "500": {
-                        "description": "Internal Server Error"
-                    }
-                }
-            }
-        },
         "/nfts/activities": {
-            "post": {
+            "get": {
                 "description": "get the activities with related to the NFT",
                 "consumes": [
                     "application/json"
@@ -230,13 +357,17 @@ const docTemplate = `{
                 "summary": "Get NFT activities",
                 "parameters": [
                     {
-                        "description": "Search parameters",
-                        "name": "params",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/types.ActivityParams"
-                        }
+                        "type": "string",
+                        "description": "Collection address",
+                        "name": "address",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Activity types (['LISTING'])",
+                        "name": "activity_types",
+                        "in": "query"
                     }
                 ],
                 "responses": {
@@ -248,41 +379,6 @@ const docTemplate = `{
                     },
                     "400": {
                         "description": "Bad Request"
-                    },
-                    "500": {
-                        "description": "Internal Server Error"
-                    }
-                }
-            }
-        },
-        "/nfts/detail/{address}": {
-            "get": {
-                "description": "get detail information about the NFT",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "nfts"
-                ],
-                "summary": "Get NFT detail",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "NFT address",
-                        "name": "address",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/types.NFT"
-                        }
                     },
                     "500": {
                         "description": "Internal Server Error"
@@ -328,8 +424,43 @@ const docTemplate = `{
                 }
             }
         },
+        "/nfts/{address}": {
+            "get": {
+                "description": "get detail information about the NFT",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "nfts"
+                ],
+                "summary": "Get NFT detail",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "NFT address",
+                        "name": "address",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/types.NFT"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
         "/users/activities": {
-            "post": {
+            "get": {
                 "description": "get the activities with related to the wallet",
                 "consumes": [
                     "application/json"
@@ -343,13 +474,31 @@ const docTemplate = `{
                 "summary": "Get user activities",
                 "parameters": [
                     {
-                        "description": "Search parameters",
-                        "name": "params",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/types.ActivityParams"
-                        }
+                        "type": "string",
+                        "description": "Wallet address",
+                        "name": "address",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Limit",
+                        "name": "limit",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Offset",
+                        "name": "offset",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Activity types (['LISTING'])",
+                        "name": "activity_types",
+                        "in": "query"
                     }
                 ],
                 "responses": {
@@ -369,7 +518,7 @@ const docTemplate = `{
             }
         },
         "/users/offers": {
-            "post": {
+            "get": {
                 "description": "get the offers with related to the wallet",
                 "consumes": [
                     "application/json"
@@ -383,13 +532,25 @@ const docTemplate = `{
                 "summary": "Get user offers",
                 "parameters": [
                     {
-                        "description": "Search parameters",
-                        "name": "params",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/types.ActivityParams"
-                        }
+                        "type": "string",
+                        "description": "Wallet address",
+                        "name": "address",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Limit",
+                        "name": "limit",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Offset",
+                        "name": "offset",
+                        "in": "query",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -445,32 +606,6 @@ const docTemplate = `{
                 },
                 "symbol": {
                     "type": "string"
-                }
-            }
-        },
-        "types.ActivityParams": {
-            "type": "object",
-            "properties": {
-                "activityTypes": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    },
-                    "example": [
-                        "LISTING"
-                    ]
-                },
-                "address": {
-                    "type": "string",
-                    "example": "target address"
-                },
-                "limit": {
-                    "type": "integer",
-                    "example": 10
-                },
-                "offset": {
-                    "type": "integer",
-                    "example": 0
                 }
             }
         },
@@ -635,48 +770,6 @@ const docTemplate = `{
                 }
             }
         },
-        "types.NFTParams": {
-            "type": "object",
-            "properties": {
-                "attributes": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/types.Attribute"
-                    }
-                },
-                "auctionHouse": {
-                    "type": "string",
-                    "example": "6hW2rVdPUD5qn1amEvN3K9zkvgsCA34LqCvTPcpamQHc"
-                },
-                "collection": {
-                    "type": "string",
-                    "example": "8xBMPGAj5NzAwRmdfEcksDcZyexr87AAmD6LWwKG7Dqq"
-                },
-                "limit": {
-                    "type": "integer",
-                    "example": 10
-                },
-                "listingOnly": {
-                    "type": "boolean"
-                },
-                "offset": {
-                    "type": "integer",
-                    "example": 0
-                },
-                "order": {
-                    "type": "string",
-                    "example": "ASC|DESC"
-                },
-                "program": {
-                    "type": "string",
-                    "example": "RwDDvPp7ta9qqUwxbBfShsNreBaSsKvFcHzMxfBC3Ki"
-                },
-                "sortBy": {
-                    "type": "string",
-                    "example": "lowest_listing_block_timestamp"
-                }
-            }
-        },
         "types.NFTRes": {
             "type": "object",
             "properties": {
@@ -731,35 +824,6 @@ const docTemplate = `{
                 },
                 "volume": {
                     "type": "integer"
-                }
-            }
-        },
-        "types.TimeSeriesParams": {
-            "type": "object",
-            "properties": {
-                "collection": {
-                    "type": "string",
-                    "example": "8xBMPGAj5NzAwRmdfEcksDcZyexr87AAmD6LWwKG7Dqq"
-                },
-                "endTimestamp": {
-                    "type": "integer",
-                    "example": 1679410436
-                },
-                "limit": {
-                    "type": "integer",
-                    "example": 10
-                },
-                "offset": {
-                    "type": "integer",
-                    "example": 0
-                },
-                "startTimestamp": {
-                    "type": "integer",
-                    "example": 1671128400
-                },
-                "timeGranularity": {
-                    "type": "string",
-                    "example": "PER_HOUR|PER_DAY"
                 }
             }
         },
@@ -850,31 +914,6 @@ const docTemplate = `{
                 },
                 "volume7d": {
                     "type": "string"
-                }
-            }
-        },
-        "types.TrendParams": {
-            "type": "object",
-            "properties": {
-                "limit": {
-                    "type": "integer",
-                    "example": 10
-                },
-                "offset": {
-                    "type": "integer",
-                    "example": 0
-                },
-                "order": {
-                    "type": "string",
-                    "example": "ASC|DESC"
-                },
-                "period": {
-                    "type": "string",
-                    "example": "1d|7d|1m"
-                },
-                "sortBy": {
-                    "type": "string",
-                    "example": "volume"
                 }
             }
         },

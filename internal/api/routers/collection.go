@@ -11,10 +11,10 @@ func CollectionRouter(r *gin.RouterGroup) {
 	c := r.Group("/collections")
 	c.Use()
 	{
-		c.GET("/detail/:address", collectionController.GetDetail)
-		c.POST("/trend", collectionController.GetTrends)
-		c.POST("/nfts", collectionController.GetNFTs)
-		c.POST("/series", collectionController.GetTimeSeries)
-		c.POST("/activities", collectionController.GetActivities)
+		c.GET("/trend", collectionController.GetTrends)
+		c.GET("/series", collectionController.GetTimeSeries)
+		c.GET("/nfts", collectionController.GetNFTs)
+		c.GET("/activities", collectionController.GetActivities)
+		c.GET("/:address", collectionController.GetDetail)
 	}
 }
