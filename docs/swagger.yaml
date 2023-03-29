@@ -295,24 +295,6 @@ definitions:
       volume30d:
         type: string
     type: object
-  types.TrendParams:
-    properties:
-      limit:
-        example: 10
-        type: integer
-      offset:
-        example: 0
-        type: integer
-      order:
-        example: ASC|DESC
-        type: string
-      period:
-        example: 1d|7d|1m
-        type: string
-      sortBy:
-        example: volume
-        type: string
-    type: object
   types.TrendRes:
     properties:
       hasNextPage:
@@ -430,17 +412,36 @@ paths:
       tags:
       - collections
   /collections/trend:
-    post:
+    get:
       consumes:
       - application/json
       description: get trending collections
       parameters:
-      - description: Search parameters
-        in: body
-        name: params
+      - description: Period (1d|7d|1m)
+        in: query
+        name: period
         required: true
-        schema:
-          $ref: '#/definitions/types.TrendParams'
+        type: string
+      - description: Sort by (volume)
+        in: query
+        name: sort_by
+        required: true
+        type: string
+      - description: Order (ASC|DESC)
+        in: query
+        name: order
+        required: true
+        type: string
+      - description: Limit
+        in: query
+        name: limit
+        required: true
+        type: string
+      - description: Offset
+        in: query
+        name: offset
+        required: true
+        type: string
       produces:
       - application/json
       responses:

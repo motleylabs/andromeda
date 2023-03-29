@@ -176,7 +176,7 @@ const docTemplate = `{
             }
         },
         "/collections/trend": {
-            "post": {
+            "get": {
                 "description": "get trending collections",
                 "consumes": [
                     "application/json"
@@ -190,13 +190,39 @@ const docTemplate = `{
                 "summary": "Get collection trends",
                 "parameters": [
                     {
-                        "description": "Search parameters",
-                        "name": "params",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/types.TrendParams"
-                        }
+                        "type": "string",
+                        "description": "Period (1d|7d|1m)",
+                        "name": "period",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Sort by (volume)",
+                        "name": "sort_by",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Order (ASC|DESC)",
+                        "name": "order",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Limit",
+                        "name": "limit",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Offset",
+                        "name": "offset",
+                        "in": "query",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -850,31 +876,6 @@ const docTemplate = `{
                 },
                 "volume7d": {
                     "type": "string"
-                }
-            }
-        },
-        "types.TrendParams": {
-            "type": "object",
-            "properties": {
-                "limit": {
-                    "type": "integer",
-                    "example": 10
-                },
-                "offset": {
-                    "type": "integer",
-                    "example": 0
-                },
-                "order": {
-                    "type": "string",
-                    "example": "ASC|DESC"
-                },
-                "period": {
-                    "type": "string",
-                    "example": "1d|7d|1m"
-                },
-                "sortBy": {
-                    "type": "string",
-                    "example": "volume"
                 }
             }
         },

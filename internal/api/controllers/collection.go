@@ -18,15 +18,19 @@ type Collection struct{}
 // @Tags            collections
 // @Accept          json
 // @Produce         json
-// @Param           params   body          types.TrendParams true         "Search parameters"
+// @Param           period   query         string  true         "Period (1d|7d|1m)"
+// @Param           sort_by  query         string  true         "Sort by (volume)"
+// @Param           order    query         string  true         "Order (ASC|DESC)"
+// @Param           limit    query         string  true         "Limit"
+// @Param           offset   query         string  true         "Offset"
 // @Success		    200	     {object}	   types.TrendRes
 // @Failure		    400
 // @Failure         500
-// @Router          /collections/trend     [post]
+// @Router          /collections/trend     [get]
 func (ctrl Collection) GetTrends(c *gin.Context) {
-	var params types.TrendParams
-	if err := c.ShouldBindJSON(&params); err != nil {
-		log.Printf("Collection GetTrends >> ShouldBindJSON; %s", err.Error())
+	params, err := utils.GetTrendParams(c)
+	if err != nil {
+		log.Printf("Collection GetTrends >> Util GetTrendParams; %s", err.Error())
 		c.AbortWithStatus(http.StatusBadRequest)
 		return
 	}
