@@ -21,7 +21,7 @@ jobs:
 
       - name: deploy to heroku
         uses: akhileshns/heroku-deploy@v3.12.13
-        if: ${{ github.ref == 'refs/head/main' }}
+        if: ${{ github.ref == 'refs/heads/main' }}
         with:
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
           heroku_app_name: "motley-andromeda"
