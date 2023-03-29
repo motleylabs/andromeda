@@ -554,6 +554,9 @@ const docTemplate = `{
                 "lastSold": {
                     "type": "string"
                 },
+                "listingPrice": {
+                    "type": "string"
+                },
                 "listingType": {
                     "type": "string"
                 },
@@ -641,6 +644,10 @@ const docTemplate = `{
                         "$ref": "#/definitions/types.Attribute"
                     }
                 },
+                "auctionHouse": {
+                    "type": "string",
+                    "example": "6hW2rVdPUD5qn1amEvN3K9zkvgsCA34LqCvTPcpamQHc"
+                },
                 "collection": {
                     "type": "string",
                     "example": "8xBMPGAj5NzAwRmdfEcksDcZyexr87AAmD6LWwKG7Dqq"
@@ -649,6 +656,9 @@ const docTemplate = `{
                     "type": "integer",
                     "example": 10
                 },
+                "listingOnly": {
+                    "type": "boolean"
+                },
                 "offset": {
                     "type": "integer",
                     "example": 0
@@ -656,6 +666,10 @@ const docTemplate = `{
                 "order": {
                     "type": "string",
                     "example": "ASC|DESC"
+                },
+                "program": {
+                    "type": "string",
+                    "example": "RwDDvPp7ta9qqUwxbBfShsNreBaSsKvFcHzMxfBC3Ki"
                 },
                 "sortBy": {
                     "type": "string",

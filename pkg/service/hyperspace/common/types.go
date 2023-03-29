@@ -26,10 +26,21 @@ type Conditions struct {
 	TimeGranularity          *string   `json:"time_granularity,omitempty"`
 }
 
+type MarketPlaceProgram struct {
+	MarketPlaceProgramID  string `json:"marketplace_program_id"`
+	MarketPlaceInstanceID string `json:"marketplace_instance_id"`
+}
+
+type MarketPlaceProgramCondition struct {
+	MarketPlacePrograms []MarketPlaceProgram `json:"marketplace_programs"`
+}
+
 type Condition struct {
-	ProjectIDs     *[]ProjectIDItem `json:"project_ids,omitempty"`
-	TokenAddresses *[]string        `json:"token_addresses,omitempty"`
-	ActionType     *string          `json:"action_type,omitempty"`
+	ProjectIDs                  *[]ProjectIDItem             `json:"project_ids,omitempty"`
+	TokenAddresses              *[]string                    `json:"token_addresses,omitempty"`
+	ActionType                  *string                      `json:"action_type,omitempty"`
+	MarketPlaceProgramCondition *MarketPlaceProgramCondition `json:"marketplace_program_condition,omitempty"`
+	ListingType                 *string                      `json:"listing_type,omitempty"`
 }
 
 type ActivityCondition struct {
@@ -58,7 +69,7 @@ type ActivityParams struct {
 	PaginationInfo    *PaginationConfig `json:"pagination_info,omitempty"`
 }
 
-type LastSaleMPA struct {
+type MPAInfo struct {
 	UserAddress    string  `json:"user_address"`
 	Price          float64 `json:"price"`
 	Signature      string  `json:"signature"`
@@ -85,7 +96,8 @@ type MarketPlaceSnapshot struct {
 	MetadataURI      string                 `json:"meta_data_uri"`
 	MetadataImg      string                 `json:"meta_data_img"`
 	Attributes       map[string]interface{} `json:"attributes"`
-	LastSaleMPA      *LastSaleMPA           `json:"last_sale_mpa"`
+	LastSaleMPA      *MPAInfo               `json:"last_sale_mpa"`
+	LowestListingMPA *MPAInfo               `json:"lowest_listing_mpa"`
 	CreatorRoyalty   int                    `json:"creator_royalty"`
 	NFTStandard      string                 `json:"nft_standard"`
 	Owner            string                 `json:"owner"`

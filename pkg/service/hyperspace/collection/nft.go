@@ -47,6 +47,7 @@ func convertNFTSnapshots(snapshots []common.MarketPlaceSnapshot) []types.NFT {
 }
 
 func getNFTParams(input *types.NFTParams) *common.StatParams {
+	// set program ids
 	var attributes *[]types.Attribute
 	if len(input.Attributes) > 0 {
 		attributes = &input.Attributes
@@ -57,9 +58,35 @@ func getNFTParams(input *types.NFTParams) *common.StatParams {
 			Attributes: attributes,
 		},
 	}
+
+	// set marketplace program condition
+	var marketplaceProgramCondition *common.MarketPlaceProgramCondition
+	if input.Program != nil {
+		programCondition := common.MarketPlaceProgramCondition{
+			MarketPlacePrograms: []common.MarketPlaceProgram{
+				{
+					MarketPlaceProgramID: *input.Program,
+				},
+			},
+		}
+		if input.AuctionHouse != nil {
+			programCondition.MarketPlacePrograms[0].MarketPlaceInstanceID = *input.AuctionHouse
+		}
+		marketplaceProgramCondition = &programCondition
+	}
+
+	// set listing type
+	var listingType *string
+	if input.ListingOnly {
+		listingTypeStr := "LISTING"
+		listingType = &listingTypeStr
+	}
+
 	return &common.StatParams{
 		Condition: &common.Condition{
-			ProjectIDs: &projectIDs,
+			ProjectIDs:                  &projectIDs,
+			MarketPlaceProgramCondition: marketplaceProgramCondition,
+			ListingType:                 listingType,
 		},
 		OrderBy:        getNFTOrderField(input),
 		PaginationInfo: getNFTPaginationInfo(input),

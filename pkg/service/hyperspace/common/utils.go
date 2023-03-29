@@ -54,11 +54,20 @@ func GetTraits(attributes *map[string]interface{}) []types.Trait {
 }
 
 func ConvertNFTSnapshot(snapshot *MarketPlaceSnapshot) *types.NFT {
+	// set last sold
 	var lastSold *string
 	if snapshot.LastSaleMPA != nil {
 		lastSoldStr := GetLamports(snapshot.LastSaleMPA.Price)
 		lastSold = &lastSoldStr
 	}
+
+	// set listing price
+	var listingPrice *string
+	if snapshot.LowestListingMPA != nil {
+		listingPriceStr := GetLamports(snapshot.LowestListingMPA.Price)
+		listingPrice = &listingPriceStr
+	}
+
 	traits := GetTraits(&snapshot.Attributes)
 
 	nft := types.NFT{
@@ -67,6 +76,7 @@ func ConvertNFTSnapshot(snapshot *MarketPlaceSnapshot) *types.NFT {
 		Symbol:        snapshot.ProjectSlug,
 		Image:         snapshot.MetadataImg,
 		LastSold:      lastSold,
+		ListingPrice:  listingPrice,
 		MintAddress:   snapshot.TokenAddress,
 		MoonRank:      snapshot.MoonRank,
 		Royalty:       snapshot.CreatorRoyalty,

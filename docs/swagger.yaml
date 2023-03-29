@@ -95,6 +95,8 @@ definitions:
         type: string
       lastSold:
         type: string
+      listingPrice:
+        type: string
       listingType:
         type: string
       mintAddress:
@@ -152,17 +154,25 @@ definitions:
         items:
           $ref: '#/definitions/types.Attribute'
         type: array
+      auctionHouse:
+        example: 6hW2rVdPUD5qn1amEvN3K9zkvgsCA34LqCvTPcpamQHc
+        type: string
       collection:
         example: 8xBMPGAj5NzAwRmdfEcksDcZyexr87AAmD6LWwKG7Dqq
         type: string
       limit:
         example: 10
         type: integer
+      listingOnly:
+        type: boolean
       offset:
         example: 0
         type: integer
       order:
         example: ASC|DESC
+        type: string
+      program:
+        example: RwDDvPp7ta9qqUwxbBfShsNreBaSsKvFcHzMxfBC3Ki
         type: string
       sortBy:
         example: lowest_listing_block_timestamp

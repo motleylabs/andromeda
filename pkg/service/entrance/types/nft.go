@@ -24,6 +24,7 @@ type NFT struct {
 	Description   string   `json:"description"`
 	Royalty       int      `json:"sellerFeeBasisPoints"`
 	ListingType   string   `json:"listingType"`
+	ListingPrice  *string  `json:"listingPrice"`
 	Image         string   `json:"image"`
 	Owner         string   `json:"owner"`
 	LastSold      *string  `json:"lastSold"`
