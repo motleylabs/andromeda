@@ -48,6 +48,21 @@ definitions:
           type: string
         type: array
     type: object
+  types.CollectedCollection:
+    properties:
+      estimatedValue:
+        type: string
+      floorPrice:
+        type: string
+      id:
+        type: string
+      image:
+        type: string
+      name:
+        type: string
+      nftsOwned:
+        type: integer
+    type: object
   types.Collection:
     properties:
       attributes:
@@ -233,6 +248,17 @@ definitions:
       trends:
         items:
           $ref: '#/definitions/types.Trend'
+        type: array
+    type: object
+  types.UserNFT:
+    properties:
+      collections:
+        items:
+          $ref: '#/definitions/types.CollectedCollection'
+        type: array
+      nfts:
+        items:
+          $ref: '#/definitions/types.NFT'
         type: array
     type: object
 info:
@@ -574,6 +600,29 @@ paths:
         "500":
           description: Internal Server Error
       summary: Get user activities
+      tags:
+      - users
+  /users/nfts:
+    get:
+      consumes:
+      - application/json
+      description: get the nfts of the wallet
+      parameters:
+      - description: Wallet address
+        in: query
+        name: address
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/types.UserNFT'
+        "500":
+          description: Internal Server Error
+      summary: Get user NFTs
       tags:
       - users
   /users/offers:

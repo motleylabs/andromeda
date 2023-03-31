@@ -517,6 +517,41 @@ const docTemplate = `{
                 }
             }
         },
+        "/users/nfts": {
+            "get": {
+                "description": "get the nfts of the wallet",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "users"
+                ],
+                "summary": "Get user NFTs",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Wallet address",
+                        "name": "address",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/types.UserNFT"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
         "/users/offers": {
             "get": {
                 "description": "get the offers with related to the wallet",
@@ -642,6 +677,29 @@ const docTemplate = `{
                     "example": [
                         "Vivid-tangerine"
                     ]
+                }
+            }
+        },
+        "types.CollectedCollection": {
+            "type": "object",
+            "properties": {
+                "estimatedValue": {
+                    "type": "string"
+                },
+                "floorPrice": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "image": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "nftsOwned": {
+                    "type": "integer"
                 }
             }
         },
@@ -927,6 +985,23 @@ const docTemplate = `{
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/types.Trend"
+                    }
+                }
+            }
+        },
+        "types.UserNFT": {
+            "type": "object",
+            "properties": {
+                "collections": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/types.CollectedCollection"
+                    }
+                },
+                "nfts": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/types.NFT"
                     }
                 }
             }

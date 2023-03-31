@@ -10,6 +10,17 @@ import (
 
 type User struct{}
 
+// GetNFTs godoc
+//
+// @Summary         Get user NFTs
+// @Description     get the nfts of the wallet
+// @Tags            users
+// @Accept          json
+// @Produce         json
+// @Param           address          query         string  true         "Wallet address"
+// @Success		    200	             {object}	   types.UserNFT
+// @Failure         500
+// @Router          /users/nfts     [get]
 func (ctrl User) GetNFTs(c *gin.Context) {
 	address := c.Query("address")
 
