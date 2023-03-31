@@ -17,7 +17,7 @@ func (ctrl User) GetNFTs(c *gin.Context) {
 	nftRes, err := dataProvider.GetUserNFTs(address)
 	if err != nil {
 		log.Printf("User GetNFTs >> DataProvder GetUserNFTs; %s", err.Error())
-		c.AbortWithStatus(http.StatusBadRequest)
+		c.AbortWithStatus(http.StatusInternalServerError)
 		return
 	}
 

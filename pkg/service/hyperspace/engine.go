@@ -42,7 +42,7 @@ func (Hyperspace) GetNFTOffers(address string) ([]types.NFTActivity, error) {
 }
 
 func (Hyperspace) GetUserNFTs(address string) (*types.UserNFT, error) {
-	return nil, nil
+	return user.GetNFTs(address)
 }
 
 func (Hyperspace) GetUserActivities(params *types.ActivityParams) (*types.ActivityRes, error) {

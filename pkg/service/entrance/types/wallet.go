@@ -1,12 +1,12 @@
 package types
 
 type CollectedCollection struct {
-	Name           string  `json:"name"`
-	Image          string  `json:"image"`
-	EstimatedValue string  `json:"estimatedValue"`
-	NFTsOwned      int     `json:"nftsOwned"`
-	Symbol         string  `json:"symbol"`
-	FloorPrice     float64 `json:"floorPrice"`
+	ID             string `json:"id"`
+	Name           string `json:"name"`
+	Image          string `json:"image"`
+	NFTsOwned      int    `json:"nftsOwned"`
+	EstimatedValue string `json:"estimatedValue"`
+	FloorPrice     string `json:"floorPrice"`
 }
 
 type UserNFT struct {

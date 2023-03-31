@@ -1,7 +1,9 @@
 package common
 
 import (
+	"andromeda/pkg/request"
 	"andromeda/pkg/service/entrance/types"
+	"encoding/json"
 	"fmt"
 )
 
@@ -125,4 +127,100 @@ func ConvertNFTActivity(states []MarketPlaceState) []types.NFTActivity {
 		activities[index].Price = &price
 	}
 	return activities
+}
+
+func ConvertProjectStat(projectStat *ProjectStat) *types.Collection {
+	holders := int64(0)
+	if projectStat.TokenHolders != nil {
+		holders = int64(*projectStat.TokenHolders)
+	}
+
+	marketCap := float64(0)
+	if projectStat.MarketCap != nil {
+		marketCap = *projectStat.MarketCap
+	}
+
+	attributes := []types.Attribute{}
+	if projectStat.Project.Attributes != nil {
+		attributes = *projectStat.Project.Attributes
+	}
+
+	stat := types.Statistics{
+		Volume30D: GetFromIntPointer(projectStat.Volume1M),
+		Listed1D:  GetFromIntPointer(projectStat.Listed1Day),
+		Floor1D:   GetLamportsFromPointer(projectStat.FloorPrice1Day),
+		Holders:   holders,
+		MarketCap: marketCap,
+		Supply:    projectStat.Project.Supply,
+	}
+
+	var collection types.Collection
+	collection.ID = projectStat.ProjectID
+	collection.Description = projectStat.Project.Description
+	collection.Image = projectStat.Project.ImgURL
+	collection.Name = projectStat.Project.DisplayName
+	collection.Statistics = &stat
+	collection.Attributes = attributes
+
+	return &collection
+}
+
+func GetNFTsFromAddresses(addresses []string, pageNumber, pageSize int) (*ProjectSnapshotsRes, error) {
+	projectStatParams := StatParams{
+		Condition: &Condition{
+			TokenAddresses: &addresses,
+		},
+		PaginationInfo: &PaginationConfig{
+			PageSize:   &pageSize,
+			PageNumber: &pageNumber,
+		},
+	}
+
+	payload, err := json.Marshal(projectStatParams)
+	if err != nil {
+		return nil, err
+	}
+
+	res, err := request.ProcessPost(fmt.Sprintf("%s/get-market-place-snapshots", ENDPOINT), payload)
+	if err != nil {
+		return nil, err
+	}
+
+	var nftRes ProjectSnapshotsRes
+	if err := json.Unmarshal(res, &nftRes); err != nil {
+		return nil, err
+	}
+
+	return &nftRes, nil
+}
+
+func GetProjectsFromAddresses(addresses []string, pageNumber, pageSize int) (*ProjectStatRes, error) {
+	excludeProjectAttr := false
+	projectStatParams := StatParams{
+		Conditions: &Conditions{
+			ProjectIDs:               &addresses,
+			ExcludeProjectAttributes: &excludeProjectAttr,
+		},
+		PaginationInfo: &PaginationConfig{
+			PageSize:   &pageSize,
+			PageNumber: &pageNumber,
+		},
+	}
+
+	payload, err := json.Marshal(projectStatParams)
+	if err != nil {
+		return nil, err
+	}
+
+	res, err := request.ProcessPost(fmt.Sprintf("%s/get-project-stats", ENDPOINT), payload)
+	if err != nil {
+		return nil, err
+	}
+
+	var projectStats ProjectStatRes
+	if err := json.Unmarshal(res, &projectStats); err != nil {
+		return nil, err
+	}
+
+	return &projectStats, nil
 }

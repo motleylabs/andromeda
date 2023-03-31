@@ -23,7 +23,7 @@ func GetTrends(params *types.TrendParams) (*types.TrendRes, error) {
 		return nil, err
 	}
 
-	var projectStats ProjectStatRes
+	var projectStats common.ProjectStatRes
 	if err := json.Unmarshal(res, &projectStats); err != nil {
 		return nil, err
 	}
@@ -36,7 +36,7 @@ func GetTrends(params *types.TrendParams) (*types.TrendRes, error) {
 	return &trendRes, nil
 }
 
-func convertStatistics(stats []ProjectStat) []types.Trend {
+func convertStatistics(stats []common.ProjectStat) []types.Trend {
 	trends := make([]types.Trend, len(stats))
 
 	for index := range stats {
