@@ -40,7 +40,12 @@ func GetNFTs(address string) (*types.UserNFT, error) {
 		}
 	}
 
-	fmt.Println(len(marketplaceSnapshots))
+	if len(marketplaceSnapshots) == 0 {
+		return &types.UserNFT{
+			Collections: []types.CollectedCollection{},
+			NFTs:        []types.NFT{},
+		}, nil
+	}
 
 	// get project ids
 	projectIDs := []string{}
@@ -61,32 +66,34 @@ func GetNFTs(address string) (*types.UserNFT, error) {
 
 	// get collected collections
 	collectedCollections := []types.CollectedCollection{}
-	pageNumber = 1
-	pageSize = 50
-	for {
-		projectStatRes, err := common.GetProjectsFromAddresses(projectIDs, pageNumber, pageSize)
-		if err != nil {
-			return nil, err
-		}
-
-		for index := range projectStatRes.ProjectStats {
-			collection := common.ConvertProjectStat(&projectStatRes.ProjectStats[index])
-			collectedCollection := types.CollectedCollection{
-				ID:        collection.ID,
-				Name:      collection.Name,
-				Image:     collection.Image,
-				NFTsOwned: 0,
+	if len(projectIDs) > 0 {
+		pageNumber = 1
+		pageSize = 50
+		for {
+			projectStatRes, err := common.GetProjectsFromAddresses(projectIDs, pageNumber, pageSize)
+			if err != nil {
+				return nil, err
 			}
-			if collection.Statistics != nil {
-				collectedCollection.FloorPrice = collection.Statistics.Floor1D
-			}
-			collectedCollections = append(collectedCollections, collectedCollection)
-		}
 
-		if projectStatRes.PaginationInfo.HasNextPage {
-			pageNumber += 1
-		} else {
-			break
+			for index := range projectStatRes.ProjectStats {
+				collection := common.ConvertProjectStat(&projectStatRes.ProjectStats[index])
+				collectedCollection := types.CollectedCollection{
+					ID:        collection.ID,
+					Name:      collection.Name,
+					Image:     collection.Image,
+					NFTsOwned: 0,
+				}
+				if collection.Statistics != nil {
+					collectedCollection.FloorPrice = collection.Statistics.Floor1D
+				}
+				collectedCollections = append(collectedCollections, collectedCollection)
+			}
+
+			if projectStatRes.PaginationInfo.HasNextPage {
+				pageNumber += 1
+			} else {
+				break
+			}
 		}
 	}
 
