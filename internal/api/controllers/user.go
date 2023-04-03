@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"andromeda/internal/api/models"
 	"andromeda/internal/api/utils"
 	"log"
 	"net/http"
@@ -9,6 +10,14 @@ import (
 )
 
 type User struct{}
+
+type LoginPayload struct {
+	Address string  `json:"address"`
+	Signed  *[]byte `json:"signed,omitempty"`
+}
+
+var userModel = new(models.User)
+var nonceModel = new(models.Nonce)
 
 // GetNFTs godoc
 //
@@ -102,4 +111,50 @@ func (ctrl User) GetOffers(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, activityRes)
+}
+
+func (ctrl User) GetNonce(c *gin.Context) {
+	address := c.Query("address")
+
+	nonce, err := nonceModel.FirstOrCreate(&models.Nonce{
+		Address: address,
+	})
+	if err != nil {
+		log.Printf("User GetNonce >> Nonce FirstOrCreate with address %s; %s", address, err.Error())
+		c.AbortWithStatus(http.StatusInternalServerError)
+		return
+	}
+
+	newNonce := "test_nonce"
+
+	nonce.Nonce = newNonce
+	if err := nonceModel.Update(nonce); err != nil {
+		log.Printf("User GetNonce >> Nonce Update with address %s; %s", address, err.Error())
+		c.AbortWithStatus(http.StatusInternalServerError)
+		return
+	}
+
+	c.JSON(http.StatusOK, newNonce)
+}
+
+func (ctrl User) Login(c *gin.Context) {
+	var inputData LoginPayload
+
+	if err := c.ShouldBindJSON(&inputData); err != nil {
+		log.Printf("User Login >> ShouldBindJSON; %s", err.Error())
+		c.AbortWithStatus(http.StatusBadRequest)
+		return
+	}
+
+	user, err := userModel.FirstOrCreate(&models.User{
+		Address: inputData.Address,
+	})
+
+	if err != nil {
+		log.Printf("User Login >> User Create with address %s; %s", inputData.Address, err.Error())
+		c.AbortWithStatus(http.StatusInternalServerError)
+		return
+	}
+
+	c.JSON(http.StatusOK, user)
 }

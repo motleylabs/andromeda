@@ -6,6 +6,7 @@ import (
 	"os"
 	"time"
 
+	"andromeda/internal/api/models"
 	"andromeda/internal/api/routers"
 
 	"github.com/gin-gonic/gin"
@@ -24,6 +25,11 @@ func main() {
 
 	if err := godotenv.Load(); err != nil {
 		log.Printf("Dotenv Load; %s", err.Error())
+	}
+
+	err = models.ConnectDB(os.Getenv("DB_HOST"), os.Getenv("DB_USER"), os.Getenv("DB_PASSWORD"), os.Getenv("DB_DATABASE"), os.Getenv("DB_PORT"))
+	if err != nil {
+		log.Fatal(err)
 	}
 
 	// set mode

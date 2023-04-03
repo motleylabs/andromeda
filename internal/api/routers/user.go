@@ -19,5 +19,8 @@ func UserRouter(r *gin.RouterGroup) {
 		c.GET("/activities", cache.CachePage(userStore, time.Second*30, userController.GetActivities))
 		c.GET("/nfts", cache.CachePage(userStore, time.Minute, userController.GetNFTs))
 		c.GET("/offers", cache.CachePage(userStore, time.Second*30, userController.GetOffers))
+
+		c.GET("/nonce", cache.CachePage(userStore, time.Second*30, userController.GetNonce))
+		c.POST("/login", userController.Login)
 	}
 }
