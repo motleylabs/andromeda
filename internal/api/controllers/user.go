@@ -21,7 +21,7 @@ type LoginPayload struct {
 type LoginRes struct {
 	User         models.User `json:"user"`
 	Token        string      `json:"token"`
-	RefreshToken string      `json:"refresh_token"`
+	RefreshToken string      `json:"refreshToken"`
 }
 
 type TokenRes struct {
@@ -130,7 +130,7 @@ func (ctrl User) GetOffers(c *gin.Context) {
 //
 // @Summary         Get nonce for message signing
 // @Description     get the temporary none for message signing
-// @Tags            users
+// @Tags            auth
 // @Accept          json
 // @Produce         json
 // @Param           address          query         string  true         "Wallet address"
@@ -177,7 +177,7 @@ func (ctrl User) GetNonce(c *gin.Context) {
 //
 // @Summary         User login
 // @Description     login with user wallet address
-// @Tags            users
+// @Tags            auth
 // @Accept          json
 // @Produce         json
 // @Param           request          body          LoginPayload  true     "login payload"
@@ -237,7 +237,7 @@ func (ctrl User) Login(c *gin.Context) {
 	}
 
 	// get jwt token, refresh token
-	token, err := utils.GenerateToken(user)
+	token, err := utils.GenerateToken(&user)
 	if err != nil {
 		log.Printf("User Login >> Util GenerateToken for user ID %d; %s", user.ID, err.Error())
 		utils.SendError(c, http.StatusInternalServerError, err.Error())
@@ -270,7 +270,7 @@ func (ctrl User) Login(c *gin.Context) {
 //
 // @Summary         Get refreshed token
 // @Description     get a new token using refresh token
-// @Tags            users
+// @Tags            auth
 // @Accept          json
 // @Produce         json
 // @Param           Authorization    header        string true                  "Bearer {token}"
@@ -321,6 +321,29 @@ func (ctrl User) GetRefreshToken(c *gin.Context) {
 	})
 }
 
+// GetMe godoc
+//
+// @Summary         Get me
+// @Description     get the information of the current logged in user
+// @Tags            auth
+// @Accept          json
+// @Produce         json
+// @Param           Authorization    header        string true                  "Bearer {token}"
+// @Success		    200	             {object}      models.User
+// @Failure		    403              {object}      utils.ErrorRes               "invalid user"
+// @Router          /users/me     [get]
 func (ctrl User) GetMe(c *gin.Context) {
+	data, ok := c.Get("user")
+	if !ok {
+		c.AbortWithStatus(http.StatusForbidden)
+		return
+	}
 
+	me, err := userModel.GetByID(data.(*models.User).ID)
+	if err != nil {
+		log.Printf("User GetMe >> User GetByID with user ID %d; %s", data.(*models.User).ID, err.Error())
+		utils.SendError(c, http.StatusForbidden, err.Error())
+	}
+
+	c.JSON(http.StatusOK, me)
 }

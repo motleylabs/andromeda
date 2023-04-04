@@ -679,7 +679,32 @@ paths:
           description: Internal Server Error
       summary: User login
       tags:
-      - users
+      - auth
+  /users/me:
+    get:
+      consumes:
+      - application/json
+      description: get the information of the current logged in user
+      parameters:
+      - description: Bearer {token}
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.User'
+        "403":
+          description: invalid user
+          schema:
+            $ref: '#/definitions/utils.ErrorRes'
+      summary: Get me
+      tags:
+      - auth
   /users/nfts:
     get:
       consumes:
@@ -727,7 +752,7 @@ paths:
           description: Internal Server Error
       summary: Get nonce for message signing
       tags:
-      - users
+      - auth
   /users/offers:
     get:
       consumes:
@@ -797,5 +822,5 @@ paths:
           description: Internal Server Error
       summary: Get refreshed token
       tags:
-      - users
+      - auth
 swagger: "2.0"
