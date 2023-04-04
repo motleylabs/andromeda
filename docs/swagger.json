@@ -505,6 +505,61 @@
                 }
             }
         },
+        "/users/login": {
+            "post": {
+                "description": "login with user wallet address",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "users"
+                ],
+                "summary": "User login",
+                "parameters": [
+                    {
+                        "description": "login payload",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/controllers.LoginPayload"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/controllers.LoginRes"
+                        }
+                    },
+                    "400": {
+                        "description": "invalid payload",
+                        "schema": {
+                            "$ref": "#/definitions/utils.ErrorRes"
+                        }
+                    },
+                    "403": {
+                        "description": "invalid message signing",
+                        "schema": {
+                            "$ref": "#/definitions/utils.ErrorRes"
+                        }
+                    },
+                    "409": {
+                        "description": "nonce is expired",
+                        "schema": {
+                            "$ref": "#/definitions/utils.ErrorRes"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
         "/users/nfts": {
             "get": {
                 "description": "get the nfts of the wallet",
@@ -629,9 +684,119 @@
                     }
                 }
             }
+        },
+        "/users/refresh_token": {
+            "get": {
+                "description": "get a new token using refresh token",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "users"
+                ],
+                "summary": "Get refreshed token",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer {token}",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/controllers.TokenRes"
+                        }
+                    },
+                    "400": {
+                        "description": "invalid payload",
+                        "schema": {
+                            "$ref": "#/definitions/utils.ErrorRes"
+                        }
+                    },
+                    "403": {
+                        "description": "invalid refresh token",
+                        "schema": {
+                            "$ref": "#/definitions/utils.ErrorRes"
+                        }
+                    },
+                    "409": {
+                        "description": "expired refresh token",
+                        "schema": {
+                            "$ref": "#/definitions/utils.ErrorRes"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
         }
     },
     "definitions": {
+        "controllers.LoginPayload": {
+            "type": "object",
+            "required": [
+                "address",
+                "msg"
+            ],
+            "properties": {
+                "address": {
+                    "type": "string"
+                },
+                "msg": {
+                    "type": "string"
+                }
+            }
+        },
+        "controllers.LoginRes": {
+            "type": "object",
+            "properties": {
+                "refresh_token": {
+                    "type": "string"
+                },
+                "token": {
+                    "type": "string"
+                },
+                "user": {
+                    "$ref": "#/definitions/models.User"
+                }
+            }
+        },
+        "controllers.TokenRes": {
+            "type": "object",
+            "properties": {
+                "token": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.User": {
+            "type": "object",
+            "properties": {
+                "address": {
+                    "type": "string"
+                },
+                "avatar": {
+                    "type": "string"
+                },
+                "createdAt": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "updatedAt": {
+                    "type": "string"
+                }
+            }
+        },
         "types.Activity": {
             "type": "object",
             "properties": {
@@ -1029,6 +1194,14 @@
                     "items": {
                         "$ref": "#/definitions/types.NFT"
                     }
+                }
+            }
+        },
+        "utils.ErrorRes": {
+            "type": "object",
+            "properties": {
+                "error": {
+                    "type": "string"
                 }
             }
         }

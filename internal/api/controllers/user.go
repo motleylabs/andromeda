@@ -5,6 +5,7 @@ import (
 	"andromeda/internal/api/utils"
 	"log"
 	"net/http"
+	"strings"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -17,8 +18,19 @@ type LoginPayload struct {
 	SignedMsg string `json:"msg" binding:"required"`
 }
 
+type LoginRes struct {
+	User         models.User `json:"user"`
+	Token        string      `json:"token"`
+	RefreshToken string      `json:"refresh_token"`
+}
+
+type TokenRes struct {
+	Token string `json:"token"`
+}
+
 var userModel = new(models.User)
 var nonceModel = new(models.Nonce)
+var refreshTokenModel = new(models.RefreshToken)
 
 // GetNFTs godoc
 //
@@ -161,11 +173,25 @@ func (ctrl User) GetNonce(c *gin.Context) {
 	c.JSON(http.StatusOK, newNonce)
 }
 
+// Login godoc
+//
+// @Summary         User login
+// @Description     login with user wallet address
+// @Tags            users
+// @Accept          json
+// @Produce         json
+// @Param           request          body          LoginPayload  true     "login payload"
+// @Success		    200	             {object}      LoginRes
+// @Failure		    400              {object}      utils.ErrorRes               "invalid payload"
+// @Failure		    403              {object}      utils.ErrorRes               "invalid message signing"
+// @Failure		    409              {object}      utils.ErrorRes               "nonce is expired"
+// @Failure         500
+// @Router          /users/login     [post]
 func (ctrl User) Login(c *gin.Context) {
 	var inputData LoginPayload
 	if err := c.ShouldBindJSON(&inputData); err != nil {
 		log.Printf("User Login >> ShouldBindJSON; %s", err.Error())
-		c.AbortWithStatus(http.StatusBadRequest)
+		utils.SendError(c, http.StatusBadRequest, err.Error())
 		return
 	}
 
@@ -173,21 +199,21 @@ func (ctrl User) Login(c *gin.Context) {
 	nonce, err := nonceModel.GetByAddress(inputData.Address)
 	if err != nil {
 		log.Printf("User Login >> Nonce GetByAddress; %s", err.Error())
-		c.AbortWithStatus(http.StatusBadRequest)
+		utils.SendError(c, http.StatusBadRequest, err.Error())
 		return
 	}
 
 	// check if the nonce is valid
 	if nonce.ExpiredAt == nil || nonce.Nonce == nil {
 		log.Printf("User Login >> Invalid nonce with address %s", inputData.Address)
-		c.AbortWithStatus(http.StatusConflict)
+		utils.SendError(c, http.StatusConflict, "invalid nonce")
 		return
 	}
 	if nonce.ExpiredAt != nil {
 		curTime := time.Now().Unix()
 		if curTime > *nonce.ExpiredAt {
 			log.Printf("User Login >> Nonce is expired with address %s", inputData.Address)
-			c.AbortWithStatus(http.StatusConflict)
+			utils.SendError(c, http.StatusConflict, "nonce is expired")
 			return
 		}
 	}
@@ -195,19 +221,106 @@ func (ctrl User) Login(c *gin.Context) {
 	// check message signing
 	if ok := utils.ValidateMessage(inputData.Address, inputData.SignedMsg, *nonce.Nonce); !ok {
 		log.Printf("User Login >> Util ValidateMessage false with address %s", inputData.Address)
-		c.AbortWithStatus(http.StatusForbidden)
+		utils.SendError(c, http.StatusForbidden, "message signing is invalid")
 		return
 	}
 
-	user, err := userModel.FirstOrCreate(&models.User{
+	// get or create user
+	user := models.User{
 		Address: inputData.Address,
-	})
-
+	}
+	err = userModel.FirstOrCreate(&user)
 	if err != nil {
 		log.Printf("User Login >> User Create with address %s; %s", inputData.Address, err.Error())
-		c.AbortWithStatus(http.StatusInternalServerError)
+		utils.SendError(c, http.StatusInternalServerError, err.Error())
 		return
 	}
 
-	c.JSON(http.StatusOK, user)
+	// get jwt token, refresh token
+	token, err := utils.GenerateToken(user)
+	if err != nil {
+		log.Printf("User Login >> Util GenerateToken for user ID %d; %s", user.ID, err.Error())
+		utils.SendError(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	refreshToken, refreshTokenExpire, err := utils.GenerateRefreshToken(user)
+	if err != nil {
+		log.Printf("User Login >> Util GenerateRefreshToken for user ID %d; %s", user.ID, err.Error())
+		utils.SendError(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+	err = refreshTokenModel.Create(user.ID, refreshToken, refreshTokenExpire)
+	if err != nil {
+		log.Printf("User Login >> Refresh Token Create for user ID %d; %s", user.ID, err.Error())
+		utils.SendError(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	c.Set("user", user)
+
+	c.JSON(http.StatusOK, LoginRes{
+		User:         user,
+		Token:        token,
+		RefreshToken: refreshToken,
+	})
+}
+
+// GetRefreshToken godoc
+//
+// @Summary         Get refreshed token
+// @Description     get a new token using refresh token
+// @Tags            users
+// @Accept          json
+// @Produce         json
+// @Param           Authorization    header        string true                  "Bearer {token}"
+// @Success		    200	             {object}      TokenRes
+// @Failure		    400              {object}      utils.ErrorRes               "invalid payload"
+// @Failure		    403              {object}      utils.ErrorRes               "invalid refresh token"
+// @Failure		    409              {object}      utils.ErrorRes               "expired refresh token"
+// @Failure         500
+// @Router          /users/refresh_token     [get]
+func (ctrl User) GetRefreshToken(c *gin.Context) {
+	authHeader := c.Request.Header.Get("Authorization")
+	if authHeader == "" {
+		authHeader = c.Query("token")
+	}
+	if authHeader == "" {
+		utils.SendError(c, http.StatusBadRequest, "auth header is missing")
+		return
+	}
+
+	parts := strings.SplitN(authHeader, " ", 2)
+	if !(len(parts) == 2 && parts[0] == "Bearer") {
+		utils.SendError(c, http.StatusBadRequest, "auth header is invalid")
+		return
+	}
+
+	bearerToken := parts[1]
+	refreshToken, err := refreshTokenModel.GetByRefreshToken(bearerToken)
+	if err != nil {
+		utils.SendError(c, http.StatusForbidden, "invalid refresh token")
+		return
+	}
+
+	if refreshToken.ExpiredAt.Unix() < time.Now().Unix() {
+		utils.SendError(c, http.StatusConflict, "expired refresh token")
+		return
+	}
+
+	token, err := utils.GenerateToken(&models.User{
+		ID: refreshToken.UserID,
+	})
+	if err != nil {
+		utils.SendError(c, http.StatusBadRequest, "token generation failed")
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"token": token,
+	})
+}
+
+func (ctrl User) GetMe(c *gin.Context) {
+
 }

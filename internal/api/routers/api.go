@@ -2,6 +2,7 @@ package routers
 
 import (
 	"andromeda/docs"
+	"andromeda/internal/api/middlewares"
 	"os"
 
 	"github.com/gin-gonic/gin"
@@ -14,6 +15,7 @@ import (
 // @contact.email  support@swagger.io
 
 func APIRouter(r *gin.Engine) {
+	authMiddleware := middlewares.JWT()
 
 	// programmatically set swagger info
 	docs.SwaggerInfo.Title = "Andromeda"
@@ -27,7 +29,7 @@ func APIRouter(r *gin.Engine) {
 	{
 		CollectionRouter(api)
 		NFTRouter(api)
-		UserRouter(api)
+		UserRouter(api, authMiddleware)
 	}
 
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))

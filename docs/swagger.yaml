@@ -1,4 +1,41 @@
 definitions:
+  controllers.LoginPayload:
+    properties:
+      address:
+        type: string
+      msg:
+        type: string
+    required:
+    - address
+    - msg
+    type: object
+  controllers.LoginRes:
+    properties:
+      refresh_token:
+        type: string
+      token:
+        type: string
+      user:
+        $ref: '#/definitions/models.User'
+    type: object
+  controllers.TokenRes:
+    properties:
+      token:
+        type: string
+    type: object
+  models.User:
+    properties:
+      address:
+        type: string
+      avatar:
+        type: string
+      createdAt:
+        type: string
+      id:
+        type: integer
+      updatedAt:
+        type: string
+    type: object
   types.Activity:
     properties:
       activityType:
@@ -260,6 +297,11 @@ definitions:
         items:
           $ref: '#/definitions/types.NFT'
         type: array
+    type: object
+  utils.ErrorRes:
+    properties:
+      error:
+        type: string
     type: object
 info:
   contact:
@@ -602,6 +644,42 @@ paths:
       summary: Get user activities
       tags:
       - users
+  /users/login:
+    post:
+      consumes:
+      - application/json
+      description: login with user wallet address
+      parameters:
+      - description: login payload
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/controllers.LoginPayload'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controllers.LoginRes'
+        "400":
+          description: invalid payload
+          schema:
+            $ref: '#/definitions/utils.ErrorRes'
+        "403":
+          description: invalid message signing
+          schema:
+            $ref: '#/definitions/utils.ErrorRes'
+        "409":
+          description: nonce is expired
+          schema:
+            $ref: '#/definitions/utils.ErrorRes'
+        "500":
+          description: Internal Server Error
+      summary: User login
+      tags:
+      - users
   /users/nfts:
     get:
       consumes:
@@ -683,6 +761,41 @@ paths:
         "500":
           description: Internal Server Error
       summary: Get user offers
+      tags:
+      - users
+  /users/refresh_token:
+    get:
+      consumes:
+      - application/json
+      description: get a new token using refresh token
+      parameters:
+      - description: Bearer {token}
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controllers.TokenRes'
+        "400":
+          description: invalid payload
+          schema:
+            $ref: '#/definitions/utils.ErrorRes'
+        "403":
+          description: invalid refresh token
+          schema:
+            $ref: '#/definitions/utils.ErrorRes'
+        "409":
+          description: expired refresh token
+          schema:
+            $ref: '#/definitions/utils.ErrorRes'
+        "500":
+          description: Internal Server Error
+      summary: Get refreshed token
       tags:
       - users
 swagger: "2.0"
