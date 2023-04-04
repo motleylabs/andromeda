@@ -5,6 +5,7 @@ import (
 	"andromeda/internal/api/utils"
 	"log"
 	"net/http"
+	"time"
 
 	"github.com/gin-gonic/gin"
 )
@@ -12,8 +13,8 @@ import (
 type User struct{}
 
 type LoginPayload struct {
-	Address string  `json:"address"`
-	Signed  *[]byte `json:"signed,omitempty"`
+	Address   string `json:"address" binding:"required"`
+	SignedMsg string `json:"msg" binding:"required"`
 }
 
 var userModel = new(models.User)
@@ -113,8 +114,24 @@ func (ctrl User) GetOffers(c *gin.Context) {
 	c.JSON(http.StatusOK, activityRes)
 }
 
+// GetNonce godoc
+//
+// @Summary         Get nonce for message signing
+// @Description     get the temporary none for message signing
+// @Tags            users
+// @Accept          json
+// @Produce         json
+// @Param           address          query         string  true         "Wallet address"
+// @Success		    200	             {string}      string               "Nonce"
+// @Failure		    400
+// @Failure         500
+// @Router          /users/nonce     [get]
 func (ctrl User) GetNonce(c *gin.Context) {
 	address := c.Query("address")
+	if address == "" {
+		c.AbortWithStatus(http.StatusBadRequest)
+		return
+	}
 
 	nonce, err := nonceModel.FirstOrCreate(&models.Nonce{
 		Address: address,
@@ -125,10 +142,17 @@ func (ctrl User) GetNonce(c *gin.Context) {
 		return
 	}
 
-	newNonce := "test_nonce"
+	newNonce, err := utils.GenerateRandomString(32)
+	if err != nil {
+		log.Printf("User GetNonce >> Util GenerateRandomString with address %s; %s", address, err.Error())
+		c.AbortWithStatus(http.StatusInternalServerError)
+		return
+	}
 
-	nonce.Nonce = newNonce
-	if err := nonceModel.Update(nonce); err != nil {
+	expiredAt := time.Now().Unix() + 60
+	nonce.Nonce = &newNonce
+	nonce.ExpiredAt = &expiredAt
+	if err := nonceModel.Update(address, nonce); err != nil {
 		log.Printf("User GetNonce >> Nonce Update with address %s; %s", address, err.Error())
 		c.AbortWithStatus(http.StatusInternalServerError)
 		return
@@ -139,10 +163,39 @@ func (ctrl User) GetNonce(c *gin.Context) {
 
 func (ctrl User) Login(c *gin.Context) {
 	var inputData LoginPayload
-
 	if err := c.ShouldBindJSON(&inputData); err != nil {
 		log.Printf("User Login >> ShouldBindJSON; %s", err.Error())
 		c.AbortWithStatus(http.StatusBadRequest)
+		return
+	}
+
+	// get nonce data
+	nonce, err := nonceModel.GetByAddress(inputData.Address)
+	if err != nil {
+		log.Printf("User Login >> Nonce GetByAddress; %s", err.Error())
+		c.AbortWithStatus(http.StatusBadRequest)
+		return
+	}
+
+	// check if the nonce is valid
+	if nonce.ExpiredAt == nil || nonce.Nonce == nil {
+		log.Printf("User Login >> Invalid nonce with address %s", inputData.Address)
+		c.AbortWithStatus(http.StatusConflict)
+		return
+	}
+	if nonce.ExpiredAt != nil {
+		curTime := time.Now().Unix()
+		if curTime > *nonce.ExpiredAt {
+			log.Printf("User Login >> Nonce is expired with address %s", inputData.Address)
+			c.AbortWithStatus(http.StatusConflict)
+			return
+		}
+	}
+
+	// check message signing
+	if ok := utils.ValidateMessage(inputData.Address, inputData.SignedMsg, *nonce.Nonce); !ok {
+		log.Printf("User Login >> Util ValidateMessage false with address %s", inputData.Address)
+		c.AbortWithStatus(http.StatusForbidden)
 		return
 	}
 
