@@ -161,6 +161,7 @@ func ConvertProjectStat(projectStat *ProjectStat) *types.Collection {
 	collection.Name = projectStat.Project.DisplayName
 	collection.Statistics = &stat
 	collection.Attributes = attributes
+	collection.Slug = projectStat.Project.ProjectSlug
 
 	return &collection
 }
