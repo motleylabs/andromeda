@@ -59,6 +59,7 @@ func convertStatistics(stats []common.ProjectStat) []types.Trend {
 			Name:        stats[index].Project.DisplayName,
 			Description: stats[index].Project.Description,
 			Image:       stats[index].Project.ImgURL,
+			Slug:        stats[index].Project.ProjectSlug,
 		}
 	}
 

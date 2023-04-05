@@ -22,6 +22,7 @@ type Collection struct {
 	Description               string      `json:"description"`
 	Image                     string      `json:"image"`
 	Symbol                    string      `json:"symbol"`
+	Slug                      string      `json:"slug"`
 	Statistics                *Statistics `json:"statistics,omitempty"`
 	Attributes                []Attribute `json:"attributes"`
 }

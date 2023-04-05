@@ -113,6 +113,7 @@ type Project struct {
 	Description string             `json:"description"`
 	Supply      int64              `json:"supply"`
 	Attributes  *[]types.Attribute `json:"project_attributes"`
+	ProjectSlug string             `json:"project_slug"`
 }
 
 type ProjectSnapshotsRes struct {
