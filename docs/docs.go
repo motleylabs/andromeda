@@ -205,7 +205,7 @@ const docTemplate = `{
                     },
                     {
                         "type": "string",
-                        "description": "Granularity (PER_HOUR|PER_DAY)",
+                        "description": "Granularity (per_hour|per_day)",
                         "name": "granularity",
                         "in": "query",
                         "required": true

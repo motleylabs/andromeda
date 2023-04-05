@@ -96,7 +96,7 @@ func (ctrl Collection) GetNFTs(c *gin.Context) {
 // @Param           address       query         string  true         "Collection address"
 // @Param           from_time     query         int     true         "Start timestamp"
 // @Param           to_time       query         int     true         "End timestamp"
-// @Param           granularity   query         string  true         "Granularity (PER_HOUR|PER_DAY)"
+// @Param           granularity   query         string  true         "Granularity (per_hour|per_day)"
 // @Param           limit         query         int     true         "Limit"
 // @Param           offset        query         int     true         "Offset"
 // @Success		    200	          {object}	    types.TimeSeriesRes

@@ -79,7 +79,7 @@ type TimeSeriesParams struct {
 	Address     string `json:"collection" example:"8xBMPGAj5NzAwRmdfEcksDcZyexr87AAmD6LWwKG7Dqq"`
 	FromTime    int    `json:"startTimestamp" example:"1671128400"`
 	ToTime      int    `json:"endTimestamp" example:"1679410436"`
-	Granularity string `json:"timeGranularity" example:"PER_HOUR|PER_DAY"`
+	Granularity string `json:"timeGranularity" example:"per_hour|per_day"`
 	Limit       int    `json:"limit" example:"10"`
 	Offset      int    `json:"offset" example:"0"`
 }

@@ -38,7 +38,7 @@ func GetTimeSeriesParams(c *gin.Context) (types.TimeSeriesParams, error) {
 	var params types.TimeSeriesParams
 	params.Address = c.Query("address")
 	params.Granularity = c.Query("granularity")
-	if params.Granularity != "PER_DAY" && params.Granularity != "PER_HOUR" {
+	if strings.ToLower(params.Granularity) != "per_day" && strings.ToLower(params.Granularity) != "per_hour" {
 		return params, fmt.Errorf("granularity param is not valid")
 	}
 

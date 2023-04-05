@@ -6,6 +6,7 @@ import (
 	"andromeda/pkg/service/hyperspace/common"
 	"encoding/json"
 	"fmt"
+	"strings"
 )
 
 func GetTimeSeries(params *types.TimeSeriesParams) (*types.TimeSeriesRes, error) {
@@ -63,13 +64,14 @@ func convertHistEntries(entries []ProjectStatHistEntry) []types.TimeSeries {
 func getProjectHistParams(input *types.TimeSeriesParams) *common.StatParams {
 	projectIDs := []string{input.Address}
 	pageNumber := input.Offset/input.Limit + 1
+	granularity := strings.ToUpper(input.Granularity)
 
 	var statParams common.StatParams
 	statParams.Conditions = &common.Conditions{
 		ProjectIDs:      &projectIDs,
 		StartTimestamp:  &input.FromTime,
 		EndTimestamp:    &input.ToTime,
-		TimeGranularity: &input.Granularity,
+		TimeGranularity: &granularity,
 	}
 	statParams.PaginationInfo = &common.PaginationConfig{
 		PageNumber: &pageNumber,

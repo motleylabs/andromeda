@@ -414,7 +414,7 @@ paths:
         name: to_time
         required: true
         type: integer
-      - description: Granularity (PER_HOUR|PER_DAY)
+      - description: Granularity (per_hour|per_day)
         in: query
         name: granularity
         required: true
