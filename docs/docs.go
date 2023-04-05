@@ -132,7 +132,7 @@ const docTemplate = `{
                     },
                     {
                         "type": "string",
-                        "description": "Order (ASC|DESC)",
+                        "description": "Order (asc|desc)",
                         "name": "order",
                         "in": "query",
                         "required": true
@@ -271,7 +271,7 @@ const docTemplate = `{
                     },
                     {
                         "type": "string",
-                        "description": "Order (ASC|DESC)",
+                        "description": "Order (asc|desc)",
                         "name": "order",
                         "in": "query",
                         "required": true
@@ -722,6 +722,9 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "name": {
+                    "type": "string"
+                },
+                "slug": {
                     "type": "string"
                 },
                 "statistics": {

@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"strconv"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 )
@@ -14,7 +15,7 @@ func GetTrendParams(c *gin.Context) (types.TrendParams, error) {
 	params.Period = c.Query("period")
 	params.SortBy = c.Query("sort_by")
 	params.Order = c.Query("order")
-	if params.Order != "ASC" && params.Order != "DESC" {
+	if strings.ToLower(params.Order) != "asc" && strings.ToLower(params.Order) != "desc" {
 		return params, fmt.Errorf("order param is not valid")
 	}
 
@@ -73,7 +74,7 @@ func GetNFTParams(c *gin.Context) (types.NFTParams, error) {
 	params.Address = c.Query("address")
 	params.SortBy = c.Query("sort_by")
 	params.Order = c.Query("order")
-	if params.Order != "ASC" && params.Order != "DESC" {
+	if strings.ToLower(params.Order) != "asc" && strings.ToLower(params.Order) != "desc" {
 		return params, fmt.Errorf("order param is not valid")
 	}
 	params.ListingOnly = false

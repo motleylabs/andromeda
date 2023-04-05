@@ -19,7 +19,7 @@ type Collection struct{}
 // @Produce         json
 // @Param           period   query         string  true         "Period (1d|7d|1m)"
 // @Param           sort_by  query         string  true         "Sort by (volume)"
-// @Param           order    query         string  true         "Order (ASC|DESC)"
+// @Param           order    query         string  true         "Order (asc|desc)"
 // @Param           limit    query         int     true         "Limit"
 // @Param           offset   query         int     true         "Offset"
 // @Success		    200	     {object}	   types.TrendRes
@@ -59,7 +59,7 @@ func (ctrl Collection) GetTrends(c *gin.Context) {
 // @Param           program         query         string  false        "Marketplace program address"
 // @Param           auction_house   query         string  false        "Auction house address"
 // @Param           sort_by         query         string  true         "Sort By (lowest_listing_block_timestamp)"
-// @Param           order           query         string  true         "Order (ASC|DESC)"
+// @Param           order           query         string  true         "Order (asc|desc)"
 // @Param           limit           query         int     true         "Limit"
 // @Param           offset          query         int     true         "Offset"
 // @Success		    200	            {object}	  types.NFTRes

@@ -70,7 +70,7 @@ type TimeSeriesRes struct {
 type TrendParams struct {
 	Period string `json:"period" example:"1d|7d|1m"`
 	SortBy string `json:"sortBy" example:"volume"`
-	Order  string `json:"order" example:"ASC|DESC"`
+	Order  string `json:"order" example:"asc|desc"`
 	Limit  int    `json:"limit" example:"10"`
 	Offset int    `json:"offset" example:"0"`
 }
@@ -88,7 +88,7 @@ type NFTParams struct {
 	Address      string      `json:"collection" example:"8xBMPGAj5NzAwRmdfEcksDcZyexr87AAmD6LWwKG7Dqq"`
 	Attributes   []Attribute `json:"attributes,omitempty"`
 	SortBy       string      `json:"sortBy" example:"lowest_listing_block_timestamp"`
-	Order        string      `json:"order" example:"ASC|DESC"`
+	Order        string      `json:"order" example:"asc|desc"`
 	Limit        int         `json:"limit" example:"10"`
 	Offset       int         `json:"offset" example:"0"`
 	ListingOnly  bool        `json:"listingOnly,omitempty"`

@@ -6,6 +6,7 @@ import (
 	"andromeda/pkg/service/hyperspace/common"
 	"encoding/json"
 	"fmt"
+	"strings"
 )
 
 func GetTrends(params *types.TrendParams) (*types.TrendRes, error) {
@@ -97,7 +98,7 @@ func getOrderField(input *types.TrendParams) *common.OrderConfig {
 
 	return &common.OrderConfig{
 		FieldName: fmt.Sprintf("%s_%s", orderFieldName, periodSuffix),
-		SortOrder: input.Order,
+		SortOrder: strings.ToUpper(input.Order),
 	}
 }
 

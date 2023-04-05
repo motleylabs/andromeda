@@ -6,6 +6,7 @@ import (
 	"andromeda/pkg/service/hyperspace/common"
 	"encoding/json"
 	"fmt"
+	"strings"
 )
 
 func GetNFTs(params *types.NFTParams) (*types.NFTRes, error) {
@@ -103,7 +104,7 @@ func getNFTOrderField(input *types.NFTParams) *common.OrderConfig {
 
 	return &common.OrderConfig{
 		FieldName: orderFieldName,
-		SortOrder: input.Order,
+		SortOrder: strings.ToUpper(input.Order),
 	}
 }
 

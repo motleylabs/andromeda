@@ -77,6 +77,8 @@ definitions:
         type: string
       name:
         type: string
+      slug:
+        type: string
       statistics:
         $ref: '#/definitions/types.Statistics'
       symbol:
@@ -362,7 +364,7 @@ paths:
         name: sort_by
         required: true
         type: string
-      - description: Order (ASC|DESC)
+      - description: Order (asc|desc)
         in: query
         name: order
         required: true
@@ -457,7 +459,7 @@ paths:
         name: sort_by
         required: true
         type: string
-      - description: Order (ASC|DESC)
+      - description: Order (asc|desc)
         in: query
         name: order
         required: true
