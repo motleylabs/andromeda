@@ -36,10 +36,9 @@ func (ctrl Collection) GetTrends(c *gin.Context) {
 
 	dataProvider := utils.GetProvider()
 	trends, err := dataProvider.GetCollectionTrends(&params)
-
 	if err != nil {
 		log.Printf("Collection GetTrends >> DataProvder GetCollectionTrends; %s", err.Error())
-		c.AbortWithStatus(http.StatusInternalServerError)
+		utils.SendError(c, http.StatusInternalServerError, err.Error())
 		return
 	}
 
@@ -70,7 +69,7 @@ func (ctrl Collection) GetNFTs(c *gin.Context) {
 	params, err := utils.GetNFTParams(c)
 	if err != nil {
 		log.Printf("Collection GetNFTs >> Util GetNFTParams; %s", err.Error())
-		c.AbortWithStatus(http.StatusBadRequest)
+		utils.SendError(c, http.StatusBadRequest, err.Error())
 		return
 	}
 
@@ -79,7 +78,7 @@ func (ctrl Collection) GetNFTs(c *gin.Context) {
 
 	if err != nil {
 		log.Printf("Collection GetNFTs >> DataProvder GetCollectionNFTs; %s", err.Error())
-		c.AbortWithStatus(http.StatusInternalServerError)
+		utils.SendError(c, http.StatusInternalServerError, err.Error())
 		return
 	}
 
@@ -107,7 +106,7 @@ func (ctrl Collection) GetTimeSeries(c *gin.Context) {
 	params, err := utils.GetTimeSeriesParams(c)
 	if err != nil {
 		log.Printf("Collection GetTimeSeries >> Util GetTimeSeriesParams; %s", err.Error())
-		c.AbortWithStatus(http.StatusBadRequest)
+		utils.SendError(c, http.StatusBadRequest, err.Error())
 		return
 	}
 
@@ -116,7 +115,7 @@ func (ctrl Collection) GetTimeSeries(c *gin.Context) {
 
 	if err != nil {
 		log.Printf("Collection GetTimeSeries >> DataProvder GetCollectionTimeSeries; %s", err.Error())
-		c.AbortWithStatus(http.StatusInternalServerError)
+		utils.SendError(c, http.StatusInternalServerError, err.Error())
 		return
 	}
 
@@ -141,7 +140,7 @@ func (ctrl Collection) GetDetail(c *gin.Context) {
 	collection, err := dataProvider.GetCollectionDetail(address)
 	if err != nil {
 		log.Printf("Collection GetDetail >> DataProvder GetDetail; %s", err.Error())
-		c.AbortWithStatus(http.StatusInternalServerError)
+		utils.SendError(c, http.StatusInternalServerError, err.Error())
 		return
 	}
 
@@ -176,7 +175,7 @@ func (ctrl Collection) GetActivities(c *gin.Context) {
 
 	if err != nil {
 		log.Printf("Collection GetTimeSeries >> DataProvder GetCollectionTimeSeries; %s", err.Error())
-		c.AbortWithStatus(http.StatusInternalServerError)
+		utils.SendError(c, http.StatusInternalServerError, err.Error())
 		return
 	}
 

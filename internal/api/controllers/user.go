@@ -97,7 +97,7 @@ func (ctrl User) GetOffers(c *gin.Context) {
 
 	if err != nil {
 		log.Printf("User GetOffers >> DataProvder GetUserOffers; %s", err.Error())
-		c.AbortWithStatus(http.StatusInternalServerError)
+		utils.SendError(c, http.StatusInternalServerError, err.Error())
 		return
 	}
 
