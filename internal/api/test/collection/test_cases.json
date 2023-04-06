@@ -1,7 +1,7 @@
 {
     "trends": [
         "/api/collections/trend?period=1d&sort_by=volume&order=desc&limit=10&offset=0",
-        "/api/collections/trend?period=7d&sort_by=volume&order=desc&limit=10&offset=10",
-        "/api/collections/trend?period=1m&sort_by=volume&order=asc&limit=20&offset=0"
+        "/api/collections/trend?period=1m&sort_by=volume&order=asc&limit=20&offset=0",
+        "/api/collections/trend?period=7d&sort_by=volume&order=desc&limit=10&offset=10"
     ]
 }
