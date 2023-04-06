@@ -36,7 +36,7 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "Collection address",
+                        "description": "Collection slug",
                         "name": "address",
                         "in": "query",
                         "required": true
@@ -95,7 +95,7 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "Collection Address",
+                        "description": "Collection slug",
                         "name": "address",
                         "in": "query",
                         "required": true
@@ -185,7 +185,7 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "Collection address",
+                        "description": "Collection slug",
                         "name": "address",
                         "in": "query",
                         "required": true
@@ -324,7 +324,7 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "Collection Address",
+                        "description": "Collection slug",
                         "name": "address",
                         "in": "path",
                         "required": true

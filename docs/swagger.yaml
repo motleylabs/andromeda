@@ -275,7 +275,7 @@ paths:
       - application/json
       description: get collection detail information with the address
       parameters:
-      - description: Collection Address
+      - description: Collection slug
         in: path
         name: address
         required: true
@@ -298,7 +298,7 @@ paths:
       - application/json
       description: get the activities with related to the collection
       parameters:
-      - description: Collection address
+      - description: Collection slug
         in: query
         name: address
         required: true
@@ -338,7 +338,7 @@ paths:
       - application/json
       description: get the list of NFTs of the collection
       parameters:
-      - description: Collection Address
+      - description: Collection slug
         in: query
         name: address
         required: true
@@ -400,7 +400,7 @@ paths:
       - application/json
       description: get the historical stats for the collection
       parameters:
-      - description: Collection address
+      - description: Collection slug
         in: query
         name: address
         required: true

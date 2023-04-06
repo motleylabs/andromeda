@@ -52,7 +52,7 @@ func (ctrl Collection) GetTrends(c *gin.Context) {
 // @Tags            collections
 // @Accept          json
 // @Produce         json
-// @Param           address         query         string  true         "Collection Address"
+// @Param           address         query         string  true         "Collection slug"
 // @Param           attributes      query         string  false        "NFT attributes to filter ([{'name': 'Tattoos', 'type': 'CATEGORY', 'values': ['Barbwire']}])"
 // @Param           listing_only    query         string  false        "Only listed NFTs? (true|false)"
 // @Param           program         query         string  false        "Marketplace program address"
@@ -92,7 +92,7 @@ func (ctrl Collection) GetNFTs(c *gin.Context) {
 // @Tags            collections
 // @Accept          json
 // @Produce         json
-// @Param           address       query         string  true         "Collection address"
+// @Param           address       query         string  true         "Collection slug"
 // @Param           from_time     query         int     true         "Start timestamp"
 // @Param           to_time       query         int     true         "End timestamp"
 // @Param           granularity   query         string  true         "Granularity (per_hour|per_day)"
@@ -129,7 +129,7 @@ func (ctrl Collection) GetTimeSeries(c *gin.Context) {
 // @Tags            collections
 // @Accept          json
 // @Produce         json
-// @Param           address  path          string true                     "Collection Address"
+// @Param           address  path          string true                     "Collection slug"
 // @Success		    200	     {object}	   types.Collection
 // @Failure         500
 // @Router          /collections/{address} [get]
@@ -154,7 +154,7 @@ func (ctrl Collection) GetDetail(c *gin.Context) {
 // @Tags            collections
 // @Accept          json
 // @Produce         json
-// @Param           address          query         string  true         "Collection address"
+// @Param           address          query         string  true         "Collection slug"
 // @Param           limit            query         int     true         "Limit"
 // @Param           offset           query         int     true         "Offset"
 // @Param           activity_types   query         string  true        "Activity types (['listing'])"

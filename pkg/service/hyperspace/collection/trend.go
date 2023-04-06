@@ -7,9 +7,11 @@ import (
 	"encoding/json"
 	"fmt"
 	"strings"
+
+	"github.com/gin-contrib/cache/persistence"
 )
 
-func GetTrends(params *types.TrendParams) (*types.TrendRes, error) {
+func GetTrends(params *types.TrendParams, store *persistence.InMemoryStore) (*types.TrendRes, error) {
 	if params == nil {
 		return nil, fmt.Errorf("no trend params")
 	}
@@ -32,6 +34,19 @@ func GetTrends(params *types.TrendParams) (*types.TrendRes, error) {
 	trendRes := types.TrendRes{
 		HasNextPage: projectStats.PaginationInfo.HasNextPage,
 		Trends:      convertStatistics(projectStats.ProjectStats),
+	}
+
+	// cache project id and slugs
+	if len(trendRes.Trends) > 0 {
+		for index := range trendRes.Trends {
+			tempTrend := trendRes.Trends[index]
+			curID := tempTrend.Collection.ID
+			curSlug := tempTrend.Collection.Slug
+
+			if err := store.Set(curSlug, curID, -1); err != nil {
+				return nil, err
+			}
+		}
 	}
 
 	return &trendRes, nil
