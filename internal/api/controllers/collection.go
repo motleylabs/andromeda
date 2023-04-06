@@ -158,16 +158,16 @@ func (ctrl Collection) GetDetail(c *gin.Context) {
 // @Param           address          query         string  true         "Collection address"
 // @Param           limit            query         int     true         "Limit"
 // @Param           offset           query         int     true         "Offset"
-// @Param           activity_types   query         string  false        "Activity types (['LISTING'])"
+// @Param           activity_types   query         string  true        "Activity types (['listing'])"
 // @Success		    200	             {object}	   types.ActivityRes
 // @Failure		    400
 // @Failure         500
 // @Router          /collections/activities     [get]
 func (ctrl Collection) GetActivities(c *gin.Context) {
-	params, err := utils.GetActivityParams(c)
+	params, err := utils.GetActivityParams(c, false)
 	if err != nil {
 		log.Printf("Collection GetActivities >> Util GetActivityParams; %s", err.Error())
-		c.AbortWithStatus(http.StatusBadRequest)
+		utils.SendError(c, http.StatusBadRequest, err.Error())
 		return
 	}
 

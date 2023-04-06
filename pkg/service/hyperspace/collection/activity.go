@@ -43,10 +43,15 @@ func getCollectionActivityParams(input *types.ActivityParams) *common.ActivityPa
 	}
 	pageNumber := input.Offset/input.Limit + 1
 
+	activityTypes := make([]string, len(input.ActivityTypes))
+	for index := range input.ActivityTypes {
+		activityTypes[index] = common.ConvertToActivityType(input.ActivityTypes[index])
+	}
+
 	var activityParams = common.ActivityParams{
 		ActivityCondition: common.ActivityCondition{
 			Projects:   &projectIDs,
-			ByMPATypes: input.ActivityTypes,
+			ByMPATypes: activityTypes,
 		},
 		PaginationInfo: &common.PaginationConfig{
 			PageNumber: &pageNumber,

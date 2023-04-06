@@ -67,8 +67,7 @@ func (ctrl NFT) GetOffers(c *gin.Context) {
 // @Tags            nfts
 // @Accept          json
 // @Produce         json
-// @Param           address          query         string  true         "Collection address"
-// @Param           activity_types   query         string  false        "Activity types (['LISTING'])"
+// @Param           address          query         string  true         "NFT address"
 // @Success		    200	             {object}	   types.NFTActivityRes
 // @Failure		    400
 // @Failure         500

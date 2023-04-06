@@ -5,6 +5,7 @@ import (
 	"andromeda/pkg/service/entrance/types"
 	"encoding/json"
 	"fmt"
+	"strings"
 )
 
 func ConvertLamports(sol float64) int64 {
@@ -224,4 +225,12 @@ func GetProjectsFromAddresses(addresses []string, pageNumber, pageSize int) (*Pr
 	}
 
 	return &projectStats, nil
+}
+
+func ConvertToActivityType(activityType string) string {
+	return strings.ToUpper(activityType)
+}
+
+func ConvertFromActivityType(activityType string) string {
+	return strings.ToLower(activityType)
 }

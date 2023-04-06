@@ -28,7 +28,7 @@ func (ctrl User) GetNFTs(c *gin.Context) {
 	nftRes, err := dataProvider.GetUserNFTs(address)
 	if err != nil {
 		log.Printf("User GetNFTs >> DataProvder GetUserNFTs; %s", err.Error())
-		c.AbortWithStatus(http.StatusInternalServerError)
+		utils.SendError(c, http.StatusInternalServerError, err.Error())
 		return
 	}
 
@@ -45,16 +45,16 @@ func (ctrl User) GetNFTs(c *gin.Context) {
 // @Param           address          query         string  true         "Wallet address"
 // @Param           limit            query         int     true         "Limit"
 // @Param           offset           query         int     true         "Offset"
-// @Param           activity_types   query         string  false        "Activity types (['LISTING'])"
+// @Param           activity_types   query         string  true         "Activity types (['listing'])"
 // @Success		    200	             {object}	   types.ActivityRes
 // @Failure		    400
 // @Failure         500
 // @Router          /users/activities     [get]
 func (ctrl User) GetActivities(c *gin.Context) {
-	params, err := utils.GetActivityParams(c)
+	params, err := utils.GetActivityParams(c, false)
 	if err != nil {
 		log.Printf("User GetActivities >> Util GetActivityParams; %s", err.Error())
-		c.AbortWithStatus(http.StatusBadRequest)
+		utils.SendError(c, http.StatusBadRequest, err.Error())
 		return
 	}
 
@@ -63,7 +63,7 @@ func (ctrl User) GetActivities(c *gin.Context) {
 
 	if err != nil {
 		log.Printf("User GetActivities >> DataProvder GetUserActivities; %s", err.Error())
-		c.AbortWithStatus(http.StatusInternalServerError)
+		utils.SendError(c, http.StatusInternalServerError, err.Error())
 		return
 	}
 
@@ -85,10 +85,10 @@ func (ctrl User) GetActivities(c *gin.Context) {
 // @Failure         500
 // @Router          /users/offers     [get]
 func (ctrl User) GetOffers(c *gin.Context) {
-	params, err := utils.GetActivityParams(c)
+	params, err := utils.GetActivityParams(c, true)
 	if err != nil {
 		log.Printf("User GetOffers >> Util GetActivityParams; %s", err.Error())
-		c.AbortWithStatus(http.StatusBadRequest)
+		utils.SendError(c, http.StatusBadRequest, err.Error())
 		return
 	}
 

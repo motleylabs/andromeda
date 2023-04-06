@@ -38,11 +38,16 @@ func GetActivities(params *types.ActivityParams) (*types.ActivityRes, error) {
 func getUserActivityParams(input *types.ActivityParams) *common.ActivityParams {
 	pageNumber := input.Offset/input.Limit + 1
 
+	activityTypes := make([]string, len(input.ActivityTypes))
+	for index := range input.ActivityTypes {
+		activityTypes[index] = common.ConvertToActivityType(input.ActivityTypes[index])
+	}
+
 	var activityParams = common.ActivityParams{
 		ActivityCondition: common.ActivityCondition{
 			SellerAddress: &input.Address,
 			BuyerAddress:  &input.Address,
-			ByMPATypes:    input.ActivityTypes,
+			ByMPATypes:    activityTypes,
 		},
 		PaginationInfo: &common.PaginationConfig{
 			PageNumber: &pageNumber,

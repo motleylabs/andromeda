@@ -57,9 +57,10 @@ const docTemplate = `{
                     },
                     {
                         "type": "string",
-                        "description": "Activity types (['LISTING'])",
+                        "description": "Activity types (['listing'])",
                         "name": "activity_types",
-                        "in": "query"
+                        "in": "query",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -358,16 +359,10 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "Collection address",
+                        "description": "NFT address",
                         "name": "address",
                         "in": "query",
                         "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "Activity types (['LISTING'])",
-                        "name": "activity_types",
-                        "in": "query"
                     }
                 ],
                 "responses": {
@@ -496,9 +491,10 @@ const docTemplate = `{
                     },
                     {
                         "type": "string",
-                        "description": "Activity types (['LISTING'])",
+                        "description": "Activity types (['listing'])",
                         "name": "activity_types",
-                        "in": "query"
+                        "in": "query",
+                        "required": true
                     }
                 ],
                 "responses": {

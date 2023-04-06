@@ -114,14 +114,30 @@ func GetNFTParams(c *gin.Context) (types.NFTParams, error) {
 	return params, nil
 }
 
-func GetActivityParams(c *gin.Context) (types.ActivityParams, error) {
+func GetActivityParams(c *gin.Context, emptyActivity bool) (types.ActivityParams, error) {
 	var params types.ActivityParams
 	params.Address = c.Query("address")
 
 	activityTypes := c.Query("activity_types")
-	if activityTypes != "" {
+	if activityTypes == "" {
+		if !emptyActivity {
+			return params, fmt.Errorf("activity types are missing")
+		}
+	} else {
 		if err := json.Unmarshal([]byte(activityTypes), &params.ActivityTypes); err != nil {
 			return params, err
+		}
+
+		for _, activityType := range params.ActivityTypes {
+			isValid := false
+			for _, stringType := range types.ActivityStringTypes {
+				if strings.ToLower(activityType) == stringType {
+					isValid = true
+				}
+			}
+			if !isValid {
+				return params, fmt.Errorf("invalid activity type: %s", activityType)
+			}
 		}
 	}
 

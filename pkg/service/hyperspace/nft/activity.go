@@ -48,7 +48,8 @@ func getNFTActivityParams(input *types.ActivityParams) *common.StatParams {
 
 	var actionType *string
 	if len(input.ActivityTypes) > 0 {
-		actionType = &input.ActivityTypes[0]
+		converted := common.ConvertToActivityType(input.ActivityTypes[0])
+		actionType = &converted
 	}
 
 	var activityParams = common.StatParams{

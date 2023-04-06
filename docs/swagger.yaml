@@ -313,9 +313,10 @@ paths:
         name: offset
         required: true
         type: integer
-      - description: Activity types (['LISTING'])
+      - description: Activity types (['listing'])
         in: query
         name: activity_types
+        required: true
         type: string
       produces:
       - application/json
@@ -517,14 +518,10 @@ paths:
       - application/json
       description: get the activities with related to the NFT
       parameters:
-      - description: Collection address
+      - description: NFT address
         in: query
         name: address
         required: true
-        type: string
-      - description: Activity types (['LISTING'])
-        in: query
-        name: activity_types
         type: string
       produces:
       - application/json
@@ -586,9 +583,10 @@ paths:
         name: offset
         required: true
         type: integer
-      - description: Activity types (['LISTING'])
+      - description: Activity types (['listing'])
         in: query
         name: activity_types
+        required: true
         type: string
       produces:
       - application/json

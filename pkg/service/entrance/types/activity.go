@@ -12,18 +12,18 @@ const (
 	TRANSACTION
 )
 
-var activityStringTypes = []string{
-	"BID",
-	"UPDATEBID",
-	"CANCELBID",
-	"LISTING",
-	"DELISTING",
-	"UPDATELISTING",
-	"TRANSACTION",
+var ActivityStringTypes = []string{
+	"bid",
+	"update_bid",
+	"cancel_bid",
+	"listing",
+	"delisting",
+	"update_listing",
+	"transaction",
 }
 
 func (activityType ActivityType) String() string {
-	return activityStringTypes[activityType]
+	return ActivityStringTypes[activityType]
 }
 
 type Activity struct {
@@ -64,5 +64,5 @@ type ActivityParams struct {
 	Address       string   `json:"address" example:"target address"`
 	Limit         int      `json:"limit" example:"10"`
 	Offset        int      `json:"offset" example:"0"`
-	ActivityTypes []string `json:"activityTypes,omitempty" example:"LISTING"`
+	ActivityTypes []string `json:"activityTypes,omitempty" example:"listing"`
 }
