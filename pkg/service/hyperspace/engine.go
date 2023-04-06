@@ -55,7 +55,7 @@ func (Hyperspace) GetCollectionActivities(params *types.ActivityParams) (*types.
 }
 
 func (Hyperspace) GetNFTDetail(address string) (*types.NFT, error) {
-	return nft.GetDetail(address)
+	return nft.GetDetail(address, slugStore)
 }
 
 func (Hyperspace) GetNFTActivities(params *types.ActivityParams) (*types.NFTActivityRes, error) {
