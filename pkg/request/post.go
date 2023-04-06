@@ -3,7 +3,7 @@ package request
 import (
 	"bytes"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"os"
 )
@@ -30,7 +30,7 @@ func ProcessPost(apiURL string, payload []byte) ([]byte, error) {
 		return nil, fmt.Errorf("request error")
 	}
 
-	resBody, err := ioutil.ReadAll(res.Body)
+	resBody, err := io.ReadAll(res.Body)
 	if err != nil {
 		return nil, err
 	}
