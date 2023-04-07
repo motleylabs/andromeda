@@ -1,7 +1,30 @@
 {
+    "preliminary": [
+        "nfts/6GznbL6LxnrgQfM45htbQAGZHVQ3zXAVjVdw65pS8W23",
+        "nfts/AwAKtPANvuweeT1KiGhG2po3rpYxkCUoEG6XuEN5YoA1"
+    ],
     "trends": [
-        "/api/collections/trend?period=1d&sort_by=volume&order=desc&limit=10&offset=0",
-        "/api/collections/trend?period=1m&sort_by=volume&order=asc&limit=20&offset=0",
-        "/api/collections/trend?period=7d&sort_by=volume&order=desc&limit=10&offset=10"
+        "collections/trend?period=1d&sort_by=volume&order=desc&limit=10&offset=0",
+        "collections/trend?period=1m&sort_by=volume&order=asc&limit=20&offset=0",
+        "collections/trend?period=7d&sort_by=volume&order=desc&limit=10&offset=10"
+    ],
+    "detail": [
+        "collections/undergroundsociety",
+        "collections/claynosaurz"
+    ],
+    "timeseries": [
+        "collections/series?address=undergroundsociety&from_time=1671128400&to_time=1679410436&granularity=per_hour&limit=10&offset=0",
+        "collections/series?address=claynosaurz&from_time=1671128400&to_time=1679410436&granularity=per_day&limit=10&offset=0"
+    ],
+    "nfts": [
+        "collections/nfts?address=undergroundsociety&sort_by=lowest_listing_price&order=desc&limit=10&offset=0",
+        "collections/nfts?address=claynosaurz&sort_by=lowest_listing_block_timestamp&order=desc&limit=10&offset=0"
+    ],
+    "listings": [
+        "collections/nfts?address=undergroundsociety&sort_by=lowest_listing_block_timestamp&order=desc&limit=10&offset=0&program=RwDDvPp7ta9qqUwxbBfShsNreBaSsKvFcHzMxfBC3Ki&auction_house=6hW2rVdPUD5qn1amEvN3K9zkvgsCA34LqCvTPcpamQHc&listing_only=true"
+    ],
+    "activities": [
+        "collections/activities?address=undergroundsociety&limit=10&offset=0&activity_types=[\"listing\", \"delisting\", \"transaction\"]",
+        "collections/activities?address=claynosaurz&limit=10&offset=0&activity_types=[\"listing\"]"
     ]
 }
