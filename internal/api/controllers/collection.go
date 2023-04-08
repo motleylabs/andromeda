@@ -30,7 +30,7 @@ func (ctrl Collection) GetTrends(c *gin.Context) {
 	params, err := utils.GetTrendParams(c)
 	if err != nil {
 		log.Printf("Collection GetTrends >> Util GetTrendParams; %s", err.Error())
-		c.AbortWithStatus(http.StatusBadRequest)
+		utils.SendError(c, http.StatusBadRequest, err.Error())
 		return
 	}
 
