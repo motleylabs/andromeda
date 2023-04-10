@@ -157,7 +157,7 @@ func (ctrl Collection) GetDetail(c *gin.Context) {
 // @Param           address          query         string  true         "Collection slug"
 // @Param           limit            query         int     true         "Limit"
 // @Param           offset           query         int     true         "Offset"
-// @Param           activity_types   query         string  true        "Activity types (['listing'])"
+// @Param           activity_types   query         string  true         "Activity types (['listing'])"
 // @Success		    200	             {object}	   types.ActivityRes
 // @Failure		    400
 // @Failure         500

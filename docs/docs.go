@@ -363,6 +363,12 @@ const docTemplate = `{
                         "name": "address",
                         "in": "query",
                         "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Activity Types (['listing'])",
+                        "name": "activity_types",
+                        "in": "query"
                     }
                 ],
                 "responses": {

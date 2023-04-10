@@ -523,6 +523,10 @@ paths:
         name: address
         required: true
         type: string
+      - description: Activity Types (['listing'])
+        in: query
+        name: activity_types
+        type: string
       produces:
       - application/json
       responses:
