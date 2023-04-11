@@ -4,14 +4,48 @@ import (
 	"andromeda/pkg/request"
 	"andromeda/pkg/service/entrance/types"
 	"andromeda/pkg/service/hyperspace/common"
+	"andromeda/pkg/service/web3"
 	"encoding/json"
 	"fmt"
 	"strings"
+	"time"
 
 	"github.com/gin-contrib/cache/persistence"
 )
 
+func fetchSOLPrice(store *persistence.InMemoryStore) {
+	solPrice, err := web3.GetSOLprice()
+	if err == nil {
+		store.Set("andromeda-sol-price", solPrice, -1)
+	}
+}
+
+func getSOLPrice(store *persistence.InMemoryStore) (float64, error) {
+	retries := 0
+	for {
+		if retries == 5 {
+			return 0, fmt.Errorf("failed to get SOL price")
+		}
+
+		var priceStr interface{}
+		if err := store.Get("andromeda-sol-price", &priceStr); err != nil {
+			time.Sleep(200 * time.Millisecond)
+			retries += 1
+			continue
+		}
+
+		price, ok := priceStr.(float64)
+		if !ok {
+			return 0, fmt.Errorf("SOL price is invalid")
+		}
+
+		return price, nil
+	}
+}
+
 func GetTrends(params *types.TrendParams, store *persistence.InMemoryStore) (*types.TrendRes, error) {
+	go fetchSOLPrice(store)
+
 	if params == nil {
 		return nil, fmt.Errorf("no trend params")
 	}
@@ -31,9 +65,14 @@ func GetTrends(params *types.TrendParams, store *persistence.InMemoryStore) (*ty
 		return nil, err
 	}
 
+	solPrice, err := getSOLPrice(store)
+	if err != nil {
+		return nil, err
+	}
+
 	trendRes := types.TrendRes{
 		HasNextPage: projectStats.PaginationInfo.HasNextPage,
-		Trends:      convertStatistics(projectStats.ProjectStats),
+		Trends:      convertStatistics(projectStats.ProjectStats, solPrice),
 	}
 
 	// cache project id and slugs
@@ -52,14 +91,14 @@ func GetTrends(params *types.TrendParams, store *persistence.InMemoryStore) (*ty
 	return &trendRes, nil
 }
 
-func convertStatistics(stats []common.ProjectStat) []types.Trend {
+func convertStatistics(stats []common.ProjectStat, solPrice float64) []types.Trend {
 	trends := make([]types.Trend, len(stats))
 
 	for index := range stats {
 		// volume
-		trends[index].Volume1D = common.GetFromIntPointer(stats[index].Volume1Day)
-		trends[index].Volume7D = common.GetFromIntPointer(stats[index].Volume7Day)
-		trends[index].Volume30D = common.GetFromIntPointer(stats[index].Volume1M)
+		trends[index].Volume1D = common.GetLamportsFromUSDIntPointer(stats[index].Volume1Day, solPrice)
+		trends[index].Volume7D = common.GetLamportsFromUSDIntPointer(stats[index].Volume7Day, solPrice)
+		trends[index].Volume30D = common.GetLamportsFromUSDIntPointer(stats[index].Volume1M, solPrice)
 		trends[index].ChangeVolume1D = common.GetPercentFromPointer(stats[index].Volume1DayChange)
 
 		// floor price

@@ -36,6 +36,14 @@ func GetPercentFromPointer(ratio *float64) *float64 {
 	return GetPercentFromRatio(*ratio)
 }
 
+func GetLamportsFromUSDIntPointer(val *int, solPrice float64) string {
+	output := "0"
+	if val != nil && solPrice != 0 {
+		output = fmt.Sprintf("%d", int(float64(*val)/solPrice*LAMPORTS_PER_SOL))
+	}
+	return output
+}
+
 func GetFromIntPointer(val *int) string {
 	output := "0"
 	if val != nil {
