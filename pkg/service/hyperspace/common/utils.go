@@ -24,6 +24,18 @@ func GetLamportsFromPointer(sol *float64) string {
 	return output
 }
 
+func GetPercentFromRatio(ratio float64) *float64 {
+	percent := ratio * float64(100)
+	return &percent
+}
+
+func GetPercentFromPointer(ratio *float64) *float64 {
+	if ratio == nil {
+		return nil
+	}
+	return GetPercentFromRatio(*ratio)
+}
+
 func GetFromIntPointer(val *int) string {
 	output := "0"
 	if val != nil {
