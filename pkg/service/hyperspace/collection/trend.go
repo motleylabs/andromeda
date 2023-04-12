@@ -14,7 +14,7 @@ import (
 )
 
 func fetchSOLPrice(store *persistence.InMemoryStore) {
-	solPrice, err := web3.GetSOLprice()
+	solPrice, err := web3.GetSOLPrice()
 	if err == nil {
 		store.Set("andromeda-sol-price", solPrice, -1)
 	}

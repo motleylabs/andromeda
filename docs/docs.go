@@ -460,6 +460,41 @@ const docTemplate = `{
                 }
             }
         },
+        "/rpc/report": {
+            "get": {
+                "description": "get information like solana tps, price",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "rpc"
+                ],
+                "summary": "Get Report",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "auction house address",
+                        "name": "address",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/controllers.ReportRes"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
         "/users/activities": {
             "get": {
                 "description": "get the activities with related to the wallet",
@@ -608,6 +643,20 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "controllers.ReportRes": {
+            "type": "object",
+            "properties": {
+                "solPrice": {
+                    "type": "number"
+                },
+                "tps": {
+                    "type": "integer"
+                },
+                "volume": {
+                    "type": "number"
+                }
+            }
+        },
         "types.Activity": {
             "type": "object",
             "properties": {

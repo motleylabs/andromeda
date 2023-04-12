@@ -13,7 +13,7 @@ type SOLPrice struct {
 	Solana USDCost `json:"solana"`
 }
 
-func GetSOLprice() (float64, error) {
+func GetSOLPrice() (float64, error) {
 	price := float64(0)
 
 	URL := "https://api.coingecko.com/api/v3/simple/price?ids=solana&vs_currencies=usd"

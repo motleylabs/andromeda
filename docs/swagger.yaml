@@ -1,4 +1,13 @@
 definitions:
+  controllers.ReportRes:
+    properties:
+      solPrice:
+        type: number
+      tps:
+        type: integer
+      volume:
+        type: number
+    type: object
   types.Activity:
     properties:
       activityType:
@@ -566,6 +575,29 @@ paths:
       summary: Get NFT offers
       tags:
       - nfts
+  /rpc/report:
+    get:
+      consumes:
+      - application/json
+      description: get information like solana tps, price
+      parameters:
+      - description: auction house address
+        in: path
+        name: address
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controllers.ReportRes'
+        "500":
+          description: Internal Server Error
+      summary: Get Report
+      tags:
+      - rpc
   /users/activities:
     get:
       consumes:
