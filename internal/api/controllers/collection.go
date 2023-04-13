@@ -17,7 +17,7 @@ type Collection struct{}
 // @Tags            collections
 // @Accept          json
 // @Produce         json
-// @Param           period   query         string  true         "Period (1d|7d|1m)"
+// @Param           period   query         string  true         "Period (1h|1d|7d)"
 // @Param           sort_by  query         string  true         "Sort by (volume)"
 // @Param           order    query         string  true         "Order (asc|desc)"
 // @Param           limit    query         int     true         "Limit"

@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/davecgh/go-spew/spew"
 	"github.com/gin-contrib/cache/persistence"
 )
 
@@ -66,8 +67,10 @@ func convertStatistics(stats []common.ProjectStat, solPrice float64) []types.Tre
 		// volume
 		trends[index].Volume1D = common.GetLamportsFromUSDIntPointer(stats[index].Volume1Day, solPrice)
 		trends[index].Volume7D = common.GetLamportsFromUSDIntPointer(stats[index].Volume7Day, solPrice)
-		trends[index].Volume30D = common.GetLamportsFromUSDIntPointer(stats[index].Volume1M, solPrice)
+		trends[index].Volume1H = common.GetLamportsFromUSDIntPointer(stats[index].Volume1Hr, solPrice)
 		trends[index].ChangeVolume1D = common.GetPercentFromPointer(stats[index].Volume1DayChange)
+
+		spew.Dump(stats[index].Volume1Hr, trends[index].Volume1H)
 
 		// floor price
 		trends[index].Floor1D = common.GetLamportsFromPointer(stats[index].FloorPrice1Day)
@@ -114,8 +117,8 @@ func getOrderField(input *types.TrendParams) *common.OrderConfig {
 	switch input.Period {
 	case "7d":
 		periodSuffix = "7day"
-	case "1m":
-		periodSuffix = "1m"
+	case "1h":
+		periodSuffix = "1hr"
 	}
 
 	return &common.OrderConfig{

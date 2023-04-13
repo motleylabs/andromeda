@@ -2,7 +2,7 @@ package types
 
 type Statistics struct {
 	Floor1D   string  `json:"floor1d"`
-	Volume30D string  `json:"volume30d"`
+	Volume1D  string  `json:"volume1d"`
 	Listed1D  string  `json:"listed1d"`
 	Holders   int64   `json:"holders"`
 	MarketCap float64 `json:"marketCap"`
@@ -30,6 +30,8 @@ type Collection struct {
 type Trend struct {
 	Floor1D         string     `json:"floor1d"`
 	ChangeFloor1D   *float64   `json:"changeFloor1d"`
+	Volume1H        string     `json:"volume1h"`
+	ChangeVolume1H  *float64   `json:"changeVolume1h,omitempty"`
 	Volume1D        string     `json:"volume1d"`
 	ChangeVolume1D  *float64   `json:"changeVolume1d"`
 	Volume7D        string     `json:"volume7d"`

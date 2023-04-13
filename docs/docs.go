@@ -258,7 +258,7 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "Period (1d|7d|1m)",
+                        "description": "Period (1h|1d|7d)",
                         "name": "period",
                         "in": "query",
                         "required": true
@@ -954,7 +954,7 @@ const docTemplate = `{
                 "supply": {
                     "type": "integer"
                 },
-                "volume30d": {
+                "volume1d": {
                     "type": "string"
                 }
             }
@@ -1019,6 +1019,9 @@ const docTemplate = `{
                 "changeVolume1d": {
                     "type": "number"
                 },
+                "changeVolume1h": {
+                    "type": "number"
+                },
                 "changeVolume30d": {
                     "type": "number"
                 },
@@ -1035,6 +1038,9 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "volume1d": {
+                    "type": "string"
+                },
+                "volume1h": {
                     "type": "string"
                 },
                 "volume30d": {

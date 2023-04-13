@@ -167,7 +167,7 @@ func ConvertProjectStat(projectStat *ProjectStat) *types.Collection {
 	}
 
 	stat := types.Statistics{
-		Volume30D: GetFromIntPointer(projectStat.Volume1M),
+		Volume1D:  GetFromIntPointer(projectStat.Volume1Day),
 		Listed1D:  GetFromIntPointer(projectStat.Listed1Day),
 		Floor1D:   GetLamportsFromPointer(projectStat.FloorPrice1Day),
 		Holders:   holders,

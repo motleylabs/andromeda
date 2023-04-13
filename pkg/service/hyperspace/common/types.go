@@ -124,12 +124,12 @@ type ProjectSnapshotsRes struct {
 type ProjectStat struct {
 	ProjectID            string   `json:"project_id"`
 	MarketCap            *float64 `json:"market_cap"`
+	Volume1Hr            *int     `json:"volume_1hr"`
 	Volume1Day           *int     `json:"volume_1day"`
 	Volume7Day           *int     `json:"volume_7day"`
-	Volume1M             *int     `json:"volume_1m"`
+	Volume1HrChange      *float64 `json:"volume_1r_change,omitempty"`
 	Volume1DayChange     *float64 `json:"volume_1day_change,omitempty"`
 	Volume7DayChange     *float64 `json:"volume_7day_change,omitempty"`
-	Volume1MChange       *float64 `json:"volume_1m_change,omitempty"`
 	FloorPrice1Day       *float64 `json:"floor_price"`
 	FloorPrice7Day       *float64 `json:"floor_price_7day,omitempty"`
 	FloorPrice1M         *float64 `json:"floor_price_1m,omitempty"`

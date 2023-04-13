@@ -186,7 +186,7 @@ definitions:
         type: number
       supply:
         type: integer
-      volume30d:
+      volume1d:
         type: string
     type: object
   types.TimeSeries:
@@ -228,6 +228,8 @@ definitions:
         type: number
       changeVolume1d:
         type: number
+      changeVolume1h:
+        type: number
       changeVolume7d:
         type: number
       changeVolume30d:
@@ -239,6 +241,8 @@ definitions:
       listed1d:
         type: string
       volume1d:
+        type: string
+      volume1h:
         type: string
       volume7d:
         type: string
@@ -452,7 +456,7 @@ paths:
       - application/json
       description: get trending collections
       parameters:
-      - description: Period (1d|7d|1m)
+      - description: Period (1h|1d|7d)
         in: query
         name: period
         required: true
