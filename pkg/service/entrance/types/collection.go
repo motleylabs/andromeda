@@ -29,23 +29,15 @@ type Collection struct {
 
 type Trend struct {
 	Floor1D         string     `json:"floor1d"`
-	Floor7D         string     `json:"floor7d,omitempty"`
-	Floor30D        string     `json:"floor30d,omitempty"`
-	Volume1D        string     `json:"volume1d"`
-	Volume7D        string     `json:"volume7d"`
-	Volume30D       string     `json:"volume30d"`
-	Listed1D        string     `json:"listed1d"`
-	Listed7D        string     `json:"listed7d,omitempty"`
-	Listed30D       string     `json:"listed30d,omitempty"`
 	ChangeFloor1D   *float64   `json:"changeFloor1d"`
-	ChangeFloor7D   *float64   `json:"changeFloor7d,omitempty"`
-	ChangeFloor30D  *float64   `json:"changeFloor30d,omitempty"`
+	Volume1D        string     `json:"volume1d"`
 	ChangeVolume1D  *float64   `json:"changeVolume1d"`
+	Volume7D        string     `json:"volume7d"`
 	ChangeVolume7D  *float64   `json:"changeVolume7d,omitempty"`
+	Volume30D       string     `json:"volume30d"`
 	ChangeVolume30D *float64   `json:"changeVolume30d,omitempty"`
+	Listed1D        string     `json:"listed1d"`
 	ChangeListed1D  *float64   `json:"changeListed1d,omitempty"`
-	ChangeListed7D  *float64   `json:"changeListed7d,omitempty"`
-	ChangeListed30D *float64   `json:"changeListed30d,omitempty"`
 	Collection      Collection `json:"collection"`
 }
 

@@ -145,3 +145,9 @@ type ProjectStatRes struct {
 	PaginationInfo PaginationInfo `json:"pagination_info"`
 	ProjectStats   []ProjectStat  `json:"project_stats"`
 }
+
+type StatRes struct {
+	MarketCap  uint64 `json:"market_cap"`
+	Volume     uint64 `json:"volume"`
+	Volume1Day uint64 `json:"volume_1day"`
+}

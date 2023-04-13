@@ -5,6 +5,9 @@ import (
 )
 
 type DataProvider interface {
+	// for overall stats
+	GetStatOverall() (*types.StatRes, error)
+
 	// for collection
 	GetCollectionTrends(*types.TrendParams) (*types.TrendRes, error)
 	GetCollectionDetail(string) (*types.Collection, error)

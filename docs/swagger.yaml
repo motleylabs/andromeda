@@ -165,6 +165,15 @@ definitions:
           $ref: '#/definitions/types.NFT'
         type: array
     type: object
+  types.StatRes:
+    properties:
+      marketCap:
+        type: integer
+      volume:
+        type: integer
+      volume1d:
+        type: integer
+    type: object
   types.Statistics:
     properties:
       floor1d:
@@ -215,15 +224,7 @@ definitions:
     properties:
       changeFloor1d:
         type: number
-      changeFloor7d:
-        type: number
-      changeFloor30d:
-        type: number
       changeListed1d:
-        type: number
-      changeListed7d:
-        type: number
-      changeListed30d:
         type: number
       changeVolume1d:
         type: number
@@ -235,15 +236,7 @@ definitions:
         $ref: '#/definitions/types.Collection'
       floor1d:
         type: string
-      floor7d:
-        type: string
-      floor30d:
-        type: string
       listed1d:
-        type: string
-      listed7d:
-        type: string
-      listed30d:
         type: string
       volume1d:
         type: string
@@ -598,6 +591,23 @@ paths:
       summary: Get Report
       tags:
       - rpc
+  /stat/overall:
+    get:
+      consumes:
+      - application/json
+      description: get information like total market cap, volume
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/types.StatRes'
+        "500":
+          description: Internal Server Error
+      summary: Get Overall Stats
+      tags:
+      - stats
   /users/activities:
     get:
       consumes:

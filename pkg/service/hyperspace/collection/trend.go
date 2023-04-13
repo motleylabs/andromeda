@@ -4,47 +4,15 @@ import (
 	"andromeda/pkg/request"
 	"andromeda/pkg/service/entrance/types"
 	"andromeda/pkg/service/hyperspace/common"
-	"andromeda/pkg/service/web3"
 	"encoding/json"
 	"fmt"
 	"strings"
-	"time"
 
 	"github.com/gin-contrib/cache/persistence"
 )
 
-func fetchSOLPrice(store *persistence.InMemoryStore) {
-	solPrice, err := web3.GetSOLPrice()
-	if err == nil {
-		store.Set("andromeda-sol-price", solPrice, -1)
-	}
-}
-
-func getSOLPrice(store *persistence.InMemoryStore) (float64, error) {
-	retries := 0
-	for {
-		if retries == 5 {
-			return 0, fmt.Errorf("failed to get SOL price")
-		}
-
-		var priceStr interface{}
-		if err := store.Get("andromeda-sol-price", &priceStr); err != nil {
-			time.Sleep(200 * time.Millisecond)
-			retries += 1
-			continue
-		}
-
-		price, ok := priceStr.(float64)
-		if !ok {
-			return 0, fmt.Errorf("SOL price is invalid")
-		}
-
-		return price, nil
-	}
-}
-
 func GetTrends(params *types.TrendParams, store *persistence.InMemoryStore) (*types.TrendRes, error) {
-	go fetchSOLPrice(store)
+	go common.FetchSOLPrice(store)
 
 	if params == nil {
 		return nil, fmt.Errorf("no trend params")
@@ -65,7 +33,7 @@ func GetTrends(params *types.TrendParams, store *persistence.InMemoryStore) (*ty
 		return nil, err
 	}
 
-	solPrice, err := getSOLPrice(store)
+	solPrice, err := common.GetSOLPrice(store)
 	if err != nil {
 		return nil, err
 	}

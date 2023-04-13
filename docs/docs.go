@@ -495,6 +495,32 @@ const docTemplate = `{
                 }
             }
         },
+        "/stat/overall": {
+            "get": {
+                "description": "get information like total market cap, volume",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "stats"
+                ],
+                "summary": "Get Overall Stats",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/types.StatRes"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
         "/users/activities": {
             "get": {
                 "description": "get the activities with related to the wallet",
@@ -896,6 +922,20 @@ const docTemplate = `{
                 }
             }
         },
+        "types.StatRes": {
+            "type": "object",
+            "properties": {
+                "marketCap": {
+                    "type": "integer"
+                },
+                "volume": {
+                    "type": "integer"
+                },
+                "volume1d": {
+                    "type": "integer"
+                }
+            }
+        },
         "types.Statistics": {
             "type": "object",
             "properties": {
@@ -973,19 +1013,7 @@ const docTemplate = `{
                 "changeFloor1d": {
                     "type": "number"
                 },
-                "changeFloor30d": {
-                    "type": "number"
-                },
-                "changeFloor7d": {
-                    "type": "number"
-                },
                 "changeListed1d": {
-                    "type": "number"
-                },
-                "changeListed30d": {
-                    "type": "number"
-                },
-                "changeListed7d": {
                     "type": "number"
                 },
                 "changeVolume1d": {
@@ -1003,19 +1031,7 @@ const docTemplate = `{
                 "floor1d": {
                     "type": "string"
                 },
-                "floor30d": {
-                    "type": "string"
-                },
-                "floor7d": {
-                    "type": "string"
-                },
                 "listed1d": {
-                    "type": "string"
-                },
-                "listed30d": {
-                    "type": "string"
-                },
-                "listed7d": {
                     "type": "string"
                 },
                 "volume1d": {

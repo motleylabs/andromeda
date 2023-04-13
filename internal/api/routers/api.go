@@ -29,6 +29,7 @@ func APIRouter(r *gin.Engine) {
 		NFTRouter(api)
 		UserRouter(api)
 		RPCRouter(api)
+		StatRouter(api)
 	}
 
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))

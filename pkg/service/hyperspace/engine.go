@@ -4,6 +4,7 @@ import (
 	"andromeda/pkg/service/entrance/types"
 	"andromeda/pkg/service/hyperspace/collection"
 	"andromeda/pkg/service/hyperspace/nft"
+	"andromeda/pkg/service/hyperspace/stat"
 	"andromeda/pkg/service/hyperspace/user"
 	"fmt"
 	"time"
@@ -13,15 +14,22 @@ import (
 
 type Hyperspace struct{}
 
-var slugStore = persistence.NewInMemoryStore(time.Second)
+// store that saves the following information
+// slug data
+// sol price
+var store = persistence.NewInMemoryStore(time.Second)
+
+func (Hyperspace) GetStatOverall() (*types.StatRes, error) {
+	return stat.GetOverall()
+}
 
 func (Hyperspace) GetCollectionTrends(params *types.TrendParams) (*types.TrendRes, error) {
-	return collection.GetTrends(params, slugStore)
+	return collection.GetTrends(params, store)
 }
 
 func (Hyperspace) GetCollectionDetail(slug string) (*types.Collection, error) {
 	collectionID := ""
-	if err := slugStore.Get(slug, &collectionID); err != nil {
+	if err := store.Get(slug, &collectionID); err != nil {
 		return nil, fmt.Errorf("slug %s not registered", slug)
 	}
 	return collection.GetDetail(collectionID)
@@ -29,7 +37,7 @@ func (Hyperspace) GetCollectionDetail(slug string) (*types.Collection, error) {
 
 func (Hyperspace) GetCollectionTimeSeries(params *types.TimeSeriesParams) (*types.TimeSeriesRes, error) {
 	collectionID := ""
-	if err := slugStore.Get(params.Address, &collectionID); err != nil {
+	if err := store.Get(params.Address, &collectionID); err != nil {
 		return nil, fmt.Errorf("slug %s not registered", params.Address)
 	}
 	params.Address = collectionID
@@ -38,7 +46,7 @@ func (Hyperspace) GetCollectionTimeSeries(params *types.TimeSeriesParams) (*type
 
 func (Hyperspace) GetCollectionNFTs(params *types.NFTParams) (*types.NFTRes, error) {
 	collectionID := ""
-	if err := slugStore.Get(params.Address, &collectionID); err != nil {
+	if err := store.Get(params.Address, &collectionID); err != nil {
 		return nil, fmt.Errorf("slug %s not registered", params.Address)
 	}
 	params.Address = collectionID
@@ -47,7 +55,7 @@ func (Hyperspace) GetCollectionNFTs(params *types.NFTParams) (*types.NFTRes, err
 
 func (Hyperspace) GetCollectionActivities(params *types.ActivityParams) (*types.ActivityRes, error) {
 	collectionID := ""
-	if err := slugStore.Get(params.Address, &collectionID); err != nil {
+	if err := store.Get(params.Address, &collectionID); err != nil {
 		return nil, fmt.Errorf("slug %s not registered", params.Address)
 	}
 	params.Address = collectionID
@@ -55,7 +63,7 @@ func (Hyperspace) GetCollectionActivities(params *types.ActivityParams) (*types.
 }
 
 func (Hyperspace) GetNFTDetail(address string) (*types.NFT, error) {
-	return nft.GetDetail(address, slugStore)
+	return nft.GetDetail(address, store)
 }
 
 func (Hyperspace) GetNFTActivities(params *types.ActivityParams) (*types.NFTActivityRes, error) {
