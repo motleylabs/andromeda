@@ -5,6 +5,7 @@ import (
 	"andromeda/pkg/service/entrance/types"
 	"encoding/json"
 	"fmt"
+	"math"
 	"strings"
 )
 
@@ -150,7 +151,7 @@ func ConvertNFTActivity(states []MarketPlaceState) []types.NFTActivity {
 	return activities
 }
 
-func ConvertProjectStat(projectStat *ProjectStat) *types.Collection {
+func ConvertProjectStat(projectStat *ProjectStat, solPrice float64) *types.Collection {
 	holders := int64(0)
 	if projectStat.TokenHolders != nil {
 		holders = int64(*projectStat.TokenHolders)
@@ -167,11 +168,11 @@ func ConvertProjectStat(projectStat *ProjectStat) *types.Collection {
 	}
 
 	stat := types.Statistics{
-		Volume1D:  GetFromIntPointer(projectStat.Volume1Day),
+		Volume1D:  GetLamportsFromUSDIntPointer(projectStat.Volume1Day, solPrice),
 		Listed1D:  GetFromIntPointer(projectStat.Listed1Day),
 		Floor1D:   GetLamportsFromPointer(projectStat.FloorPrice1Day),
 		Holders:   holders,
-		MarketCap: marketCap,
+		MarketCap: math.Round(marketCap / solPrice),
 		Supply:    projectStat.Project.Supply,
 	}
 

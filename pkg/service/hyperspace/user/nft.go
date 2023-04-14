@@ -7,9 +7,13 @@ import (
 	"fmt"
 	"sort"
 	"strconv"
+
+	"github.com/gin-contrib/cache/persistence"
 )
 
-func GetNFTs(address string) (*types.UserNFT, error) {
+func GetNFTs(address string, store *persistence.InMemoryStore) (*types.UserNFT, error) {
+	go common.FetchSOLPrice(store)
+
 	mints, err := web3.GetTokensByOwner(address)
 	if err != nil {
 		return nil, err
@@ -64,6 +68,11 @@ func GetNFTs(address string) (*types.UserNFT, error) {
 		}
 	}
 
+	solPrice, err := common.GetSOLPrice(store)
+	if err != nil {
+		return nil, err
+	}
+
 	// get collected collections
 	collectedCollections := []types.CollectedCollection{}
 	if len(projectIDs) > 0 {
@@ -76,7 +85,7 @@ func GetNFTs(address string) (*types.UserNFT, error) {
 			}
 
 			for index := range projectStatRes.ProjectStats {
-				collection := common.ConvertProjectStat(&projectStatRes.ProjectStats[index])
+				collection := common.ConvertProjectStat(&projectStatRes.ProjectStats[index], solPrice)
 				collectedCollection := types.CollectedCollection{
 					ID:        collection.ID,
 					Name:      collection.Name,

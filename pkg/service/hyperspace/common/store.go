@@ -18,7 +18,7 @@ func FetchSOLPrice(store *persistence.InMemoryStore) {
 func GetSOLPrice(store *persistence.InMemoryStore) (float64, error) {
 	retries := 0
 	for {
-		if retries == 5 {
+		if retries == 10 {
 			return 0, fmt.Errorf("failed to get SOL price")
 		}
 

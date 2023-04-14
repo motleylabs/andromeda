@@ -31,7 +31,7 @@ func (Hyperspace) GetCollectionDetail(slug string) (*types.Collection, error) {
 	if err := store.Get(slug, &collectionID); err != nil {
 		return nil, fmt.Errorf("slug %s not registered", slug)
 	}
-	return collection.GetDetail(collectionID)
+	return collection.GetDetail(collectionID, store)
 }
 
 func (Hyperspace) GetCollectionTimeSeries(params *types.TimeSeriesParams) (*types.TimeSeriesRes, error) {
@@ -74,7 +74,7 @@ func (Hyperspace) GetNFTOffers(address string) ([]types.NFTActivity, error) {
 }
 
 func (Hyperspace) GetUserNFTs(address string) (*types.UserNFT, error) {
-	return user.GetNFTs(address)
+	return user.GetNFTs(address, store)
 }
 
 func (Hyperspace) GetUserActivities(params *types.ActivityParams) (*types.ActivityRes, error) {
