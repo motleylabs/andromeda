@@ -172,7 +172,7 @@ func ConvertProjectStat(projectStat *ProjectStat, solPrice float64) *types.Colle
 		Listed1D:  GetFromIntPointer(projectStat.Listed1Day),
 		Floor1D:   GetLamportsFromPointer(projectStat.FloorPrice1Day),
 		Holders:   holders,
-		MarketCap: math.Round(marketCap / solPrice),
+		MarketCap: fmt.Sprintf("%d", int64(math.Round(marketCap/solPrice*LAMPORTS_PER_SOL))),
 		Supply:    projectStat.Project.Supply,
 	}
 

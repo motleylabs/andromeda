@@ -1,12 +1,12 @@
 package types
 
 type Statistics struct {
-	Floor1D   string  `json:"floor1d"`
-	Volume1D  string  `json:"volume1d"`
-	Listed1D  string  `json:"listed1d"`
-	Holders   int64   `json:"holders"`
-	MarketCap float64 `json:"marketCap"`
-	Supply    int64   `json:"supply"`
+	Floor1D   string `json:"floor1d"`
+	Volume1D  string `json:"volume1d"`
+	Listed1D  string `json:"listed1d"`
+	MarketCap string `json:"marketCap"`
+	Holders   int64  `json:"holders"`
+	Supply    int64  `json:"supply"`
 }
 
 type Attribute struct {
