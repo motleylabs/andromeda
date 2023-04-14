@@ -7,7 +7,6 @@ import (
 	"andromeda/pkg/service/hyperspace/stat"
 	"andromeda/pkg/service/hyperspace/user"
 	"fmt"
-	"time"
 
 	"github.com/gin-contrib/cache/persistence"
 )
@@ -17,7 +16,7 @@ type Hyperspace struct{}
 // store that saves the following information
 // slug data
 // sol price
-var store = persistence.NewInMemoryStore(time.Second)
+var store = persistence.NewInMemoryStore(0)
 
 func (Hyperspace) GetStatOverall() (*types.StatRes, error) {
 	return stat.GetOverall()
