@@ -8,7 +8,6 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/davecgh/go-spew/spew"
 	"github.com/gin-contrib/cache/persistence"
 )
 
@@ -69,8 +68,6 @@ func convertStatistics(stats []common.ProjectStat, solPrice float64) []types.Tre
 		trends[index].Volume7D = common.GetLamportsFromUSDIntPointer(stats[index].Volume7Day, solPrice)
 		trends[index].Volume1H = common.GetLamportsFromUSDIntPointer(stats[index].Volume1Hr, solPrice)
 		trends[index].ChangeVolume1D = common.GetPercentFromPointer(stats[index].Volume1DayChange)
-
-		spew.Dump(stats[index].Volume1Hr, trends[index].Volume1H)
 
 		// floor price
 		trends[index].Floor1D = common.GetLamportsFromPointer(stats[index].FloorPrice1Day)

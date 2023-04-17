@@ -183,7 +183,7 @@ definitions:
       listed1d:
         type: string
       marketCap:
-        type: number
+        type: string
       supply:
         type: integer
       volume1d:

@@ -949,7 +949,7 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "marketCap": {
-                    "type": "number"
+                    "type": "string"
                 },
                 "supply": {
                     "type": "integer"
