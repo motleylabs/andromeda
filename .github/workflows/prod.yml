@@ -19,6 +19,17 @@ jobs:
       - name: Build
         run: go build -o andromeda ./app/main.go
 
+      - name: Test
+        env: 
+          ENV: ${{ secrets.ENV }}
+          PORT: ${{ secrets.PORT }}
+          HOST: ${{ secrets.HOST }}
+          PROVIDER: ${{ secrets.PROVIDER }}
+          API_KEY: ${{ secrets.API_KEY }}
+          RPC_ENDPOINT: ${{ secrets.RPC_ENDPOINT }}
+        run: |
+          go clean -testcache && go test -v ./...
+
       - name: deploy to heroku
         uses: akhileshns/heroku-deploy@v3.12.13
         if: ${{ github.ref == 'refs/heads/main' }}
