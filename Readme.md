@@ -1,3 +1,5 @@
+[![Andromeda Dev](https://github.com/motleylabs/andromeda/actions/workflows/test.yml/badge.svg)](https://github.com/motleylabs/andromeda/actions/workflows/test.yml)
+
 # Andromeda
 
 A data layer for getting marketplace information on Solana blockchain.
