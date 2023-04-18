@@ -683,6 +683,32 @@ const docTemplate = `{
                 }
             }
         },
+        "types.ActionInfo": {
+            "type": "object",
+            "properties": {
+                "auctionHouseAddress": {
+                    "type": "string"
+                },
+                "auctionHouseProgram": {
+                    "type": "string"
+                },
+                "blockTimestamp": {
+                    "type": "integer"
+                },
+                "price": {
+                    "type": "string"
+                },
+                "signature": {
+                    "type": "string"
+                },
+                "tradeState": {
+                    "type": "string"
+                },
+                "userAddress": {
+                    "type": "string"
+                }
+            }
+        },
         "types.Activity": {
             "type": "object",
             "properties": {
@@ -821,17 +847,17 @@ const docTemplate = `{
                 "description": {
                     "type": "string"
                 },
+                "highestBid": {
+                    "$ref": "#/definitions/types.ActionInfo"
+                },
                 "image": {
                     "type": "string"
                 },
-                "lastSold": {
-                    "type": "string"
+                "lastSale": {
+                    "$ref": "#/definitions/types.ActionInfo"
                 },
-                "listingPrice": {
-                    "type": "string"
-                },
-                "listingType": {
-                    "type": "string"
+                "latestListing": {
+                    "$ref": "#/definitions/types.ActionInfo"
                 },
                 "mintAddress": {
                     "type": "string"

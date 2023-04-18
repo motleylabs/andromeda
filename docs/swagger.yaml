@@ -8,6 +8,23 @@ definitions:
       volume:
         type: number
     type: object
+  types.ActionInfo:
+    properties:
+      auctionHouseAddress:
+        type: string
+      auctionHouseProgram:
+        type: string
+      blockTimestamp:
+        type: integer
+      price:
+        type: string
+      signature:
+        type: string
+      tradeState:
+        type: string
+      userAddress:
+        type: string
+    type: object
   types.Activity:
     properties:
       activityType:
@@ -99,14 +116,14 @@ definitions:
     properties:
       description:
         type: string
+      highestBid:
+        $ref: '#/definitions/types.ActionInfo'
       image:
         type: string
-      lastSold:
-        type: string
-      listingPrice:
-        type: string
-      listingType:
-        type: string
+      lastSale:
+        $ref: '#/definitions/types.ActionInfo'
+      latestListing:
+        $ref: '#/definitions/types.ActionInfo'
       mintAddress:
         type: string
       moonrankRank:

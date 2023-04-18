@@ -69,11 +69,18 @@ type ActivityParams struct {
 	PaginationInfo    *PaginationConfig `json:"pagination_info,omitempty"`
 }
 
+type Metadata struct {
+	TradeState *string `json:"tradeState,omitempty"`
+}
+
 type MPAInfo struct {
-	UserAddress    string  `json:"user_address"`
-	Price          float64 `json:"price"`
-	Signature      string  `json:"signature"`
-	BlockTimestamp int64   `json:"block_timestamp"`
+	UserAddress           string   `json:"user_address"`
+	Price                 float64  `json:"price"`
+	Signature             string   `json:"signature"`
+	BlockTimestamp        int64    `json:"block_timestamp"`
+	MarketPlaceProgramID  string   `json:"marketplace_program_id"`
+	MarketPlaceInstanceID string   `json:"marketplace_instance_id"`
+	Metadata              Metadata `json:"metadata"`
 }
 
 type MarketPlaceState struct {
@@ -98,6 +105,7 @@ type MarketPlaceSnapshot struct {
 	Attributes       map[string]interface{} `json:"attributes"`
 	LastSaleMPA      *MPAInfo               `json:"last_sale_mpa"`
 	LowestListingMPA *MPAInfo               `json:"lowest_listing_mpa"`
+	HighestBidMPA    *MPAInfo               `json:"highest_bid_mpa"`
 	CreatorRoyalty   int                    `json:"creator_royalty"`
 	NFTStandard      string                 `json:"nft_standard"`
 	Owner            string                 `json:"owner"`
