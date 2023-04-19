@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"math"
+	"sort"
 	"strings"
 )
 
@@ -73,6 +74,18 @@ func GetTraits(attributes *map[string]interface{}) []types.Trait {
 			Value:     fmt.Sprintf("%v", value),
 		})
 	}
+
+	sort.SliceStable(res, func(i, j int) bool {
+		if res[i].TraitType == "Attributes Count" {
+			return true
+		}
+
+		if res[j].TraitType == "Attributes Count" {
+			return false
+		}
+
+		return strings.Compare(res[i].TraitType, res[j].TraitType) < 0
+	})
 
 	return res
 }
