@@ -36,6 +36,7 @@ type Activity struct {
 	Price                     *string `json:"price"`
 	ActivityType              string  `json:"activityType"`
 	MarketPlaceProgramAddress string  `json:"martketplaceProgramAddress"`
+	AuctionHouseAddress       string  `json:"auctionHouseAddress"`
 	CreatedAt                 string  `json:"createdAt"`
 	Signature                 string  `json:"signature"`
 }
@@ -46,6 +47,7 @@ type NFTActivity struct {
 	Price                     *string `json:"price"`
 	ActivityType              string  `json:"activityType"`
 	MarketPlaceProgramAddress string  `json:"martketplaceProgramAddress"`
+	AuctionHouseAddress       string  `json:"auctionHouseAddress"`
 	CreatedAt                 string  `json:"createdAt"`
 	Signature                 string  `json:"signature"`
 }

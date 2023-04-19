@@ -47,6 +47,7 @@ func convertNFTActivitySnapshots(snapshots []common.MarketPlaceSnapshot) []types
 		if snapshots[index].MarketPlaceState != nil {
 			price := common.GetLamportsFromPointer(snapshots[index].MarketPlaceState.Price)
 			activities[index].MarketPlaceProgramAddress = snapshots[index].MarketPlaceState.MarketPlaceProgramID
+			activities[index].AuctionHouseAddress = snapshots[index].MarketPlaceState.MarketPlaceInstanceID
 			activities[index].Signature = snapshots[index].MarketPlaceState.Signature
 			activities[index].CreatedAt = snapshots[index].MarketPlaceState.CreatedAt
 			activities[index].Seller = snapshots[index].MarketPlaceState.SellerAddress

@@ -84,14 +84,15 @@ type MPAInfo struct {
 }
 
 type MarketPlaceState struct {
-	BlockTimestamp       int      `json:"block_timestamp"`
-	Signature            string   `json:"signature"`
-	SellerAddress        *string  `json:"seller_address"`
-	BuyerAddress         *string  `json:"buyer_address"`
-	Type                 string   `json:"type"`
-	MarketPlaceProgramID string   `json:"marketplace_program_id"`
-	Price                *float64 `json:"price"`
-	CreatedAt            string   `json:"created_at"`
+	BlockTimestamp        int      `json:"block_timestamp"`
+	Signature             string   `json:"signature"`
+	SellerAddress         *string  `json:"seller_address"`
+	BuyerAddress          *string  `json:"buyer_address"`
+	Type                  string   `json:"type"`
+	MarketPlaceProgramID  string   `json:"marketplace_program_id"`
+	MarketPlaceInstanceID string   `json:"marketplace_instance_id"`
+	Price                 *float64 `json:"price"`
+	CreatedAt             string   `json:"created_at"`
 }
 
 type MarketPlaceSnapshot struct {

@@ -125,6 +125,7 @@ func ConvertActivitySnapshots(snapshots []MarketPlaceSnapshot) []types.Activity 
 		if snapshots[index].MarketPlaceState != nil {
 			price := GetLamportsFromPointer(snapshots[index].MarketPlaceState.Price)
 			activities[index].MarketPlaceProgramAddress = snapshots[index].MarketPlaceState.MarketPlaceProgramID
+			activities[index].AuctionHouseAddress = snapshots[index].MarketPlaceState.MarketPlaceInstanceID
 			activities[index].Signature = snapshots[index].MarketPlaceState.Signature
 			activities[index].CreatedAt = snapshots[index].MarketPlaceState.CreatedAt
 			activities[index].Seller = snapshots[index].MarketPlaceState.SellerAddress
