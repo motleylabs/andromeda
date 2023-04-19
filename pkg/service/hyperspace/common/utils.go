@@ -130,6 +130,7 @@ func ConvertActivitySnapshots(snapshots []MarketPlaceSnapshot) []types.Activity 
 		activities[index].Name = snapshots[index].Name
 		activities[index].Image = snapshots[index].MetadataImg
 		activities[index].Mint = snapshots[index].TokenAddress
+		activities[index].Symbol = snapshots[index].ProjectSlug
 
 		if snapshots[index].MarketPlaceState != nil {
 			price := GetLamportsFromPointer(snapshots[index].MarketPlaceState.Price)
@@ -287,4 +288,20 @@ func ConvertToActivityType(activityType string) string {
 
 func ConvertFromActivityType(activityType string) string {
 	return strings.ToLower(activityType)
+}
+
+func ChunkAddresses(addresses []string, chunkSize int) [][]string {
+	var divided [][]string
+
+	for index := 0; index < len(addresses); index += chunkSize {
+		end := index + chunkSize
+
+		if end > len(addresses) {
+			end = len(addresses)
+		}
+
+		divided = append(divided, addresses[index:end])
+	}
+
+	return divided
 }

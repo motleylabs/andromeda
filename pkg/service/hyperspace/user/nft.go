@@ -27,21 +27,15 @@ func GetNFTs(address string, store *persistence.InMemoryStore) (*types.UserNFT, 
 	}
 
 	marketplaceSnapshots := []common.MarketPlaceSnapshot{}
-	pageNumber := 1
-	pageSize := 50
-	for {
-		nftRes, err := common.GetNFTsFromAddresses(mints, pageNumber, pageSize)
+	pageSize := 400
+	chunkedMints := common.ChunkAddresses(mints, pageSize)
+	for chunkIndex := range chunkedMints {
+		nftRes, err := common.GetNFTsFromAddresses(chunkedMints[chunkIndex], 1, pageSize)
 		if err != nil {
 			return nil, err
 		}
 
 		marketplaceSnapshots = append(marketplaceSnapshots, nftRes.MarketPlaceSnapshots...)
-
-		if nftRes.PaginationInfo.HasNextPage {
-			pageNumber += 1
-		} else {
-			break
-		}
 	}
 
 	if len(marketplaceSnapshots) == 0 {
@@ -76,10 +70,10 @@ func GetNFTs(address string, store *persistence.InMemoryStore) (*types.UserNFT, 
 	// get collected collections
 	collectedCollections := []types.CollectedCollection{}
 	if len(projectIDs) > 0 {
-		pageNumber = 1
-		pageSize = 50
-		for {
-			projectStatRes, err := common.GetProjectsFromAddresses(projectIDs, true, pageNumber, pageSize)
+		pageSize := 50
+		chunkedIDs := common.ChunkAddresses(projectIDs, pageSize)
+		for chunkIndex := range chunkedIDs {
+			projectStatRes, err := common.GetProjectsFromAddresses(chunkedIDs[chunkIndex], true, 1, pageSize)
 			if err != nil {
 				return nil, err
 			}
@@ -96,12 +90,6 @@ func GetNFTs(address string, store *persistence.InMemoryStore) (*types.UserNFT, 
 					collectedCollection.FloorPrice = collection.Statistics.Floor1D
 				}
 				collectedCollections = append(collectedCollections, collectedCollection)
-			}
-
-			if projectStatRes.PaginationInfo.HasNextPage {
-				pageNumber += 1
-			} else {
-				break
 			}
 		}
 	}
