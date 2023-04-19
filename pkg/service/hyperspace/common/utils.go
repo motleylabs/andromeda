@@ -167,7 +167,27 @@ func ConvertProjectStat(projectStat *ProjectStat, solPrice float64) *types.Colle
 
 	attributes := []types.Attribute{}
 	if projectStat.Project.Attributes != nil {
-		attributes = *projectStat.Project.Attributes
+		curAttributes := *projectStat.Project.Attributes
+		for index := range curAttributes {
+			outAttribute := types.Attribute{
+				Name:   curAttributes[index].Name,
+				Type:   curAttributes[index].Type,
+				Values: curAttributes[index].Values,
+				Counts: make([]int, len(curAttributes[index].Values)),
+			}
+
+			if len(curAttributes[index].Values) > 0 {
+				for valueIndex, value := range curAttributes[index].Values {
+					for k, v := range curAttributes[index].Counts {
+						if k == value {
+							outAttribute.Counts[valueIndex] = v
+						}
+					}
+				}
+			}
+
+			attributes = append(attributes, outAttribute)
+		}
 	}
 
 	stat := types.Statistics{
@@ -220,8 +240,8 @@ func GetNFTsFromAddresses(addresses []string, pageNumber, pageSize int) (*Projec
 	return &nftRes, nil
 }
 
-func GetProjectsFromAddresses(addresses []string, pageNumber, pageSize int) (*ProjectStatRes, error) {
-	excludeProjectAttr := false
+func GetProjectsFromAddresses(addresses []string, excludeAttr bool, pageNumber, pageSize int) (*ProjectStatRes, error) {
+	excludeProjectAttr := excludeAttr
 	projectStatParams := StatParams{
 		Conditions: &Conditions{
 			ProjectIDs:               &addresses,

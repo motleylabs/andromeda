@@ -79,7 +79,7 @@ func GetNFTs(address string, store *persistence.InMemoryStore) (*types.UserNFT, 
 		pageNumber = 1
 		pageSize = 50
 		for {
-			projectStatRes, err := common.GetProjectsFromAddresses(projectIDs, pageNumber, pageSize)
+			projectStatRes, err := common.GetProjectsFromAddresses(projectIDs, true, pageNumber, pageSize)
 			if err != nil {
 				return nil, err
 			}

@@ -13,6 +13,7 @@ type Attribute struct {
 	Name   string   `json:"name" example:"Background"`
 	Type   string   `json:"type" example:"CATEGORY"`
 	Values []string `json:"values" example:"Vivid-tangerine"`
+	Counts []int    `json:"counts,omitempty" example:"10"`
 }
 
 type Collection struct {

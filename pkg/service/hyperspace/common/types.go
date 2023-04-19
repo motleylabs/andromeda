@@ -114,15 +114,22 @@ type MarketPlaceSnapshot struct {
 	ProjectSlug      string                 `json:"project_slug"`
 }
 
+type Attribute struct {
+	Name   string         `json:"name"`
+	Type   string         `json:"type"`
+	Values []string       `json:"values"`
+	Counts map[string]int `json:"counts"`
+}
+
 type Project struct {
-	ProjectID   string             `json:"project_id"`
-	IsVerified  bool               `json:"is_verified"`
-	DisplayName string             `json:"display_name"`
-	ImgURL      string             `json:"img_url"`
-	Description string             `json:"description"`
-	Supply      int64              `json:"supply"`
-	Attributes  *[]types.Attribute `json:"project_attributes"`
-	ProjectSlug string             `json:"project_slug"`
+	ProjectID   string       `json:"project_id"`
+	IsVerified  bool         `json:"is_verified"`
+	DisplayName string       `json:"display_name"`
+	ImgURL      string       `json:"img_url"`
+	Description string       `json:"description"`
+	Supply      int64        `json:"supply"`
+	Attributes  *[]Attribute `json:"project_attributes"`
+	ProjectSlug string       `json:"project_slug"`
 }
 
 type ProjectSnapshotsRes struct {

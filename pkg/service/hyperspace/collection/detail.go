@@ -14,7 +14,7 @@ func GetDetail(address string, store *persistence.InMemoryStore) (*types.Collect
 	projectIDs := []string{
 		address,
 	}
-	projectStats, err := common.GetProjectsFromAddresses(projectIDs, 1, 10)
+	projectStats, err := common.GetProjectsFromAddresses(projectIDs, false, 1, 10)
 	if err != nil {
 		return nil, err
 	}
