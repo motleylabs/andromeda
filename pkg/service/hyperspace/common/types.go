@@ -109,7 +109,7 @@ type MarketPlaceSnapshot struct {
 	HighestBidMPA    *MPAInfo               `json:"highest_bid_mpa"`
 	CreatorRoyalty   int                    `json:"creator_royalty"`
 	NFTStandard      string                 `json:"nft_standard"`
-	Owner            string                 `json:"owner"`
+	Owner            *string                `json:"owner"`
 	MarketPlaceState *MarketPlaceState      `json:"market_place_state"`
 	ProjectSlug      string                 `json:"project_slug"`
 }

@@ -34,7 +34,7 @@ type NFT struct {
 	Description   string      `json:"description"`
 	Royalty       int         `json:"sellerFeeBasisPoints"`
 	Image         string      `json:"image"`
-	Owner         string      `json:"owner"`
+	Owner         *string     `json:"owner"`
 	TokenStandard string      `json:"tokenStandard"`
 	MoonRank      int         `json:"moonrankRank"`
 	HighestBid    *ActionInfo `json:"highestBid"`

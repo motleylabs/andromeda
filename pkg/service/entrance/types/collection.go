@@ -19,6 +19,7 @@ type Attribute struct {
 type Collection struct {
 	ID                        string      `json:"id"`
 	Name                      string      `json:"name"`
+	IsVerified                bool        `json:"isVerified"`
 	VerifiedCollectionAddress string      `json:"verifiedCollectionAddress"`
 	Description               string      `json:"description"`
 	Image                     string      `json:"image"`

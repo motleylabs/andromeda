@@ -95,6 +95,15 @@ func convertActionInfo(mpaInfo *MPAInfo) *types.ActionInfo {
 func ConvertNFTSnapshot(snapshot *MarketPlaceSnapshot) *types.NFT {
 	traits := GetTraits(&snapshot.Attributes)
 
+	var owner *string
+	if snapshot.Owner == nil {
+		if snapshot.LastSaleMPA != nil {
+			owner = &snapshot.LastSaleMPA.UserAddress
+		}
+	} else {
+		owner = snapshot.Owner
+	}
+
 	nft := types.NFT{
 		ProjectID:     snapshot.ProjectID,
 		Name:          &snapshot.Name,
@@ -103,7 +112,7 @@ func ConvertNFTSnapshot(snapshot *MarketPlaceSnapshot) *types.NFT {
 		MintAddress:   snapshot.TokenAddress,
 		MoonRank:      snapshot.MoonRank,
 		Royalty:       snapshot.CreatorRoyalty,
-		Owner:         snapshot.Owner,
+		Owner:         owner,
 		TokenStandard: snapshot.NFTStandard,
 		Traits:        &traits,
 		URI:           snapshot.MetadataURI,
@@ -207,6 +216,7 @@ func ConvertProjectStat(projectStat *ProjectStat, solPrice float64) *types.Colle
 	collection.Statistics = &stat
 	collection.Attributes = attributes
 	collection.Slug = projectStat.Project.ProjectSlug
+	collection.IsVerified = projectStat.Project.IsVerified
 
 	return &collection
 }
