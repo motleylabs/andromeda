@@ -18,7 +18,7 @@ type AttributeInput struct {
 type AttributeStat struct {
 	Value      string   `json:"value"`
 	Counts     int      `json:"counts"`
-	FloorPrice *float64 `json:"floor_price"`
+	FloorPrice *float64 `json:"floorPrice"`
 	Listed     int      `json:"listed"`
 }
 

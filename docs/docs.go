@@ -789,7 +789,7 @@ const docTemplate = `{
                 "counts": {
                     "type": "integer"
                 },
-                "floor_price": {
+                "floorPrice": {
                     "type": "number"
                 },
                 "listed": {

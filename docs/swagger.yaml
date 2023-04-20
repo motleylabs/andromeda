@@ -78,7 +78,7 @@ definitions:
     properties:
       counts:
         type: integer
-      floor_price:
+      floorPrice:
         type: number
       listed:
         type: integer
