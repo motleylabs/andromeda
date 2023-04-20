@@ -1,5 +1,5 @@
 [![Andromeda](https://github.com/motleylabs/andromeda/actions/workflows/prod.yml/badge.svg)](https://github.com/motleylabs/andromeda/actions/workflows/prod.yml)
-[![Andromeda Dev](https://github.com/motleylabs/andromeda/actions/workflows/test.yml/badge.svg)](https://github.com/motleylabs/andromeda/actions/workflows/test.yml)
+[![Andromeda Dev](https://github.com/motleylabs/andromeda/actions/workflows/dev.yml/badge.svg)](https://github.com/motleylabs/andromeda/actions/workflows/dev.yml)
 
 # Andromeda
 
