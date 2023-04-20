@@ -16,10 +16,10 @@ type AttributeInput struct {
 }
 
 type AttributeStat struct {
-	Value      string   `json:"value"`
-	Counts     int      `json:"counts"`
-	FloorPrice *float64 `json:"floorPrice"`
-	Listed     int      `json:"listed"`
+	Value      string  `json:"value"`
+	Counts     int     `json:"counts"`
+	FloorPrice *string `json:"floorPrice"`
+	Listed     int     `json:"listed"`
 }
 
 type AttributeOutput struct {

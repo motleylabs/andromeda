@@ -79,7 +79,7 @@ definitions:
       counts:
         type: integer
       floorPrice:
-        type: number
+        type: string
       listed:
         type: integer
       value:

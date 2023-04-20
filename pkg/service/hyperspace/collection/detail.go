@@ -86,7 +86,14 @@ func GetDetail(address string, store *persistence.InMemoryStore) (*types.Collect
 			for count_k, count_v := range curStats.Counts {
 
 				// get floor price
-				floorPrice := curStats.FloorPrices[count_k]
+				var floorPrice *string
+				floorSolPrice, ok := curStats.FloorPrices[count_k]
+				if ok {
+					floorPriceLamports := common.GetLamportsFromPointer(floorSolPrice)
+					if floorPriceLamports != "0" {
+						floorPrice = &floorPriceLamports
+					}
+				}
 
 				// get listed count
 				listed := curStats.NumListed[count_k]

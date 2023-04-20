@@ -790,7 +790,7 @@ const docTemplate = `{
                     "type": "integer"
                 },
                 "floorPrice": {
-                    "type": "number"
+                    "type": "string"
                 },
                 "listed": {
                     "type": "integer"
