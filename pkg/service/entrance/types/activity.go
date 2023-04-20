@@ -14,11 +14,11 @@ const (
 
 var ActivityStringTypes = []string{
 	"bid",
-	"update_bid",
-	"cancel_bid",
+	"updatebid",
+	"cancelbid",
 	"listing",
 	"delisting",
-	"update_listing",
+	"updatelisting",
 	"transaction",
 }
 
