@@ -122,6 +122,19 @@ func GetDetail(address string, store *persistence.InMemoryStore) (*types.Collect
 
 			attributes[index] = curAttribute
 		}
+
+		sort.Slice(attributes, func(i, j int) bool {
+			if attributes[i].Name == "Attributes Count" {
+				return true
+			}
+
+			if attributes[j].Name == "Attributes Count" {
+				return false
+			}
+
+			return attributes[i].Name < attributes[j].Name
+		})
+
 		collection.Attributes = attributes
 	}
 
