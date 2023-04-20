@@ -110,7 +110,9 @@ func ConvertNFTSnapshot(snapshot *MarketPlaceSnapshot) *types.NFT {
 
 	var owner *string
 	if snapshot.Owner == nil {
-		if snapshot.LastSaleMPA != nil {
+		if snapshot.LowestListingMPA != nil {
+			owner = &snapshot.LowestListingMPA.UserAddress
+		} else if snapshot.LastSaleMPA != nil {
 			owner = &snapshot.LastSaleMPA.UserAddress
 		}
 	} else {
