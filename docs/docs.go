@@ -715,6 +715,9 @@ const docTemplate = `{
                 "activityType": {
                     "type": "string"
                 },
+                "auctionHouseAddress": {
+                    "type": "string"
+                },
                 "buyer": {
                     "type": "string"
                 },
@@ -761,7 +764,7 @@ const docTemplate = `{
                 }
             }
         },
-        "types.Attribute": {
+        "types.AttributeOutput": {
             "type": "object",
             "properties": {
                 "name": {
@@ -775,11 +778,25 @@ const docTemplate = `{
                 "values": {
                     "type": "array",
                     "items": {
-                        "type": "string"
-                    },
-                    "example": [
-                        "Vivid-tangerine"
-                    ]
+                        "$ref": "#/definitions/types.AttributeStat"
+                    }
+                }
+            }
+        },
+        "types.AttributeStat": {
+            "type": "object",
+            "properties": {
+                "counts": {
+                    "type": "integer"
+                },
+                "floor_price": {
+                    "type": "number"
+                },
+                "listed": {
+                    "type": "integer"
+                },
+                "value": {
+                    "type": "string"
                 }
             }
         },
@@ -812,7 +829,7 @@ const docTemplate = `{
                 "attributes": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/types.Attribute"
+                        "$ref": "#/definitions/types.AttributeOutput"
                     }
                 },
                 "description": {
@@ -823,6 +840,9 @@ const docTemplate = `{
                 },
                 "image": {
                     "type": "string"
+                },
+                "isVerified": {
+                    "type": "boolean"
                 },
                 "name": {
                     "type": "string"
@@ -898,6 +918,9 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "activityType": {
+                    "type": "string"
+                },
+                "auctionHouseAddress": {
                     "type": "string"
                 },
                 "buyer": {

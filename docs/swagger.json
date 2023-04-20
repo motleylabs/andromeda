@@ -703,6 +703,9 @@
                 "activityType": {
                     "type": "string"
                 },
+                "auctionHouseAddress": {
+                    "type": "string"
+                },
                 "buyer": {
                     "type": "string"
                 },
@@ -749,7 +752,7 @@
                 }
             }
         },
-        "types.Attribute": {
+        "types.AttributeOutput": {
             "type": "object",
             "properties": {
                 "name": {
@@ -763,11 +766,25 @@
                 "values": {
                     "type": "array",
                     "items": {
-                        "type": "string"
-                    },
-                    "example": [
-                        "Vivid-tangerine"
-                    ]
+                        "$ref": "#/definitions/types.AttributeStat"
+                    }
+                }
+            }
+        },
+        "types.AttributeStat": {
+            "type": "object",
+            "properties": {
+                "counts": {
+                    "type": "integer"
+                },
+                "floor_price": {
+                    "type": "number"
+                },
+                "listed": {
+                    "type": "integer"
+                },
+                "value": {
+                    "type": "string"
                 }
             }
         },
@@ -800,7 +817,7 @@
                 "attributes": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/types.Attribute"
+                        "$ref": "#/definitions/types.AttributeOutput"
                     }
                 },
                 "description": {
@@ -811,6 +828,9 @@
                 },
                 "image": {
                     "type": "string"
+                },
+                "isVerified": {
+                    "type": "boolean"
                 },
                 "name": {
                     "type": "string"
@@ -886,6 +906,9 @@
             "type": "object",
             "properties": {
                 "activityType": {
+                    "type": "string"
+                },
+                "auctionHouseAddress": {
                     "type": "string"
                 },
                 "buyer": {

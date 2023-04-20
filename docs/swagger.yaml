@@ -29,6 +29,8 @@ definitions:
     properties:
       activityType:
         type: string
+      auctionHouseAddress:
+        type: string
       buyer:
         type: string
       createdAt:
@@ -59,7 +61,7 @@ definitions:
       hasNextPage:
         type: boolean
     type: object
-  types.Attribute:
+  types.AttributeOutput:
     properties:
       name:
         example: Background
@@ -68,11 +70,20 @@ definitions:
         example: CATEGORY
         type: string
       values:
-        example:
-        - Vivid-tangerine
         items:
-          type: string
+          $ref: '#/definitions/types.AttributeStat'
         type: array
+    type: object
+  types.AttributeStat:
+    properties:
+      counts:
+        type: integer
+      floor_price:
+        type: number
+      listed:
+        type: integer
+      value:
+        type: string
     type: object
   types.CollectedCollection:
     properties:
@@ -93,7 +104,7 @@ definitions:
     properties:
       attributes:
         items:
-          $ref: '#/definitions/types.Attribute'
+          $ref: '#/definitions/types.AttributeOutput'
         type: array
       description:
         type: string
@@ -101,6 +112,8 @@ definitions:
         type: string
       image:
         type: string
+      isVerified:
+        type: boolean
       name:
         type: string
       slug:
@@ -150,6 +163,8 @@ definitions:
   types.NFTActivity:
     properties:
       activityType:
+        type: string
+      auctionHouseAddress:
         type: string
       buyer:
         type: string

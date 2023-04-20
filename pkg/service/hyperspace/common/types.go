@@ -13,8 +13,8 @@ type PaginationConfig struct {
 }
 
 type ProjectIDItem struct {
-	ProjectID  string             `json:"project_id"`
-	Attributes *[]types.Attribute `json:"attributes,omitempty"`
+	ProjectID  string                  `json:"project_id"`
+	Attributes *[]types.AttributeInput `json:"attributes,omitempty"`
 }
 
 type Conditions struct {
@@ -36,6 +36,7 @@ type MarketPlaceProgramCondition struct {
 }
 
 type Condition struct {
+	ProjectID                   *string                      `json:"project_id,omitempty"`
 	ProjectIDs                  *[]ProjectIDItem             `json:"project_ids,omitempty"`
 	TokenAddresses              *[]string                    `json:"token_addresses,omitempty"`
 	ActionType                  *string                      `json:"action_type,omitempty"`

@@ -49,7 +49,7 @@ func convertNFTSnapshots(snapshots []common.MarketPlaceSnapshot) []types.NFT {
 
 func getNFTParams(input *types.NFTParams) *common.StatParams {
 	// set program ids
-	var attributes *[]types.Attribute
+	var attributes *[]types.AttributeInput
 	if len(input.Attributes) > 0 {
 		attributes = &input.Attributes
 	}

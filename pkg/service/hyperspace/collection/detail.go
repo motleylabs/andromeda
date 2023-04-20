@@ -1,9 +1,13 @@
 package collection
 
 import (
+	"andromeda/pkg/request"
 	"andromeda/pkg/service/entrance/types"
 	"andromeda/pkg/service/hyperspace/common"
+	"encoding/json"
 	"fmt"
+	"sort"
+	"sync"
 
 	"github.com/gin-contrib/cache/persistence"
 )
@@ -14,19 +18,130 @@ func GetDetail(address string, store *persistence.InMemoryStore) (*types.Collect
 	projectIDs := []string{
 		address,
 	}
-	projectStats, err := common.GetProjectsFromAddresses(projectIDs, false, 1, 10)
-	if err != nil {
-		return nil, err
+
+	wg := sync.WaitGroup{}
+	wg.Add(3)
+
+	// project detail data
+	var projectStats *common.ProjectStatRes
+	var projectResError error
+
+	go func() {
+		defer wg.Done()
+		projectStats, projectResError = common.GetProjectsFromAddresses(projectIDs, true, 1, 10)
+	}()
+
+	// project attribute data
+	var projectAttributeRes *ProjectAttributeRes
+	var projectAttributeError error
+
+	go func() {
+		defer wg.Done()
+		projectAttributeRes, projectAttributeError = getProjectAttributesFromAddress(address)
+	}()
+
+	// get sol price
+	var solPrice float64
+	var solPriceError error
+
+	go func() {
+		defer wg.Done()
+		solPrice, solPriceError = common.GetSOLPrice(store)
+	}()
+
+	wg.Wait()
+
+	// error handler
+	if projectResError != nil {
+		return nil, projectResError
 	}
 
+	if projectAttributeError != nil {
+		return nil, projectAttributeError
+	}
+
+	if solPriceError != nil {
+		return nil, solPriceError
+	}
+
+	// get project stat data
 	if len(projectStats.ProjectStats) == 0 {
 		return nil, fmt.Errorf("invalid project id")
 	}
+	collection := common.ConvertProjectStat(&projectStats.ProjectStats[0], solPrice)
 
-	solPrice, err := common.GetSOLPrice(store)
+	// get attribute data
+	if len(projectAttributeRes.ProjectAttributesStats) > 0 {
+		attributes := make([]types.AttributeOutput, len(projectAttributeRes.ProjectAttributesStats))
+
+		for index := range projectAttributeRes.ProjectAttributesStats {
+			curStats := projectAttributeRes.ProjectAttributesStats[index]
+			curAttribute := types.AttributeOutput{
+				Name:   curStats.Name,
+				Type:   curStats.Type,
+				Values: make([]types.AttributeStat, len(curStats.Counts)),
+			}
+
+			valueIndex := 0
+			for count_k, count_v := range curStats.Counts {
+
+				// get floor price
+				floorPrice := curStats.FloorPrices[count_k]
+
+				// get listed count
+				listed := curStats.NumListed[count_k]
+
+				curAttribute.Values[valueIndex] = types.AttributeStat{
+					Value:      count_k,
+					Counts:     count_v,
+					FloorPrice: floorPrice,
+					Listed:     listed,
+				}
+
+				valueIndex += 1
+			}
+
+			sort.Slice(curAttribute.Values, func(i, j int) bool {
+				if curAttribute.Values[i].Value == "None" {
+					return true
+				}
+
+				if curAttribute.Values[j].Value == "None" {
+					return false
+				}
+
+				return curAttribute.Values[i].Value < curAttribute.Values[j].Value
+			})
+
+			attributes[index] = curAttribute
+		}
+		collection.Attributes = attributes
+	}
+
+	return collection, nil
+}
+
+func getProjectAttributesFromAddress(address string) (*ProjectAttributeRes, error) {
+	projectAttributeParam := common.StatParams{
+		Condition: &common.Condition{
+			ProjectID: &address,
+		},
+	}
+
+	payload, err := json.Marshal(projectAttributeParam)
 	if err != nil {
 		return nil, err
 	}
 
-	return common.ConvertProjectStat(&projectStats.ProjectStats[0], solPrice), nil
+	res, err := request.ProcessPost(fmt.Sprintf("%s/get-project-attribute-stats", common.ENDPOINT), payload)
+	if err != nil {
+		return nil, err
+	}
+
+	var projectAttributeRes ProjectAttributeRes
+	if err := json.Unmarshal(res, &projectAttributeRes); err != nil {
+		return nil, err
+	}
+
+	return &projectAttributeRes, nil
 }

@@ -188,31 +188,7 @@ func ConvertProjectStat(projectStat *ProjectStat, solPrice float64) *types.Colle
 		marketCap = *projectStat.MarketCap
 	}
 
-	attributes := []types.Attribute{}
-	if projectStat.Project.Attributes != nil {
-		curAttributes := *projectStat.Project.Attributes
-		for index := range curAttributes {
-			outAttribute := types.Attribute{
-				Name:   curAttributes[index].Name,
-				Type:   curAttributes[index].Type,
-				Values: curAttributes[index].Values,
-				Counts: make([]int, len(curAttributes[index].Values)),
-			}
-
-			if len(curAttributes[index].Values) > 0 {
-				for valueIndex, value := range curAttributes[index].Values {
-					for k, v := range curAttributes[index].Counts {
-						if k == value {
-							outAttribute.Counts[valueIndex] = v
-						}
-					}
-				}
-			}
-
-			attributes = append(attributes, outAttribute)
-		}
-	}
-
+	attributes := []types.AttributeOutput{}
 	stat := types.Statistics{
 		Volume1D:  GetLamportsFromUSDIntPointer(projectStat.Volume1Day, solPrice),
 		Listed1D:  GetFromIntPointer(projectStat.Listed1Day),
