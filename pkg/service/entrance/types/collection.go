@@ -9,22 +9,36 @@ type Statistics struct {
 	Supply    int64  `json:"supply"`
 }
 
-type Attribute struct {
+type AttributeInput struct {
 	Name   string   `json:"name" example:"Background"`
 	Type   string   `json:"type" example:"CATEGORY"`
 	Values []string `json:"values" example:"Vivid-tangerine"`
 }
 
+type AttributeStat struct {
+	Value      string  `json:"value"`
+	Counts     int     `json:"counts"`
+	FloorPrice *string `json:"floorPrice"`
+	Listed     int     `json:"listed"`
+}
+
+type AttributeOutput struct {
+	Name   string          `json:"name" example:"Background"`
+	Type   string          `json:"type" example:"CATEGORY"`
+	Values []AttributeStat `json:"values"`
+}
+
 type Collection struct {
-	ID                        string      `json:"id"`
-	Name                      string      `json:"name"`
-	VerifiedCollectionAddress string      `json:"verifiedCollectionAddress"`
-	Description               string      `json:"description"`
-	Image                     string      `json:"image"`
-	Symbol                    string      `json:"symbol"`
-	Slug                      string      `json:"slug"`
-	Statistics                *Statistics `json:"statistics,omitempty"`
-	Attributes                []Attribute `json:"attributes"`
+	ID                        string            `json:"id"`
+	Name                      string            `json:"name"`
+	IsVerified                bool              `json:"isVerified"`
+	VerifiedCollectionAddress string            `json:"verifiedCollectionAddress"`
+	Description               string            `json:"description"`
+	Image                     string            `json:"image"`
+	Symbol                    string            `json:"symbol"`
+	Slug                      string            `json:"slug"`
+	Statistics                *Statistics       `json:"statistics,omitempty"`
+	Attributes                []AttributeOutput `json:"attributes"`
 }
 
 type Trend struct {
@@ -79,13 +93,13 @@ type TimeSeriesParams struct {
 }
 
 type NFTParams struct {
-	Address      string      `json:"collection" example:"8xBMPGAj5NzAwRmdfEcksDcZyexr87AAmD6LWwKG7Dqq"`
-	Attributes   []Attribute `json:"attributes,omitempty"`
-	SortBy       string      `json:"sortBy" example:"timestamp|listing"`
-	Order        string      `json:"order" example:"asc|desc"`
-	Limit        int         `json:"limit" example:"10"`
-	Offset       int         `json:"offset" example:"0"`
-	ListingOnly  bool        `json:"listingOnly,omitempty"`
-	Program      *string     `json:"program,omitempty" example:"RwDDvPp7ta9qqUwxbBfShsNreBaSsKvFcHzMxfBC3Ki"`
-	AuctionHouse *string     `json:"auctionHouse,omitempty" example:"6hW2rVdPUD5qn1amEvN3K9zkvgsCA34LqCvTPcpamQHc"`
+	Address      string           `json:"collection" example:"8xBMPGAj5NzAwRmdfEcksDcZyexr87AAmD6LWwKG7Dqq"`
+	Attributes   []AttributeInput `json:"attributes,omitempty"`
+	SortBy       string           `json:"sortBy" example:"timestamp|listing"`
+	Order        string           `json:"order" example:"asc|desc"`
+	Limit        int              `json:"limit" example:"10"`
+	Offset       int              `json:"offset" example:"0"`
+	ListingOnly  bool             `json:"listingOnly,omitempty"`
+	Program      *string          `json:"program,omitempty" example:"RwDDvPp7ta9qqUwxbBfShsNreBaSsKvFcHzMxfBC3Ki"`
+	AuctionHouse *string          `json:"auctionHouse,omitempty" example:"6hW2rVdPUD5qn1amEvN3K9zkvgsCA34LqCvTPcpamQHc"`
 }

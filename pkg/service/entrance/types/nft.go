@@ -14,22 +14,32 @@ var TokenStandard = []string{
 	"PROGRAMMABLE_NON_FUNGIBLE",
 }
 
+type ActionInfo struct {
+	User                  string  `json:"userAddress"`
+	Price                 string  `json:"price"`
+	Signature             string  `json:"signature"`
+	BlockTimestamp        int64   `json:"blockTimestamp"`
+	MarketPlaceProgramID  string  `json:"auctionHouseProgram"`
+	MarketPlaceInstanceID string  `json:"auctionHouseAddress"`
+	TradeState            *string `json:"tradeState,omitempty"`
+}
+
 type NFT struct {
-	ProjectID     string   `json:"projectId"`
-	MintAddress   string   `json:"mintAddress"`
-	Symbol        string   `json:"symbol"`
-	URI           string   `json:"uri"`
-	Traits        *[]Trait `json:"traits"`
-	Name          *string  `json:"name"`
-	Description   string   `json:"description"`
-	Royalty       int      `json:"sellerFeeBasisPoints"`
-	ListingType   string   `json:"listingType"`
-	ListingPrice  *string  `json:"listingPrice"`
-	Image         string   `json:"image"`
-	Owner         string   `json:"owner"`
-	LastSold      *string  `json:"lastSold"`
-	TokenStandard string   `json:"tokenStandard"`
-	MoonRank      int      `json:"moonrankRank"`
+	ProjectID     string      `json:"projectId"`
+	MintAddress   string      `json:"mintAddress"`
+	Symbol        string      `json:"symbol"`
+	URI           string      `json:"uri"`
+	Traits        *[]Trait    `json:"traits"`
+	Name          *string     `json:"name"`
+	Description   string      `json:"description"`
+	Royalty       int         `json:"sellerFeeBasisPoints"`
+	Image         string      `json:"image"`
+	Owner         *string     `json:"owner"`
+	TokenStandard string      `json:"tokenStandard"`
+	MoonRank      int         `json:"moonrankRank"`
+	HighestBid    *ActionInfo `json:"highestBid"`
+	LatestListing *ActionInfo `json:"latestListing"`
+	LastSale      *ActionInfo `json:"lastSale"`
 }
 
 type NFTRes struct {

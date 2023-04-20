@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"math"
+	"sort"
 	"strings"
 )
 
@@ -74,40 +75,63 @@ func GetTraits(attributes *map[string]interface{}) []types.Trait {
 		})
 	}
 
+	sort.SliceStable(res, func(i, j int) bool {
+		if res[i].TraitType == "Attributes Count" {
+			return true
+		}
+
+		if res[j].TraitType == "Attributes Count" {
+			return false
+		}
+
+		return strings.Compare(res[i].TraitType, res[j].TraitType) < 0
+	})
+
 	return res
 }
 
+func convertActionInfo(mpaInfo *MPAInfo) *types.ActionInfo {
+	if mpaInfo != nil {
+		return &types.ActionInfo{
+			User:                  mpaInfo.UserAddress,
+			Price:                 GetLamports(mpaInfo.Price),
+			Signature:             mpaInfo.Signature,
+			BlockTimestamp:        mpaInfo.BlockTimestamp,
+			MarketPlaceProgramID:  mpaInfo.MarketPlaceProgramID,
+			MarketPlaceInstanceID: mpaInfo.MarketPlaceInstanceID,
+			TradeState:            mpaInfo.Metadata.TradeState,
+		}
+	}
+	return nil
+}
+
 func ConvertNFTSnapshot(snapshot *MarketPlaceSnapshot) *types.NFT {
-	// set last sold
-	var lastSold *string
-	if snapshot.LastSaleMPA != nil {
-		lastSoldStr := GetLamports(snapshot.LastSaleMPA.Price)
-		lastSold = &lastSoldStr
-	}
-
-	// set listing price
-	var listingPrice *string
-	if snapshot.LowestListingMPA != nil {
-		listingPriceStr := GetLamports(snapshot.LowestListingMPA.Price)
-		listingPrice = &listingPriceStr
-	}
-
 	traits := GetTraits(&snapshot.Attributes)
+
+	var owner *string
+	if snapshot.Owner == nil {
+		if snapshot.LastSaleMPA != nil {
+			owner = &snapshot.LastSaleMPA.UserAddress
+		}
+	} else {
+		owner = snapshot.Owner
+	}
 
 	nft := types.NFT{
 		ProjectID:     snapshot.ProjectID,
 		Name:          &snapshot.Name,
 		Symbol:        snapshot.ProjectSlug,
 		Image:         snapshot.MetadataImg,
-		LastSold:      lastSold,
-		ListingPrice:  listingPrice,
 		MintAddress:   snapshot.TokenAddress,
 		MoonRank:      snapshot.MoonRank,
 		Royalty:       snapshot.CreatorRoyalty,
-		Owner:         snapshot.Owner,
+		Owner:         owner,
 		TokenStandard: snapshot.NFTStandard,
 		Traits:        &traits,
 		URI:           snapshot.MetadataURI,
+		LastSale:      convertActionInfo(snapshot.LastSaleMPA),
+		LatestListing: convertActionInfo(snapshot.LowestListingMPA),
+		HighestBid:    convertActionInfo(snapshot.HighestBidMPA),
 	}
 	return &nft
 }
@@ -119,10 +143,12 @@ func ConvertActivitySnapshots(snapshots []MarketPlaceSnapshot) []types.Activity 
 		activities[index].Name = snapshots[index].Name
 		activities[index].Image = snapshots[index].MetadataImg
 		activities[index].Mint = snapshots[index].TokenAddress
+		activities[index].Symbol = snapshots[index].ProjectSlug
 
 		if snapshots[index].MarketPlaceState != nil {
 			price := GetLamportsFromPointer(snapshots[index].MarketPlaceState.Price)
 			activities[index].MarketPlaceProgramAddress = snapshots[index].MarketPlaceState.MarketPlaceProgramID
+			activities[index].AuctionHouseAddress = snapshots[index].MarketPlaceState.MarketPlaceInstanceID
 			activities[index].Signature = snapshots[index].MarketPlaceState.Signature
 			activities[index].CreatedAt = snapshots[index].MarketPlaceState.CreatedAt
 			activities[index].Seller = snapshots[index].MarketPlaceState.SellerAddress
@@ -162,11 +188,7 @@ func ConvertProjectStat(projectStat *ProjectStat, solPrice float64) *types.Colle
 		marketCap = *projectStat.MarketCap
 	}
 
-	attributes := []types.Attribute{}
-	if projectStat.Project.Attributes != nil {
-		attributes = *projectStat.Project.Attributes
-	}
-
+	attributes := []types.AttributeOutput{}
 	stat := types.Statistics{
 		Volume1D:  GetLamportsFromUSDIntPointer(projectStat.Volume1Day, solPrice),
 		Listed1D:  GetFromIntPointer(projectStat.Listed1Day),
@@ -184,6 +206,7 @@ func ConvertProjectStat(projectStat *ProjectStat, solPrice float64) *types.Colle
 	collection.Statistics = &stat
 	collection.Attributes = attributes
 	collection.Slug = projectStat.Project.ProjectSlug
+	collection.IsVerified = projectStat.Project.IsVerified
 
 	return &collection
 }
@@ -217,8 +240,8 @@ func GetNFTsFromAddresses(addresses []string, pageNumber, pageSize int) (*Projec
 	return &nftRes, nil
 }
 
-func GetProjectsFromAddresses(addresses []string, pageNumber, pageSize int) (*ProjectStatRes, error) {
-	excludeProjectAttr := false
+func GetProjectsFromAddresses(addresses []string, excludeAttr bool, pageNumber, pageSize int) (*ProjectStatRes, error) {
+	excludeProjectAttr := excludeAttr
 	projectStatParams := StatParams{
 		Conditions: &Conditions{
 			ProjectIDs:               &addresses,
@@ -254,4 +277,20 @@ func ConvertToActivityType(activityType string) string {
 
 func ConvertFromActivityType(activityType string) string {
 	return strings.ToLower(activityType)
+}
+
+func ChunkAddresses(addresses []string, chunkSize int) [][]string {
+	var divided [][]string
+
+	for index := 0; index < len(addresses); index += chunkSize {
+		end := index + chunkSize
+
+		if end > len(addresses) {
+			end = len(addresses)
+		}
+
+		divided = append(divided, addresses[index:end])
+	}
+
+	return divided
 }

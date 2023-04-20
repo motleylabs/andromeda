@@ -683,10 +683,39 @@ const docTemplate = `{
                 }
             }
         },
+        "types.ActionInfo": {
+            "type": "object",
+            "properties": {
+                "auctionHouseAddress": {
+                    "type": "string"
+                },
+                "auctionHouseProgram": {
+                    "type": "string"
+                },
+                "blockTimestamp": {
+                    "type": "integer"
+                },
+                "price": {
+                    "type": "string"
+                },
+                "signature": {
+                    "type": "string"
+                },
+                "tradeState": {
+                    "type": "string"
+                },
+                "userAddress": {
+                    "type": "string"
+                }
+            }
+        },
         "types.Activity": {
             "type": "object",
             "properties": {
                 "activityType": {
+                    "type": "string"
+                },
+                "auctionHouseAddress": {
                     "type": "string"
                 },
                 "buyer": {
@@ -735,7 +764,7 @@ const docTemplate = `{
                 }
             }
         },
-        "types.Attribute": {
+        "types.AttributeOutput": {
             "type": "object",
             "properties": {
                 "name": {
@@ -749,11 +778,25 @@ const docTemplate = `{
                 "values": {
                     "type": "array",
                     "items": {
-                        "type": "string"
-                    },
-                    "example": [
-                        "Vivid-tangerine"
-                    ]
+                        "$ref": "#/definitions/types.AttributeStat"
+                    }
+                }
+            }
+        },
+        "types.AttributeStat": {
+            "type": "object",
+            "properties": {
+                "counts": {
+                    "type": "integer"
+                },
+                "floorPrice": {
+                    "type": "string"
+                },
+                "listed": {
+                    "type": "integer"
+                },
+                "value": {
+                    "type": "string"
                 }
             }
         },
@@ -786,7 +829,7 @@ const docTemplate = `{
                 "attributes": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/types.Attribute"
+                        "$ref": "#/definitions/types.AttributeOutput"
                     }
                 },
                 "description": {
@@ -797,6 +840,9 @@ const docTemplate = `{
                 },
                 "image": {
                     "type": "string"
+                },
+                "isVerified": {
+                    "type": "boolean"
                 },
                 "name": {
                     "type": "string"
@@ -821,17 +867,17 @@ const docTemplate = `{
                 "description": {
                     "type": "string"
                 },
+                "highestBid": {
+                    "$ref": "#/definitions/types.ActionInfo"
+                },
                 "image": {
                     "type": "string"
                 },
-                "lastSold": {
-                    "type": "string"
+                "lastSale": {
+                    "$ref": "#/definitions/types.ActionInfo"
                 },
-                "listingPrice": {
-                    "type": "string"
-                },
-                "listingType": {
-                    "type": "string"
+                "latestListing": {
+                    "$ref": "#/definitions/types.ActionInfo"
                 },
                 "mintAddress": {
                     "type": "string"
@@ -872,6 +918,9 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "activityType": {
+                    "type": "string"
+                },
+                "auctionHouseAddress": {
                     "type": "string"
                 },
                 "buyer": {

@@ -13,8 +13,8 @@ type PaginationConfig struct {
 }
 
 type ProjectIDItem struct {
-	ProjectID  string             `json:"project_id"`
-	Attributes *[]types.Attribute `json:"attributes,omitempty"`
+	ProjectID  string                  `json:"project_id"`
+	Attributes *[]types.AttributeInput `json:"attributes,omitempty"`
 }
 
 type Conditions struct {
@@ -36,6 +36,7 @@ type MarketPlaceProgramCondition struct {
 }
 
 type Condition struct {
+	ProjectID                   *string                      `json:"project_id,omitempty"`
 	ProjectIDs                  *[]ProjectIDItem             `json:"project_ids,omitempty"`
 	TokenAddresses              *[]string                    `json:"token_addresses,omitempty"`
 	ActionType                  *string                      `json:"action_type,omitempty"`
@@ -69,22 +70,30 @@ type ActivityParams struct {
 	PaginationInfo    *PaginationConfig `json:"pagination_info,omitempty"`
 }
 
+type Metadata struct {
+	TradeState *string `json:"tradeState,omitempty"`
+}
+
 type MPAInfo struct {
-	UserAddress    string  `json:"user_address"`
-	Price          float64 `json:"price"`
-	Signature      string  `json:"signature"`
-	BlockTimestamp int64   `json:"block_timestamp"`
+	UserAddress           string   `json:"user_address"`
+	Price                 float64  `json:"price"`
+	Signature             string   `json:"signature"`
+	BlockTimestamp        int64    `json:"block_timestamp"`
+	MarketPlaceProgramID  string   `json:"marketplace_program_id"`
+	MarketPlaceInstanceID string   `json:"marketplace_instance_id"`
+	Metadata              Metadata `json:"metadata"`
 }
 
 type MarketPlaceState struct {
-	BlockTimestamp       int      `json:"block_timestamp"`
-	Signature            string   `json:"signature"`
-	SellerAddress        *string  `json:"seller_address"`
-	BuyerAddress         *string  `json:"buyer_address"`
-	Type                 string   `json:"type"`
-	MarketPlaceProgramID string   `json:"marketplace_program_id"`
-	Price                *float64 `json:"price"`
-	CreatedAt            string   `json:"created_at"`
+	BlockTimestamp        int      `json:"block_timestamp"`
+	Signature             string   `json:"signature"`
+	SellerAddress         *string  `json:"seller_address"`
+	BuyerAddress          *string  `json:"buyer_address"`
+	Type                  string   `json:"type"`
+	MarketPlaceProgramID  string   `json:"marketplace_program_id"`
+	MarketPlaceInstanceID string   `json:"marketplace_instance_id"`
+	Price                 *float64 `json:"price"`
+	CreatedAt             string   `json:"created_at"`
 }
 
 type MarketPlaceSnapshot struct {
@@ -98,22 +107,30 @@ type MarketPlaceSnapshot struct {
 	Attributes       map[string]interface{} `json:"attributes"`
 	LastSaleMPA      *MPAInfo               `json:"last_sale_mpa"`
 	LowestListingMPA *MPAInfo               `json:"lowest_listing_mpa"`
+	HighestBidMPA    *MPAInfo               `json:"highest_bid_mpa"`
 	CreatorRoyalty   int                    `json:"creator_royalty"`
 	NFTStandard      string                 `json:"nft_standard"`
-	Owner            string                 `json:"owner"`
+	Owner            *string                `json:"owner"`
 	MarketPlaceState *MarketPlaceState      `json:"market_place_state"`
 	ProjectSlug      string                 `json:"project_slug"`
 }
 
+type Attribute struct {
+	Name   string         `json:"name"`
+	Type   string         `json:"type"`
+	Values []string       `json:"values"`
+	Counts map[string]int `json:"counts"`
+}
+
 type Project struct {
-	ProjectID   string             `json:"project_id"`
-	IsVerified  bool               `json:"is_verified"`
-	DisplayName string             `json:"display_name"`
-	ImgURL      string             `json:"img_url"`
-	Description string             `json:"description"`
-	Supply      int64              `json:"supply"`
-	Attributes  *[]types.Attribute `json:"project_attributes"`
-	ProjectSlug string             `json:"project_slug"`
+	ProjectID   string       `json:"project_id"`
+	IsVerified  bool         `json:"is_verified"`
+	DisplayName string       `json:"display_name"`
+	ImgURL      string       `json:"img_url"`
+	Description string       `json:"description"`
+	Supply      int64        `json:"supply"`
+	Attributes  *[]Attribute `json:"project_attributes"`
+	ProjectSlug string       `json:"project_slug"`
 }
 
 type ProjectSnapshotsRes struct {
