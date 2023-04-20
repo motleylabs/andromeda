@@ -79,11 +79,14 @@ func GetDetail(address string, store *persistence.InMemoryStore) (*types.Collect
 			curAttribute := types.AttributeOutput{
 				Name:   curStats.Name,
 				Type:   curStats.Type,
-				Values: make([]types.AttributeStat, len(curStats.Counts)),
+				Values: []types.AttributeStat{},
 			}
 
-			valueIndex := 0
 			for count_k, count_v := range curStats.Counts {
+
+				if count_v == 0 {
+					continue
+				}
 
 				// get floor price
 				var floorPrice *string
@@ -98,14 +101,12 @@ func GetDetail(address string, store *persistence.InMemoryStore) (*types.Collect
 				// get listed count
 				listed := curStats.NumListed[count_k]
 
-				curAttribute.Values[valueIndex] = types.AttributeStat{
+				curAttribute.Values = append(curAttribute.Values, types.AttributeStat{
 					Value:      count_k,
 					Counts:     count_v,
 					FloorPrice: floorPrice,
 					Listed:     listed,
-				}
-
-				valueIndex += 1
+				})
 			}
 
 			sort.Slice(curAttribute.Values, func(i, j int) bool {
