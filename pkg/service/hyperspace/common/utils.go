@@ -3,6 +3,7 @@ package common
 import (
 	"andromeda/pkg/request"
 	"andromeda/pkg/service/entrance/types"
+	"andromeda/pkg/service/web3"
 	"encoding/json"
 	"fmt"
 	"math"
@@ -110,10 +111,10 @@ func ConvertNFTSnapshot(snapshot *MarketPlaceSnapshot) *types.NFT {
 
 	var owner *string
 	if snapshot.Owner == nil {
-		if snapshot.LowestListingMPA != nil {
+		owner, _ = web3.GetMintOwner(snapshot.TokenAddress)
+		if owner == nil && snapshot.LowestListingMPA != nil {
+			// if our rpc failed, fall back to latest listing seller, even though it could be stale
 			owner = &snapshot.LowestListingMPA.UserAddress
-		} else if snapshot.LastSaleMPA != nil {
-			owner = &snapshot.LastSaleMPA.UserAddress
 		}
 	} else {
 		owner = snapshot.Owner
