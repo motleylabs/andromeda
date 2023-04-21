@@ -1,0 +1,6 @@
+{
+    "search": [
+        "stat/search?mode=user&keyword=under&offset=5&limit=10",
+        "stat/search?mode=collection&keyword=under&offset=5&limit=10"
+    ]
+}
