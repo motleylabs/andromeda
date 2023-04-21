@@ -631,7 +631,28 @@ paths:
     get:
       consumes:
       - application/json
-      description: get information like total market cap, volume
+      description: Search collections, users by name
+      parameters:
+      - description: Search mode(collection)
+        in: query
+        name: mode
+        required: true
+        type: string
+      - description: Search keyword
+        in: query
+        name: keyword
+        required: true
+        type: string
+      - description: Page limit
+        in: query
+        name: limit
+        required: true
+        type: string
+      - description: Page offset
+        in: query
+        name: offset
+        required: true
+        type: string
       produces:
       - application/json
       responses:
@@ -641,7 +662,7 @@ paths:
             $ref: '#/definitions/types.StatRes'
         "500":
           description: Internal Server Error
-      summary: Get Overall Stats
+      summary: Search collections, users
       tags:
       - stats
   /users/activities:

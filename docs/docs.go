@@ -497,7 +497,7 @@ const docTemplate = `{
         },
         "/stat/overall": {
             "get": {
-                "description": "get information like total market cap, volume",
+                "description": "Search collections, users by name",
                 "consumes": [
                     "application/json"
                 ],
@@ -507,7 +507,37 @@ const docTemplate = `{
                 "tags": [
                     "stats"
                 ],
-                "summary": "Get Overall Stats",
+                "summary": "Search collections, users",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Search mode(collection)",
+                        "name": "mode",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Search keyword",
+                        "name": "keyword",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Page limit",
+                        "name": "limit",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Page offset",
+                        "name": "offset",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",

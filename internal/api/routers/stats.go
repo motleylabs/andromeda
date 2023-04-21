@@ -17,5 +17,6 @@ func StatRouter(r *gin.RouterGroup) {
 	c.Use()
 	{
 		c.GET("/overall", cache.CachePage(statStore, time.Minute*5, statController.GetOverallStat))
+		c.GET("/search", statController.Search)
 	}
 }

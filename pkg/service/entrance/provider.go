@@ -7,6 +7,7 @@ import (
 type DataProvider interface {
 	// for overall stats
 	GetStatOverall() (*types.StatRes, error)
+	GetStatSearch(*types.SearchParams) (*types.SearchRes, error)
 
 	// for collection
 	GetCollectionTrends(*types.TrendParams) (*types.TrendRes, error)
