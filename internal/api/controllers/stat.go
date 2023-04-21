@@ -43,9 +43,9 @@ func (ctrl Stat) GetOverallStat(c *gin.Context) {
 // @Param           keyword  query         string true          "Search keyword"
 // @Param           limit    query         string true          "Page limit"
 // @Param           offset   query         string true          "Page offset"
-// @Success		    200	     {object}	   types.StatRes
+// @Success		    200	     {object}	   types.SearchRes
 // @Failure         500
-// @Router          /stat/overall     [get]
+// @Router          /stat/search     [get]
 func (ctrl Stat) Search(c *gin.Context) {
 	params, err := utils.GetSearchParams(c)
 	if err != nil {

@@ -197,6 +197,32 @@ definitions:
           $ref: '#/definitions/types.NFT'
         type: array
     type: object
+  types.ObjInfo:
+    properties:
+      address:
+        type: string
+      imgURL:
+        type: string
+      isVerified:
+        type: boolean
+      name:
+        type: string
+      slug:
+        type: string
+      twitter:
+        type: string
+      volume1d:
+        type: string
+    type: object
+  types.SearchRes:
+    properties:
+      hasNextPage:
+        type: boolean
+      results:
+        items:
+          $ref: '#/definitions/types.ObjInfo'
+        type: array
+    type: object
   types.StatRes:
     properties:
       marketCap:
@@ -631,6 +657,23 @@ paths:
     get:
       consumes:
       - application/json
+      description: get information like total market cap, volume
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/types.StatRes'
+        "500":
+          description: Internal Server Error
+      summary: Get Overall Stats
+      tags:
+      - stats
+  /stat/search:
+    get:
+      consumes:
+      - application/json
       description: Search collections, users by name
       parameters:
       - description: Search mode(collection)
@@ -659,7 +702,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/types.StatRes'
+            $ref: '#/definitions/types.SearchRes'
         "500":
           description: Internal Server Error
       summary: Search collections, users

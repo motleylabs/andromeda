@@ -497,6 +497,32 @@ const docTemplate = `{
         },
         "/stat/overall": {
             "get": {
+                "description": "get information like total market cap, volume",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "stats"
+                ],
+                "summary": "Get Overall Stats",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/types.StatRes"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/stat/search": {
+            "get": {
                 "description": "Search collections, users by name",
                 "consumes": [
                     "application/json"
@@ -542,7 +568,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/types.StatRes"
+                            "$ref": "#/definitions/types.SearchRes"
                         }
                     },
                     "500": {
@@ -997,6 +1023,46 @@ const docTemplate = `{
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/types.NFT"
+                    }
+                }
+            }
+        },
+        "types.ObjInfo": {
+            "type": "object",
+            "properties": {
+                "address": {
+                    "type": "string"
+                },
+                "imgURL": {
+                    "type": "string"
+                },
+                "isVerified": {
+                    "type": "boolean"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "slug": {
+                    "type": "string"
+                },
+                "twitter": {
+                    "type": "string"
+                },
+                "volume1d": {
+                    "type": "string"
+                }
+            }
+        },
+        "types.SearchRes": {
+            "type": "object",
+            "properties": {
+                "hasNextPage": {
+                    "type": "boolean"
+                },
+                "results": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/types.ObjInfo"
                     }
                 }
             }
