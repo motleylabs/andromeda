@@ -112,9 +112,7 @@ func ConvertNFTSnapshot(snapshot *MarketPlaceSnapshot) *types.NFT {
 	holder, _ := web3.GetMintOwner(snapshot.TokenAddress)
 
 	var owner *string
-	if snapshot.Owner != nil {
-		owner = snapshot.Owner
-	} else if snapshot.LowestListingMPA != nil {
+	if snapshot.LowestListingMPA != nil {
 		owner = &snapshot.LowestListingMPA.UserAddress
 	}
 
