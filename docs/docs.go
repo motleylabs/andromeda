@@ -926,6 +926,9 @@ const docTemplate = `{
                 "highestBid": {
                     "$ref": "#/definitions/types.ActionInfo"
                 },
+                "holder": {
+                    "type": "string"
+                },
                 "image": {
                     "type": "string"
                 },

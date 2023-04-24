@@ -131,6 +131,8 @@ definitions:
         type: string
       highestBid:
         $ref: '#/definitions/types.ActionInfo'
+      holder:
+        type: string
       image:
         type: string
       lastSale:
