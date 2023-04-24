@@ -38,14 +38,14 @@ func GetHits(params *types.SearchParams, store *persistence.InMemoryStore) (*typ
 	}
 
 	searchRes := types.SearchRes{
-		Results:     convertRecords(records, solPrice),
+		Results:     convertRecords(records, solPrice, store),
 		HasNextPage: len(records) == params.Limit,
 	}
 
 	return &searchRes, nil
 }
 
-func convertRecords(records []types.FoundObj, solPrice float64) []types.ObjInfo {
+func convertRecords(records []types.FoundObj, solPrice float64, store *persistence.InMemoryStore) []types.ObjInfo {
 	objects := make([]types.ObjInfo, len(records))
 
 	for index := range records {
@@ -53,6 +53,17 @@ func convertRecords(records []types.FoundObj, solPrice float64) []types.ObjInfo 
 		if records[index].Volume != nil {
 			volume := common.GetLamportsFromUSDIntPointer(records[index].Volume, solPrice)
 			volume1D = &volume
+		}
+
+		curSlug := records[index].ProjectSlug
+		curID := records[index].ProjectID
+
+		if curSlug == nil || curID == nil {
+			continue
+		}
+
+		if err := store.Set(*curSlug, *curID, -1); err != nil {
+			continue
 		}
 
 		objects[index] = types.ObjInfo{
@@ -64,6 +75,7 @@ func convertRecords(records []types.FoundObj, solPrice float64) []types.ObjInfo 
 			ImgURL:      records[index].ImgURL,
 			Volume1D:    volume1D,
 		}
+
 	}
 
 	return objects

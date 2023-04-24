@@ -17,6 +17,7 @@ type FoundObj struct {
 	Twitter     *string `json:"twitter,omitempty"`
 	Address     *string `json:"address,omitempty"`
 	ProjectSlug *string `json:"project_slug,omitempty"`
+	ProjectID   *string `json:"project_id,omitempty"`
 	IsVerified  *bool   `json:"is_verified,omitempty"`
 	ProjectName *string `json:"display_name,omitempty"`
 	ImgURL      *string `json:"img_url,omitempty"`
