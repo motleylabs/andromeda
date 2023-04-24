@@ -109,15 +109,19 @@ func convertActionInfo(mpaInfo *MPAInfo) *types.ActionInfo {
 func ConvertNFTSnapshot(snapshot *MarketPlaceSnapshot) *types.NFT {
 	traits := GetTraits(&snapshot.Attributes)
 
+	holder, _ := web3.GetMintOwner(snapshot.TokenAddress)
+
 	var owner *string
-	if snapshot.Owner == nil {
-		owner, _ = web3.GetMintOwner(snapshot.TokenAddress)
-		if owner == nil && snapshot.LowestListingMPA != nil {
-			// if our rpc failed, fall back to latest listing seller, even though it could be stale
-			owner = &snapshot.LowestListingMPA.UserAddress
-		}
-	} else {
+	if snapshot.Owner != nil {
 		owner = snapshot.Owner
+	} else if snapshot.LowestListingMPA != nil {
+		owner = &snapshot.LowestListingMPA.UserAddress
+	}
+
+	if holder != nil && owner == nil {
+		owner = holder
+	} else if holder == nil && owner != nil {
+		holder = owner
 	}
 
 	nft := types.NFT{
@@ -129,6 +133,7 @@ func ConvertNFTSnapshot(snapshot *MarketPlaceSnapshot) *types.NFT {
 		MoonRank:      snapshot.MoonRank,
 		Royalty:       snapshot.CreatorRoyalty,
 		Owner:         owner,
+		Holder:        holder,
 		TokenStandard: snapshot.NFTStandard,
 		Traits:        &traits,
 		URI:           snapshot.MetadataURI,
