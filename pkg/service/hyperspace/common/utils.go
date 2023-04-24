@@ -156,7 +156,7 @@ func ConvertActivitySnapshots(snapshots []MarketPlaceSnapshot) []types.Activity 
 			activities[index].MarketPlaceProgramAddress = snapshots[index].MarketPlaceState.MarketPlaceProgramID
 			activities[index].AuctionHouseAddress = snapshots[index].MarketPlaceState.MarketPlaceInstanceID
 			activities[index].Signature = snapshots[index].MarketPlaceState.Signature
-			activities[index].CreatedAt = snapshots[index].MarketPlaceState.CreatedAt
+			activities[index].BlockTimestamp = snapshots[index].MarketPlaceState.BlockTimestamp
 			activities[index].Seller = snapshots[index].MarketPlaceState.SellerAddress
 			activities[index].Buyer = snapshots[index].MarketPlaceState.BuyerAddress
 			activities[index].ActivityType = snapshots[index].MarketPlaceState.Type
@@ -174,7 +174,7 @@ func ConvertNFTActivity(states []MarketPlaceState) []types.NFTActivity {
 		price := GetLamportsFromPointer(states[index].Price)
 		activities[index].MarketPlaceProgramAddress = states[index].MarketPlaceProgramID
 		activities[index].Signature = states[index].Signature
-		activities[index].CreatedAt = states[index].CreatedAt
+		activities[index].BlockTimestamp = states[index].BlockTimestamp
 		activities[index].Seller = states[index].SellerAddress
 		activities[index].Buyer = states[index].BuyerAddress
 		activities[index].ActivityType = states[index].Type
