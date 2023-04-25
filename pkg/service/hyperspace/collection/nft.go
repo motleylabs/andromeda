@@ -41,7 +41,7 @@ func convertNFTSnapshots(snapshots []common.MarketPlaceSnapshot) []types.NFT {
 	nfts := make([]types.NFT, len(snapshots))
 
 	for index := range snapshots {
-		nfts[index] = *common.ConvertNFTSnapshot(&snapshots[index])
+		nfts[index] = *common.ConvertNFTSnapshot(&snapshots[index], false, nil)
 	}
 
 	return nfts

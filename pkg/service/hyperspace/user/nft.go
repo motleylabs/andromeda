@@ -105,7 +105,7 @@ func GetNFTs(address string, store *persistence.InMemoryStore) (*types.UserNFT, 
 			}
 		}
 
-		nfts = append(nfts, *common.ConvertNFTSnapshot(&marketplaceSnapshots[index]))
+		nfts = append(nfts, *common.ConvertNFTSnapshot(&marketplaceSnapshots[index], false, &address))
 	}
 
 	for index := range collectedCollections {

@@ -71,6 +71,7 @@ type ActivityParams struct {
 }
 
 type Metadata struct {
+	Seller     *string `json:"seller_address,omitempty"`
 	TradeState *string `json:"seller_trade_state,omitempty"`
 }
 
