@@ -49,7 +49,7 @@ func convertNFTActivitySnapshots(snapshots []common.MarketPlaceSnapshot) []types
 			activities[index].MarketPlaceProgramAddress = snapshots[index].MarketPlaceState.MarketPlaceProgramID
 			activities[index].AuctionHouseAddress = snapshots[index].MarketPlaceState.MarketPlaceInstanceID
 			activities[index].Signature = snapshots[index].MarketPlaceState.Signature
-			activities[index].CreatedAt = snapshots[index].MarketPlaceState.CreatedAt
+			activities[index].BlockTimestamp = snapshots[index].MarketPlaceState.BlockTimestamp
 			activities[index].Seller = snapshots[index].MarketPlaceState.SellerAddress
 			activities[index].Buyer = snapshots[index].MarketPlaceState.BuyerAddress
 			activities[index].ActivityType = snapshots[index].MarketPlaceState.Type
