@@ -82,6 +82,7 @@ func GetNFTs(address string, store *persistence.InMemoryStore) (*types.UserNFT, 
 				collection := common.ConvertProjectStat(&projectStatRes.ProjectStats[index], solPrice)
 				collectedCollection := types.CollectedCollection{
 					ID:        collection.ID,
+					Slug:      collection.Slug,
 					Name:      collection.Name,
 					Image:     collection.Image,
 					NFTsOwned: 0,
