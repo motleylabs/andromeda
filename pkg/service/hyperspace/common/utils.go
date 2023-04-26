@@ -3,6 +3,7 @@ package common
 import (
 	"andromeda/pkg/request"
 	"andromeda/pkg/service/entrance/types"
+	"andromeda/pkg/service/web3"
 	"encoding/json"
 	"fmt"
 	"math"
@@ -105,16 +106,31 @@ func convertActionInfo(mpaInfo *MPAInfo) *types.ActionInfo {
 	return nil
 }
 
-func ConvertNFTSnapshot(snapshot *MarketPlaceSnapshot) *types.NFT {
+var MarketPrograms = map[string]string{
+	"1BWutmTvYPwDtmw9abTkS4Ssr8no61spGAvW1X6NDix": "magiceden.v2",
+}
+
+func ConvertNFTSnapshot(snapshot *MarketPlaceSnapshot, isDetail bool, snapshotOwner *string) *types.NFT {
 	traits := GetTraits(&snapshot.Attributes)
 
 	var owner *string
-	if snapshot.Owner == nil {
-		if snapshot.LastSaleMPA != nil {
-			owner = &snapshot.LastSaleMPA.UserAddress
-		}
+	if snapshotOwner != nil {
+		owner = snapshotOwner
 	} else {
-		owner = snapshot.Owner
+		if snapshot.LowestListingMPA != nil {
+			if snapshot.LowestListingMPA.Metadata.Seller != nil {
+				owner = snapshot.LowestListingMPA.Metadata.Seller
+			} else {
+				owner = &snapshot.LowestListingMPA.UserAddress
+			}
+		}
+
+		if isDetail || owner == nil {
+			holder, _ := web3.GetMintOwner(snapshot.TokenAddress)
+			if !(isDetail && owner != nil && holder != nil && MarketPrograms[*holder] != "") {
+				owner = holder
+			}
+		}
 	}
 
 	nft := types.NFT{
@@ -150,7 +166,7 @@ func ConvertActivitySnapshots(snapshots []MarketPlaceSnapshot) []types.Activity 
 			activities[index].MarketPlaceProgramAddress = snapshots[index].MarketPlaceState.MarketPlaceProgramID
 			activities[index].AuctionHouseAddress = snapshots[index].MarketPlaceState.MarketPlaceInstanceID
 			activities[index].Signature = snapshots[index].MarketPlaceState.Signature
-			activities[index].CreatedAt = snapshots[index].MarketPlaceState.CreatedAt
+			activities[index].BlockTimestamp = snapshots[index].MarketPlaceState.BlockTimestamp
 			activities[index].Seller = snapshots[index].MarketPlaceState.SellerAddress
 			activities[index].Buyer = snapshots[index].MarketPlaceState.BuyerAddress
 			activities[index].ActivityType = snapshots[index].MarketPlaceState.Type
@@ -168,7 +184,7 @@ func ConvertNFTActivity(states []MarketPlaceState) []types.NFTActivity {
 		price := GetLamportsFromPointer(states[index].Price)
 		activities[index].MarketPlaceProgramAddress = states[index].MarketPlaceProgramID
 		activities[index].Signature = states[index].Signature
-		activities[index].CreatedAt = states[index].CreatedAt
+		activities[index].BlockTimestamp = states[index].BlockTimestamp
 		activities[index].Seller = states[index].SellerAddress
 		activities[index].Buyer = states[index].BuyerAddress
 		activities[index].ActivityType = states[index].Type

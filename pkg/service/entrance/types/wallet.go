@@ -2,6 +2,7 @@ package types
 
 type CollectedCollection struct {
 	ID             string `json:"id"`
+	Slug           string `json:"slug"`
 	Name           string `json:"name"`
 	Image          string `json:"image"`
 	NFTsOwned      int    `json:"nftsOwned"`

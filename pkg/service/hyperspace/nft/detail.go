@@ -25,5 +25,5 @@ func GetDetail(address string, store *persistence.InMemoryStore) (*types.NFT, er
 		return nil, err
 	}
 
-	return common.ConvertNFTSnapshot(&nftRes.MarketPlaceSnapshots[0]), nil
+	return common.ConvertNFTSnapshot(&nftRes.MarketPlaceSnapshots[0], true, nil), nil
 }

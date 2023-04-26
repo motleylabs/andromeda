@@ -14,11 +14,11 @@ const (
 
 var ActivityStringTypes = []string{
 	"bid",
-	"update_bid",
-	"cancel_bid",
+	"updatebid",
+	"cancelbid",
 	"listing",
 	"delisting",
-	"update_listing",
+	"updatelisting",
 	"transaction",
 }
 
@@ -37,7 +37,7 @@ type Activity struct {
 	ActivityType              string  `json:"activityType"`
 	MarketPlaceProgramAddress string  `json:"martketplaceProgramAddress"`
 	AuctionHouseAddress       string  `json:"auctionHouseAddress"`
-	CreatedAt                 string  `json:"createdAt"`
+	BlockTimestamp            int     `json:"blockTimestamp"`
 	Signature                 string  `json:"signature"`
 }
 
@@ -48,7 +48,7 @@ type NFTActivity struct {
 	ActivityType              string  `json:"activityType"`
 	MarketPlaceProgramAddress string  `json:"martketplaceProgramAddress"`
 	AuctionHouseAddress       string  `json:"auctionHouseAddress"`
-	CreatedAt                 string  `json:"createdAt"`
+	BlockTimestamp            int     `json:"blockTimestamp"`
 	Signature                 string  `json:"signature"`
 }
 

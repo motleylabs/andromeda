@@ -169,3 +169,23 @@ func GetNFTActivityParams(c *gin.Context) (types.ActivityParams, error) {
 
 	return params, nil
 }
+
+func GetSearchParams(c *gin.Context) (types.SearchParams, error) {
+	var params types.SearchParams
+	params.Mode = c.Query("mode")
+	params.Keyword = c.Query("keyword")
+
+	offset, err := strconv.Atoi(c.Query("offset"))
+	if err != nil {
+		return params, fmt.Errorf("offset param is not valid")
+	}
+	params.Offset = offset
+
+	limit, err := strconv.Atoi(c.Query("limit"))
+	if err != nil {
+		return params, fmt.Errorf("limit param is not valid")
+	}
+	params.Limit = limit
+
+	return params, nil
+}

@@ -22,6 +22,10 @@ func (Hyperspace) GetStatOverall() (*types.StatRes, error) {
 	return stat.GetOverall()
 }
 
+func (Hyperspace) GetStatSearch(params *types.SearchParams) (*types.SearchRes, error) {
+	return stat.GetHits(params, store)
+}
+
 func (Hyperspace) GetCollectionTrends(params *types.TrendParams) (*types.TrendRes, error) {
 	return collection.GetTrends(params, store)
 }

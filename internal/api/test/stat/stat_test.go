@@ -19,6 +19,7 @@ import (
 )
 
 var router *gin.Engine
+var testCase map[string][]string
 
 func init() {
 	// load env
@@ -27,6 +28,15 @@ func init() {
 
 	if err := godotenv.Load(envDir); err != nil {
 		log.Printf("Dotenv Load; %s", err.Error())
+	}
+
+	// load test cases
+	data, err := os.ReadFile("test_cases.json")
+	if err != nil {
+		log.Fatalf("Test case file not found")
+	}
+	if err := json.Unmarshal(data, &testCase); err != nil {
+		log.Fatalf("Test case file format is wrong")
 	}
 
 	// initialize router
@@ -50,4 +60,18 @@ func TestOverall(t *testing.T) {
 	var nftRes types.StatRes
 	err := json.Unmarshal(resBytes, &nftRes)
 	assert.Nil(t, err)
+}
+
+func TestSearch(t *testing.T) {
+	testURLs := testCase["search"]
+
+	for _, testURL := range testURLs {
+		statusCode, resBytes := processGet(testURL)
+		assert.Equal(t, 200, statusCode)
+
+		var searchRes types.SearchRes
+		err := json.Unmarshal(resBytes, &searchRes)
+		assert.Nil(t, err)
+	}
+
 }

@@ -521,6 +521,62 @@ const docTemplate = `{
                 }
             }
         },
+        "/stat/search": {
+            "get": {
+                "description": "Search collections, users by name",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "stats"
+                ],
+                "summary": "Search collections, users",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Search mode(collection)",
+                        "name": "mode",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Search keyword",
+                        "name": "keyword",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Page limit",
+                        "name": "limit",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Page offset",
+                        "name": "offset",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/types.SearchRes"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
         "/users/activities": {
             "get": {
                 "description": "get the activities with related to the wallet",
@@ -870,6 +926,9 @@ const docTemplate = `{
                 "highestBid": {
                     "$ref": "#/definitions/types.ActionInfo"
                 },
+                "holder": {
+                    "type": "string"
+                },
                 "image": {
                     "type": "string"
                 },
@@ -967,6 +1026,46 @@ const docTemplate = `{
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/types.NFT"
+                    }
+                }
+            }
+        },
+        "types.ObjInfo": {
+            "type": "object",
+            "properties": {
+                "address": {
+                    "type": "string"
+                },
+                "imgURL": {
+                    "type": "string"
+                },
+                "isVerified": {
+                    "type": "boolean"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "slug": {
+                    "type": "string"
+                },
+                "twitter": {
+                    "type": "string"
+                },
+                "volume1d": {
+                    "type": "string"
+                }
+            }
+        },
+        "types.SearchRes": {
+            "type": "object",
+            "properties": {
+                "hasNextPage": {
+                    "type": "boolean"
+                },
+                "results": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/types.ObjInfo"
                     }
                 }
             }
