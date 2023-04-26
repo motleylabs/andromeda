@@ -106,6 +106,10 @@ func convertActionInfo(mpaInfo *MPAInfo) *types.ActionInfo {
 	return nil
 }
 
+var MarketPrograms = map[string]string{
+	"1BWutmTvYPwDtmw9abTkS4Ssr8no61spGAvW1X6NDix": "magiceden.v2",
+}
+
 func ConvertNFTSnapshot(snapshot *MarketPlaceSnapshot, isDetail bool, snapshotOwner *string) *types.NFT {
 	traits := GetTraits(&snapshot.Attributes)
 
@@ -113,7 +117,7 @@ func ConvertNFTSnapshot(snapshot *MarketPlaceSnapshot, isDetail bool, snapshotOw
 	if snapshotOwner != nil {
 		owner = snapshotOwner
 	} else {
-		if !isDetail && snapshot.LowestListingMPA != nil {
+		if snapshot.LowestListingMPA != nil {
 			if snapshot.LowestListingMPA.Metadata.Seller != nil {
 				owner = snapshot.LowestListingMPA.Metadata.Seller
 			} else {
@@ -121,8 +125,11 @@ func ConvertNFTSnapshot(snapshot *MarketPlaceSnapshot, isDetail bool, snapshotOw
 			}
 		}
 
-		if owner == nil {
-			owner, _ = web3.GetMintOwner(snapshot.TokenAddress)
+		if isDetail || owner == nil {
+			holder, _ := web3.GetMintOwner(snapshot.TokenAddress)
+			if !(isDetail && owner != nil && holder != nil && MarketPrograms[*holder] != "") {
+				owner = holder
+			}
 		}
 	}
 
