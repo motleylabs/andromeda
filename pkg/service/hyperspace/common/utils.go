@@ -107,7 +107,8 @@ func convertActionInfo(mpaInfo *MPAInfo) *types.ActionInfo {
 }
 
 var MarketPrograms = map[string]string{
-	"1BWutmTvYPwDtmw9abTkS4Ssr8no61spGAvW1X6NDix": "magiceden.v2",
+	"1BWutmTvYPwDtmw9abTkS4Ssr8no61spGAvW1X6NDix":  "magiceden.v2",
+	"4zdNGgAtFsW1cQgHqkiWyRsxaAgxrSRRynnuunxzjxue": "tensorswap.v1",
 }
 
 func ConvertNFTSnapshot(snapshot *MarketPlaceSnapshot, isDetail bool, snapshotOwner *string) *types.NFT {
