@@ -69,6 +69,7 @@ func GetDetail(address string, store *persistence.InMemoryStore) (*types.Collect
 		return nil, fmt.Errorf("invalid project id")
 	}
 	collection := common.ConvertProjectStat(&projectStats.ProjectStats[0], solPrice)
+	store.Set(collection.Slug, collection.ID, -1)
 
 	// get attribute data
 	if len(projectAttributeRes.ProjectAttributesStats) > 0 {
