@@ -148,7 +148,7 @@ type ProjectStat struct {
 	Volume1HrChange      *float64 `json:"volume_1r_change,omitempty"`
 	Volume1DayChange     *float64 `json:"volume_1day_change,omitempty"`
 	Volume7DayChange     *float64 `json:"volume_7day_change,omitempty"`
-	FloorPrice1Day       *float64 `json:"floor_price"`
+	FloorPrice1Day       *float64 `json:"feeless_floor_price"`
 	FloorPrice7Day       *float64 `json:"floor_price_7day,omitempty"`
 	FloorPrice1M         *float64 `json:"floor_price_1m,omitempty"`
 	FloorPrice1DayChange *float64 `json:"floor_price_1day_change,omitempty"`
