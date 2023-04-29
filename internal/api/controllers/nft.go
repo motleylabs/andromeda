@@ -107,11 +107,21 @@ func (ctrl NFT) GetActivities(c *gin.Context) {
 // @Failure         500
 // @Router          /nfts/buy        [post]
 func (ctrl NFT) GetBuyNowTx(c *gin.Context) {
-	var buyParams *types.BuyParams
+	var buyParams types.BuyParams
 	if err := c.ShouldBindJSON(&buyParams); err != nil {
 		log.Printf("NFT GetBuyNowTx >> ShouldBindJSON; %s", err.Error())
 		c.AbortWithStatus(http.StatusBadRequest)
 		return
 	}
 
+	dataProvider := utils.GetProvider()
+	buyNowTx, err := dataProvider.GetNFTBuyNowTx(&buyParams)
+
+	if err != nil {
+		log.Printf("NFT GetBuyNowTx >> DataProvder GetNFTBuyNowTx; %s", err.Error())
+		utils.SendError(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	c.JSON(http.StatusOK, buyNowTx)
 }
