@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"andromeda/internal/api/utils"
+	"andromeda/pkg/service/entrance/types"
 	"log"
 	"net/http"
 
@@ -91,4 +92,26 @@ func (ctrl NFT) GetActivities(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, activityRes)
+}
+
+// GetBuyNowTx godoc
+//
+// @Summary         Get transaction data for buying NFT
+// @Description     get the byte array for transaction to buy the NFT
+// @Tags            nfts
+// @Accept          json
+// @Produce         json
+// @Param           request          body		   types.BuyParams true     "Input data"
+// @Success		    200	             {object}	   []byte                   "Buffered Tx"
+// @Failure		    400
+// @Failure         500
+// @Router          /nfts/buy        [post]
+func (ctrl NFT) GetBuyNowTx(c *gin.Context) {
+	var buyParams *types.BuyParams
+	if err := c.ShouldBindJSON(&buyParams); err != nil {
+		log.Printf("NFT GetBuyNowTx >> ShouldBindJSON; %s", err.Error())
+		c.AbortWithStatus(http.StatusBadRequest)
+		return
+	}
+
 }

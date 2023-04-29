@@ -387,6 +387,49 @@ const docTemplate = `{
                 }
             }
         },
+        "/nfts/buy": {
+            "post": {
+                "description": "get the byte array for transaction to buy the NFT",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "nfts"
+                ],
+                "summary": "Get transaction data for buying NFT",
+                "parameters": [
+                    {
+                        "description": "Input data",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/types.BuyParams"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Buffered Tx",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "integer"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
         "/nfts/offers": {
             "get": {
                 "description": "get the offers with related to the NFT",
@@ -774,10 +817,10 @@ const docTemplate = `{
                 "auctionHouseAddress": {
                     "type": "string"
                 },
-                "buyer": {
-                    "type": "string"
+                "blockTimestamp": {
+                    "type": "integer"
                 },
-                "createdAt": {
+                "buyer": {
                     "type": "string"
                 },
                 "image": {
@@ -856,6 +899,23 @@ const docTemplate = `{
                 }
             }
         },
+        "types.BuyParams": {
+            "type": "object",
+            "properties": {
+                "buyer": {
+                    "type": "string"
+                },
+                "buyerBroker": {
+                    "type": "string"
+                },
+                "mint": {
+                    "type": "string"
+                },
+                "price": {
+                    "type": "string"
+                }
+            }
+        },
         "types.CollectedCollection": {
             "type": "object",
             "properties": {
@@ -876,6 +936,9 @@ const docTemplate = `{
                 },
                 "nftsOwned": {
                     "type": "integer"
+                },
+                "slug": {
+                    "type": "string"
                 }
             }
         },
@@ -925,9 +988,6 @@ const docTemplate = `{
                 },
                 "highestBid": {
                     "$ref": "#/definitions/types.ActionInfo"
-                },
-                "holder": {
-                    "type": "string"
                 },
                 "image": {
                     "type": "string"
@@ -982,10 +1042,10 @@ const docTemplate = `{
                 "auctionHouseAddress": {
                     "type": "string"
                 },
-                "buyer": {
-                    "type": "string"
+                "blockTimestamp": {
+                    "type": "integer"
                 },
-                "createdAt": {
+                "buyer": {
                     "type": "string"
                 },
                 "martketplaceProgramAddress": {

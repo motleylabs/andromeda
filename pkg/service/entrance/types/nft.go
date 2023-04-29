@@ -46,3 +46,10 @@ type NFTRes struct {
 	NFTs        []NFT `json:"nfts"`
 	HasNextPage bool  `json:"hasNextPage"`
 }
+
+type BuyParams struct {
+	Buyer       string `json:"buyer"`
+	BuyerBroker string `json:"buyerBroker"`
+	Price       string `json:"price"`
+	Mint        string `json:"mint"`
+}

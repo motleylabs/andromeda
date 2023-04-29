@@ -19,5 +19,7 @@ func NFTRouter(r *gin.RouterGroup) {
 		c.GET("/activities", cache.CachePage(nftStore, time.Second*10, nftController.GetActivities))
 		c.GET("/offers", cache.CachePage(nftStore, time.Second*10, nftController.GetOffers))
 		c.GET("/:address", cache.CachePage(nftStore, time.Second*10, nftController.GetDetail))
+
+		c.POST("/buy", nftController.GetBuyNowTx)
 	}
 }

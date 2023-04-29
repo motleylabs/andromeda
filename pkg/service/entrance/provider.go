@@ -20,6 +20,7 @@ type DataProvider interface {
 	GetNFTDetail(string) (*types.NFT, error)
 	GetNFTActivities(*types.ActivityParams) (*types.NFTActivityRes, error)
 	GetNFTOffers(string) ([]types.NFTActivity, error)
+	GetNFTBuyNowTx(*types.BuyParams) ([]byte, error)
 
 	// for wallet
 	GetUserNFTs(string) (*types.UserNFT, error)
