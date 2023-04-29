@@ -184,6 +184,7 @@ func ConvertNFTActivity(states []MarketPlaceState) []types.NFTActivity {
 	for index := range states {
 		price := GetLamportsFromPointer(states[index].Price)
 		activities[index].MarketPlaceProgramAddress = states[index].MarketPlaceProgramID
+		activities[index].AuctionHouseAddress = states[index].MarketPlaceInstanceID
 		activities[index].Signature = states[index].Signature
 		activities[index].BlockTimestamp = states[index].BlockTimestamp
 		activities[index].Seller = states[index].SellerAddress
