@@ -110,7 +110,7 @@ func (ctrl NFT) GetBuyNowTx(c *gin.Context) {
 	var buyParams types.BuyParams
 	if err := c.ShouldBindJSON(&buyParams); err != nil {
 		log.Printf("NFT GetBuyNowTx >> ShouldBindJSON; %s", err.Error())
-		c.AbortWithStatus(http.StatusBadRequest)
+		utils.SendError(c, http.StatusBadRequest, err.Error())
 		return
 	}
 
