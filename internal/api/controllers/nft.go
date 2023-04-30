@@ -102,7 +102,7 @@ func (ctrl NFT) GetActivities(c *gin.Context) {
 // @Accept          json
 // @Produce         json
 // @Param           request          body		   types.BuyParams true     "Input data"
-// @Success		    200	             {object}	   []byte                   "Buffered Tx"
+// @Success		    200	             {object}	   types.BuyRes
 // @Failure		    400
 // @Failure         500
 // @Router          /nfts/buy        [post]

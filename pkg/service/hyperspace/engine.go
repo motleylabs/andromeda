@@ -98,7 +98,7 @@ func (Hyperspace) GetNFTOffers(address string) ([]types.NFTActivity, error) {
 	return nft.GetOffers(address)
 }
 
-func (Hyperspace) GetNFTBuyNowTx(params *types.BuyParams) ([]byte, error) {
+func (Hyperspace) GetNFTBuyNowTx(params *types.BuyParams) (*types.BuyRes, error) {
 	return nft.GetBuyNowTx(params)
 }
 

@@ -53,3 +53,7 @@ type BuyParams struct {
 	Price       string `json:"price"`
 	Mint        string `json:"mint"`
 }
+
+type BuyRes struct {
+	Buffer []byte `json:"data"`
+}

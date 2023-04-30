@@ -96,6 +96,13 @@ definitions:
       price:
         type: string
     type: object
+  types.BuyRes:
+    properties:
+      data:
+        items:
+          type: integer
+        type: array
+    type: object
   types.CollectedCollection:
     properties:
       estimatedValue:
@@ -634,11 +641,9 @@ paths:
       - application/json
       responses:
         "200":
-          description: Buffered Tx
+          description: OK
           schema:
-            items:
-              type: integer
-            type: array
+            $ref: '#/definitions/types.BuyRes'
         "400":
           description: Bad Request
         "500":

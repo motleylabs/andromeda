@@ -413,12 +413,9 @@ const docTemplate = `{
                 ],
                 "responses": {
                     "200": {
-                        "description": "Buffered Tx",
+                        "description": "OK",
                         "schema": {
-                            "type": "array",
-                            "items": {
-                                "type": "integer"
-                            }
+                            "$ref": "#/definitions/types.BuyRes"
                         }
                     },
                     "400": {
@@ -913,6 +910,17 @@ const docTemplate = `{
                 },
                 "price": {
                     "type": "string"
+                }
+            }
+        },
+        "types.BuyRes": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
                 }
             }
         },

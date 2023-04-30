@@ -27,10 +27,10 @@ type HSBuyResponse struct {
 	Error     *HSBuyError `json:"error"`
 }
 
-func GetBuyNowTx(params *types.BuyParams) ([]byte, error) {
+func GetBuyNowTx(params *types.BuyParams) (*types.BuyRes, error) {
 	price, err := strconv.ParseInt(params.Price, 10, 64)
 	if err != nil {
-		return []byte{}, fmt.Errorf("price param is not valid")
+		return nil, fmt.Errorf("price param is not valid")
 	}
 
 	hsParams := HSBuyParams{
@@ -41,26 +41,28 @@ func GetBuyNowTx(params *types.BuyParams) ([]byte, error) {
 	}
 	payload, err := json.Marshal(hsParams)
 	if err != nil {
-		return []byte{}, err
+		return nil, err
 	}
 
 	res, err := request.ProcessPost(fmt.Sprintf("%s/create-buy-tx", common.ENDPOINT), payload)
 	if err != nil {
-		return []byte{}, err
+		return nil, err
 	}
 
 	var buyRes HSBuyResponse
 	if err := json.Unmarshal(res, &buyRes); err != nil {
-		return []byte{}, err
+		return nil, err
 	}
 
 	if buyRes.Error != nil {
-		return []byte{}, fmt.Errorf(buyRes.Error.Message)
+		return nil, fmt.Errorf(buyRes.Error.Message)
 	}
 
 	if len(buyRes.StdBuffer) > 0 {
-		return buyRes.StdBuffer, nil
+		return &types.BuyRes{
+			Buffer: buyRes.StdBuffer,
+		}, nil
 	}
 
-	return []byte{}, fmt.Errorf("no data returned")
+	return nil, fmt.Errorf("no data returned")
 }
