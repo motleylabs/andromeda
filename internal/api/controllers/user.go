@@ -22,6 +22,7 @@ type User struct{}
 // @Failure         500
 // @Router          /users/nfts     [get]
 func (ctrl User) GetNFTs(c *gin.Context) {
+	c.Writer.Header().Set("Cache-Control", "public, max-age=60, stale-while-revalidate")
 	address := c.Query("address")
 
 	dataProvider := utils.GetProvider()
@@ -51,6 +52,7 @@ func (ctrl User) GetNFTs(c *gin.Context) {
 // @Failure         500
 // @Router          /users/activities     [get]
 func (ctrl User) GetActivities(c *gin.Context) {
+	c.Writer.Header().Set("Cache-Control", "public, max-age=10, stale-while-revalidate")
 	params, err := utils.GetActivityParams(c, false)
 	if err != nil {
 		log.Printf("User GetActivities >> Util GetActivityParams; %s", err.Error())
@@ -85,6 +87,7 @@ func (ctrl User) GetActivities(c *gin.Context) {
 // @Failure         500
 // @Router          /users/offers     [get]
 func (ctrl User) GetOffers(c *gin.Context) {
+	c.Writer.Header().Set("Cache-Control", "public, max-age=10, stale-while-revalidate")
 	params, err := utils.GetActivityParams(c, true)
 	if err != nil {
 		log.Printf("User GetOffers >> Util GetActivityParams; %s", err.Error())

@@ -27,6 +27,7 @@ type Collection struct{}
 // @Failure         500
 // @Router          /collections/trend     [get]
 func (ctrl Collection) GetTrends(c *gin.Context) {
+	c.Writer.Header().Set("Cache-Control", "public, max-age=60, stale-while-revalidate")
 	params, err := utils.GetTrendParams(c)
 	if err != nil {
 		log.Printf("Collection GetTrends >> Util GetTrendParams; %s", err.Error())
@@ -66,6 +67,7 @@ func (ctrl Collection) GetTrends(c *gin.Context) {
 // @Failure         500
 // @Router          /collections/nfts     [get]
 func (ctrl Collection) GetNFTs(c *gin.Context) {
+	c.Writer.Header().Set("Cache-Control", "public, max-age=10, stale-while-revalidate")
 	params, err := utils.GetNFTParams(c)
 	if err != nil {
 		log.Printf("Collection GetNFTs >> Util GetNFTParams; %s", err.Error())
@@ -103,6 +105,7 @@ func (ctrl Collection) GetNFTs(c *gin.Context) {
 // @Failure         500
 // @Router          /collections/series     [get]
 func (ctrl Collection) GetTimeSeries(c *gin.Context) {
+	c.Writer.Header().Set("Cache-Control", "public, max-age=300, stale-while-revalidate")
 	params, err := utils.GetTimeSeriesParams(c)
 	if err != nil {
 		log.Printf("Collection GetTimeSeries >> Util GetTimeSeriesParams; %s", err.Error())
@@ -134,6 +137,7 @@ func (ctrl Collection) GetTimeSeries(c *gin.Context) {
 // @Failure         500
 // @Router          /collections/{address} [get]
 func (ctrl Collection) GetDetail(c *gin.Context) {
+	c.Writer.Header().Set("Cache-Control", "public, max-age=300, stale-while-revalidate")
 	address := c.Param("address")
 
 	dataProvider := utils.GetProvider()
@@ -163,6 +167,7 @@ func (ctrl Collection) GetDetail(c *gin.Context) {
 // @Failure         500
 // @Router          /collections/activities     [get]
 func (ctrl Collection) GetActivities(c *gin.Context) {
+	c.Writer.Header().Set("Cache-Control", "public, max-age=10, stale-while-revalidate")
 	params, err := utils.GetActivityParams(c, false)
 	if err != nil {
 		log.Printf("Collection GetActivities >> Util GetActivityParams; %s", err.Error())

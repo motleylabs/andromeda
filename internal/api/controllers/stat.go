@@ -21,6 +21,7 @@ type Stat struct{}
 // @Failure         500
 // @Router          /stat/overall     [get]
 func (ctrl Stat) GetOverallStat(c *gin.Context) {
+	c.Writer.Header().Set("Cache-Control", "public, max-age=300, stale-while-revalidate")
 	dataProvider := utils.GetProvider()
 	stat, err := dataProvider.GetStatOverall()
 	if err != nil {

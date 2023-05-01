@@ -29,6 +29,7 @@ type ReportRes struct {
 // @Failure         500
 // @Router          /rpc/report     [get]
 func (ctrl RPC) GetReport(c *gin.Context) {
+	c.Writer.Header().Set("Cache-Control", "public, max-age=300, stale-while-revalidate")
 	address := c.Param("address")
 
 	solPrice, err := web3.GetSOLPrice()

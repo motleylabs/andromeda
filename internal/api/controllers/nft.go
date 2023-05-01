@@ -23,6 +23,7 @@ type NFT struct{}
 // @Failure         500
 // @Router          /nfts/{address}     [get]
 func (ctrl NFT) GetDetail(c *gin.Context) {
+	c.Writer.Header().Set("Cache-Control", "public, max-age=10, stale-while-revalidate")
 	address := c.Param("address")
 
 	dataProvider := utils.GetProvider()
@@ -48,6 +49,7 @@ func (ctrl NFT) GetDetail(c *gin.Context) {
 // @Failure         500
 // @Router          /nfts/offers     [get]
 func (ctrl NFT) GetOffers(c *gin.Context) {
+	c.Writer.Header().Set("Cache-Control", "public, max-age=10, stale-while-revalidate")
 	address := c.Query("address")
 
 	dataProvider := utils.GetProvider()
@@ -75,6 +77,7 @@ func (ctrl NFT) GetOffers(c *gin.Context) {
 // @Failure         500
 // @Router          /nfts/activities     [get]
 func (ctrl NFT) GetActivities(c *gin.Context) {
+	c.Writer.Header().Set("Cache-Control", "public, max-age=10, stale-while-revalidate")
 	params, err := utils.GetNFTActivityParams(c)
 	if err != nil {
 		log.Printf("NFT GetActivities >> Util GetNFTActivityParams; %s", err.Error())
