@@ -225,6 +225,7 @@ func ConvertProjectStat(projectStat *ProjectStat, solPrice float64) *types.Colle
 	collection.Attributes = attributes
 	collection.Slug = projectStat.Project.ProjectSlug
 	collection.IsVerified = projectStat.Project.IsVerified
+	collection.VerifiedCollectionAddress = projectStat.Project.VerifiedCollectionAddress
 
 	return &collection
 }

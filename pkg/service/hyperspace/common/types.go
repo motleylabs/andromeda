@@ -124,14 +124,15 @@ type Attribute struct {
 }
 
 type Project struct {
-	ProjectID   string       `json:"project_id"`
-	IsVerified  bool         `json:"is_verified"`
-	DisplayName string       `json:"display_name"`
-	ImgURL      string       `json:"img_url"`
-	Description string       `json:"description"`
-	Supply      int64        `json:"supply"`
-	Attributes  *[]Attribute `json:"project_attributes"`
-	ProjectSlug string       `json:"project_slug"`
+	ProjectID                 string       `json:"project_id"`
+	IsVerified                bool         `json:"is_verified"`
+	DisplayName               string       `json:"display_name"`
+	ImgURL                    string       `json:"img_url"`
+	Description               string       `json:"description"`
+	Supply                    int64        `json:"supply"`
+	Attributes                *[]Attribute `json:"project_attributes"`
+	ProjectSlug               string       `json:"project_slug"`
+	VerifiedCollectionAddress string       `json:"mcc_id"`
 }
 
 type ProjectSnapshotsRes struct {

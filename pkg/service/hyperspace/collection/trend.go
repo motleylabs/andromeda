@@ -78,11 +78,12 @@ func convertStatistics(stats []common.ProjectStat, solPrice float64) []types.Tre
 
 		// collection
 		trends[index].Collection = types.Collection{
-			ID:          stats[index].ProjectID,
-			Name:        stats[index].Project.DisplayName,
-			Description: stats[index].Project.Description,
-			Image:       stats[index].Project.ImgURL,
-			Slug:        stats[index].Project.ProjectSlug,
+			ID:                        stats[index].ProjectID,
+			Name:                      stats[index].Project.DisplayName,
+			Description:               stats[index].Project.Description,
+			Image:                     stats[index].Project.ImgURL,
+			Slug:                      stats[index].Project.ProjectSlug,
+			VerifiedCollectionAddress: stats[index].Project.VerifiedCollectionAddress,
 		}
 	}
 
