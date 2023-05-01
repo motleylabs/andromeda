@@ -61,6 +61,7 @@ func GetBuyNowTx(params *types.BuyParams) (*types.BuyRes, error) {
 	if len(buyRes.StdBuffer) > 0 {
 		return &types.BuyRes{
 			Buffer: buyRes.StdBuffer,
+			Data:   buyRes.Data,
 		}, nil
 	}
 

@@ -55,5 +55,6 @@ type BuyParams struct {
 }
 
 type BuyRes struct {
-	Buffer []byte `json:"data"`
+	Data   []byte `json:"data"`
+	Buffer []byte `json:"buffer"`
 }
