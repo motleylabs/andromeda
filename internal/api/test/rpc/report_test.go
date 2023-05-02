@@ -1,7 +1,7 @@
 package test
 
 import (
-	"andromeda/internal/api/controllers"
+	"andromeda/pkg/service/entrance/types"
 	"andromeda/internal/api/routers"
 	"encoding/json"
 	"fmt"
@@ -47,7 +47,7 @@ func TestReport(t *testing.T) {
 	statusCode, resBytes := processGet("rpc/report")
 	assert.Equal(t, 200, statusCode)
 
-	var nftRes controllers.ReportRes
+	var nftRes types.ReportRes
 	err := json.Unmarshal(resBytes, &nftRes)
 	assert.Nil(t, err)
 }

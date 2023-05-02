@@ -1,5 +1,5 @@
 definitions:
-  controllers.ReportRes:
+  types.ReportRes:
     properties:
       solPrice:
         type: number
@@ -693,7 +693,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/controllers.ReportRes'
+            $ref: '#/definitions/types.ReportRes'
         "500":
           description: Internal Server Error
       summary: Get Report

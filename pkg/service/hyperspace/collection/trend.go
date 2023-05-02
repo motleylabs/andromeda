@@ -1,6 +1,7 @@
 package collection
 
 import (
+	"andromeda/internal/api/state"
 	"andromeda/pkg/request"
 	"andromeda/pkg/service/entrance/types"
 	"andromeda/pkg/service/hyperspace/common"
@@ -12,8 +13,6 @@ import (
 )
 
 func GetTrends(params *types.TrendParams, store *persistence.InMemoryStore) (*types.TrendRes, error) {
-	go common.FetchSOLPrice(store)
-
 	if params == nil {
 		return nil, fmt.Errorf("no trend params")
 	}
@@ -33,10 +32,7 @@ func GetTrends(params *types.TrendParams, store *persistence.InMemoryStore) (*ty
 		return nil, err
 	}
 
-	solPrice, err := common.GetSOLPrice(store)
-	if err != nil {
-		return nil, err
-	}
+	solPrice := state.GetSOLPrice()
 
 	trendRes := types.TrendRes{
 		HasNextPage: projectStats.PaginationInfo.HasNextPage,

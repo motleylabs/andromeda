@@ -11,6 +11,10 @@ import (
 	"github.com/gagliardetto/solana-go/rpc"
 )
 
+func GetATA(wallet string, mint string) (solana.PublicKey, uint8, error) {
+	return solana.FindAssociatedTokenAddress(solana.MustPublicKeyFromBase58(wallet), solana.MustPublicKeyFromBase58(mint))
+}
+
 func GetMintOwner(address string) (*string, error) {
 	client := rpc.New(os.Getenv("RPC_ENDPOINT"))
 

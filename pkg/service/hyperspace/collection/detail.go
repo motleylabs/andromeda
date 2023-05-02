@@ -1,6 +1,7 @@
 package collection
 
 import (
+	"andromeda/internal/api/state"
 	"andromeda/pkg/request"
 	"andromeda/pkg/service/entrance/types"
 	"andromeda/pkg/service/hyperspace/common"
@@ -13,14 +14,12 @@ import (
 )
 
 func GetDetail(address string, store *persistence.InMemoryStore) (*types.Collection, error) {
-	go common.FetchSOLPrice(store)
-
 	projectIDs := []string{
 		address,
 	}
 
 	wg := sync.WaitGroup{}
-	wg.Add(3)
+	wg.Add(2)
 
 	// project detail data
 	var projectStats *common.ProjectStatRes
@@ -40,16 +39,9 @@ func GetDetail(address string, store *persistence.InMemoryStore) (*types.Collect
 		projectAttributeRes, projectAttributeError = getProjectAttributesFromAddress(address)
 	}()
 
-	// get sol price
-	var solPrice float64
-	var solPriceError error
-
-	go func() {
-		defer wg.Done()
-		solPrice, solPriceError = common.GetSOLPrice(store)
-	}()
-
 	wg.Wait()
+
+	solPrice := state.GetSOLPrice()
 
 	// error handler
 	if projectResError != nil {
@@ -58,10 +50,6 @@ func GetDetail(address string, store *persistence.InMemoryStore) (*types.Collect
 
 	if projectAttributeError != nil {
 		return nil, projectAttributeError
-	}
-
-	if solPriceError != nil {
-		return nil, solPriceError
 	}
 
 	// get project stat data

@@ -5,6 +5,7 @@ import (
 	"andromeda/pkg/service/hyperspace/collection"
 	"andromeda/pkg/service/hyperspace/nft"
 	"andromeda/pkg/service/hyperspace/stat"
+	"andromeda/pkg/service/hyperspace/stat/market"
 	"andromeda/pkg/service/hyperspace/user"
 	"fmt"
 	"time"
@@ -37,7 +38,7 @@ func getCollectionIDFromSlug(slug string) (string, error) {
 }
 
 func (Hyperspace) GetStatOverall() (*types.StatRes, error) {
-	return stat.GetOverall()
+	return market.GetOverall()
 }
 
 func (Hyperspace) GetStatSearch(params *types.SearchParams) (*types.SearchRes, error) {

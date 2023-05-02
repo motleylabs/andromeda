@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"andromeda/internal/api/routers"
+	"andromeda/internal/api/state"
 
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
@@ -31,6 +32,12 @@ func main() {
 		log.Printf("now production mode")
 		gin.SetMode(gin.ReleaseMode)
 	}
+
+	if !state.Ensure() {
+		log.Fatal("Main >> state.Ensure; failed to ensure state")
+	}
+
+	go state.Runloop()
 
 	// router initialization
 	r := routers.Initialize()

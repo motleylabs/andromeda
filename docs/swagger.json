@@ -514,7 +514,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/controllers.ReportRes"
+                            "$ref": "#/definitions/types.ReportRes"
                         }
                     },
                     "500": {
@@ -753,7 +753,7 @@
         }
     },
     "definitions": {
-        "controllers.ReportRes": {
+        "types.ReportRes": {
             "type": "object",
             "properties": {
                 "solPrice": {

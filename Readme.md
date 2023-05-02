@@ -26,7 +26,7 @@ http://localhost:8080/swagger/index.html
 
 You can test the current API server by using the following command:
 ```
-go clean -testcase && go test -v ./...
+go clean && go test -v ./...
 ```
 
 ## How to build

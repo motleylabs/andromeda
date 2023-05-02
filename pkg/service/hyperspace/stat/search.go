@@ -1,6 +1,7 @@
 package stat
 
 import (
+	"andromeda/internal/api/state"
 	"andromeda/pkg/service/entrance/types"
 	"andromeda/pkg/service/hyperspace/common"
 
@@ -11,8 +12,6 @@ import (
 )
 
 func GetHits(params *types.SearchParams, store *persistence.InMemoryStore) (*types.SearchRes, error) {
-	go common.FetchSOLPrice(store)
-
 	client := search.NewClient(common.ALGOLIA_APP_ID, common.ALGOLIA_API_KEY)
 
 	indexName := "volume_1d_desc"
@@ -26,10 +25,7 @@ func GetHits(params *types.SearchParams, store *persistence.InMemoryStore) (*typ
 		return nil, err
 	}
 
-	solPrice, err := common.GetSOLPrice(store)
-	if err != nil {
-		return nil, err
-	}
+	solPrice := state.GetSOLPrice()
 
 	var records []types.FoundObj
 	if err := res.UnmarshalHits(&records); err != nil {

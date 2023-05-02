@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"andromeda/internal/api/state"
 	"andromeda/internal/api/utils"
 	"log"
 	"net/http"
@@ -21,16 +22,8 @@ type Stat struct{}
 // @Failure         500
 // @Router          /stat/overall     [get]
 func (ctrl Stat) GetOverallStat(c *gin.Context) {
-	c.Writer.Header().Set("Cache-Control", "public, max-age=300, stale-while-revalidate")
-	dataProvider := utils.GetProvider()
-	stat, err := dataProvider.GetStatOverall()
-	if err != nil {
-		log.Printf("Stat GetOverallStat >> DataProvider GetStatOverall; %s", err.Error())
-		utils.SendError(c, http.StatusInternalServerError, err.Error())
-		return
-	}
-
-	c.JSON(http.StatusOK, stat)
+	c.Writer.Header().Set("Cache-Control", "public, max-age=10, stale-while-revalidate")
+	c.JSON(http.StatusOK, state.CurrentState.GlobalStats)
 }
 
 // Search godoc

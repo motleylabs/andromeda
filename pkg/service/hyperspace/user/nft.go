@@ -1,6 +1,7 @@
 package user
 
 import (
+	"andromeda/internal/api/state"
 	"andromeda/pkg/service/entrance/types"
 	"andromeda/pkg/service/hyperspace/common"
 	"andromeda/pkg/service/web3"
@@ -12,8 +13,6 @@ import (
 )
 
 func GetNFTs(address string, store *persistence.InMemoryStore) (*types.UserNFT, error) {
-	go common.FetchSOLPrice(store)
-
 	mints, err := web3.GetTokensByOwner(address)
 	if err != nil {
 		return nil, err
@@ -62,10 +61,7 @@ func GetNFTs(address string, store *persistence.InMemoryStore) (*types.UserNFT, 
 		}
 	}
 
-	solPrice, err := common.GetSOLPrice(store)
-	if err != nil {
-		return nil, err
-	}
+	solPrice := state.GetSOLPrice()
 
 	// get collected collections
 	collectedCollections := []types.CollectedCollection{}

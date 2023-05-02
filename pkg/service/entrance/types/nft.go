@@ -48,10 +48,13 @@ type NFTRes struct {
 }
 
 type BuyParams struct {
-	Buyer       string `json:"buyer"`
-	BuyerBroker string `json:"buyerBroker"`
-	Price       string `json:"price"`
-	Mint        string `json:"mint"`
+	AuctionHouseProgram string `json:"auctionHouseProgram"`
+	AuctionHouseAddress string `json:"auctionHouseAddress"`
+	Seller              string `json:"seller"`
+	Buyer               string `json:"buyer"`
+	BuyerBroker         string `json:"buyerBroker"`
+	Price               string `json:"price"`
+	Mint                string `json:"mint"`
 }
 
 type BuyRes struct {

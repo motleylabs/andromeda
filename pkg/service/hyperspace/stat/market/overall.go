@@ -1,4 +1,4 @@
-package stat
+package market
 
 import (
 	"andromeda/pkg/request"
@@ -8,14 +8,19 @@ import (
 	"fmt"
 )
 
-func GetOverall() (*types.StatRes, error) {
+type StatRes struct {
+	MarketCap  uint64 `json:"market_cap"`
+	Volume     uint64 `json:"volume"`
+	Volume1Day uint64 `json:"volume_1day"`
+}
 
+func GetOverall() (*types.StatRes, error) {
 	res, err := request.ProcessGet(fmt.Sprintf("%s/get-overall-project-stats", common.ENDPOINT))
 	if err != nil {
 		return nil, err
 	}
 
-	var statRes common.StatRes
+	var statRes StatRes
 	if err := json.Unmarshal(res, &statRes); err != nil {
 		return nil, err
 	}

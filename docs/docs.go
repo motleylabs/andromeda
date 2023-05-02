@@ -526,7 +526,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/controllers.ReportRes"
+                            "$ref": "#/definitions/types.ReportRes"
                         }
                     },
                     "500": {
@@ -765,7 +765,7 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "controllers.ReportRes": {
+        "types.ReportRes": {
             "type": "object",
             "properties": {
                 "solPrice": {
