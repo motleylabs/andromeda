@@ -753,20 +753,6 @@
         }
     },
     "definitions": {
-        "types.ReportRes": {
-            "type": "object",
-            "properties": {
-                "solPrice": {
-                    "type": "number"
-                },
-                "tps": {
-                    "type": "integer"
-                },
-                "volume": {
-                    "type": "number"
-                }
-            }
-        },
         "types.ActionInfo": {
             "type": "object",
             "properties": {
@@ -887,6 +873,12 @@
         "types.BuyParams": {
             "type": "object",
             "properties": {
+                "auctionHouseAddress": {
+                    "type": "string"
+                },
+                "auctionHouseProgram": {
+                    "type": "string"
+                },
                 "buyer": {
                     "type": "string"
                 },
@@ -898,12 +890,21 @@
                 },
                 "price": {
                     "type": "string"
+                },
+                "seller": {
+                    "type": "string"
                 }
             }
         },
         "types.BuyRes": {
             "type": "object",
             "properties": {
+                "buffer": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                },
                 "data": {
                     "type": "array",
                     "items": {
@@ -1109,6 +1110,20 @@
                 },
                 "volume1d": {
                     "type": "string"
+                }
+            }
+        },
+        "types.ReportRes": {
+            "type": "object",
+            "properties": {
+                "solPrice": {
+                    "type": "number"
+                },
+                "tps": {
+                    "type": "integer"
+                },
+                "volume": {
+                    "type": "number"
                 }
             }
         },

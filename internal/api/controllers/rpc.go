@@ -17,7 +17,7 @@ type RPC struct{}
 // @Accept          json
 // @Produce         json
 // @Param           address  path          string true          "auction house address"
-// @Success		    200	     {object}	   ReportRes
+// @Success		    200	     {object}	   types.ReportRes
 // @Failure         500
 // @Router          /rpc/report     [get]
 func (ctrl RPC) GetReport(c *gin.Context) {

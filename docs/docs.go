@@ -765,20 +765,6 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "types.ReportRes": {
-            "type": "object",
-            "properties": {
-                "solPrice": {
-                    "type": "number"
-                },
-                "tps": {
-                    "type": "integer"
-                },
-                "volume": {
-                    "type": "number"
-                }
-            }
-        },
         "types.ActionInfo": {
             "type": "object",
             "properties": {
@@ -899,6 +885,12 @@ const docTemplate = `{
         "types.BuyParams": {
             "type": "object",
             "properties": {
+                "auctionHouseAddress": {
+                    "type": "string"
+                },
+                "auctionHouseProgram": {
+                    "type": "string"
+                },
                 "buyer": {
                     "type": "string"
                 },
@@ -910,12 +902,21 @@ const docTemplate = `{
                 },
                 "price": {
                     "type": "string"
+                },
+                "seller": {
+                    "type": "string"
                 }
             }
         },
         "types.BuyRes": {
             "type": "object",
             "properties": {
+                "buffer": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                },
                 "data": {
                     "type": "array",
                     "items": {
@@ -1121,6 +1122,20 @@ const docTemplate = `{
                 },
                 "volume1d": {
                     "type": "string"
+                }
+            }
+        },
+        "types.ReportRes": {
+            "type": "object",
+            "properties": {
+                "solPrice": {
+                    "type": "number"
+                },
+                "tps": {
+                    "type": "integer"
+                },
+                "volume": {
+                    "type": "number"
                 }
             }
         },

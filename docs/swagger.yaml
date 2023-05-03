@@ -1,13 +1,4 @@
 definitions:
-  types.ReportRes:
-    properties:
-      solPrice:
-        type: number
-      tps:
-        type: integer
-      volume:
-        type: number
-    type: object
   types.ActionInfo:
     properties:
       auctionHouseAddress:
@@ -87,6 +78,10 @@ definitions:
     type: object
   types.BuyParams:
     properties:
+      auctionHouseAddress:
+        type: string
+      auctionHouseProgram:
+        type: string
       buyer:
         type: string
       buyerBroker:
@@ -95,9 +90,15 @@ definitions:
         type: string
       price:
         type: string
+      seller:
+        type: string
     type: object
   types.BuyRes:
     properties:
+      buffer:
+        items:
+          type: integer
+        type: array
       data:
         items:
           type: integer
@@ -233,6 +234,15 @@ definitions:
         type: string
       volume1d:
         type: string
+    type: object
+  types.ReportRes:
+    properties:
+      solPrice:
+        type: number
+      tps:
+        type: integer
+      volume:
+        type: number
     type: object
   types.SearchRes:
     properties:
