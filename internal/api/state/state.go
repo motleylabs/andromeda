@@ -6,7 +6,6 @@ import (
 	"andromeda/pkg/service/web3"
 
 	"log"
-	"sync"
 	"time"
 )
 
@@ -20,58 +19,27 @@ type State struct {
 
 func (State *State) Initialize() error {
 	State.Version = time.Now().Unix()
-
-	wg := sync.WaitGroup{}
-	wg.Add(3)
-
-	// Get overall stat
-	var globalStats *types.StatRes
-	var statResError error
-
-	go func() {
-		defer wg.Done()
-		globalStats, statResError = market.GetOverall()
-	}()
-
-	// Get SOL Price
-	var solPrice float64
-	var solPriceError error
-
-	go func() {
-		defer wg.Done()
-		solPrice, solPriceError = web3.GetSOLPrice()
-	}()
-
-	// Get SOL TPS
-	var tps uint64
-	var solTpsError error
-
-	go func() {
-		defer wg.Done()
-		tps, solTpsError = web3.GetSOLTPS()
-	}()
-
-	wg.Wait()
-
-	// error handler
-	if statResError != nil {
-		log.Printf("State Intialize >> Market GetOverall; %s", statResError.Error())
-		return statResError
-	}
-	if solPriceError != nil {
-		log.Printf("State Initialize >> Web3 GetSOLPrice; %s", solPriceError.Error())
-		return solPriceError
-	}
-	if solTpsError != nil {
-		log.Printf("State Initialize >> Web3 GetSOLTPS; %s", solTpsError.Error())
-		return solTpsError
+	globalStats, err := market.GetOverall()
+	if err != nil {
+		return err
 	}
 
 	State.GlobalStats = *globalStats
+
+	solPrice, err := web3.GetSOLPrice()
+	if err != nil {
+		return err
+	}
+
 	State.SOLPrice = solPrice
+
+	tps, err := web3.GetSOLTPS()
+	if err != nil {
+		return err
+	}
+
 	State.TPS = tps
 	State.MarketVolume = 0
-
 	return nil
 }
 
@@ -88,11 +56,9 @@ func Update() {
 }
 
 func Runloop() {
-	ticker := time.NewTicker(10 * time.Second)
-	defer ticker.Stop()
 	for {
-		<-ticker.C
 		Update()
+		time.Sleep(10 * time.Second)
 	}
 }
 
