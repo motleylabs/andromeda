@@ -82,6 +82,29 @@ func GetNFTParams(c *gin.Context) (types.NFTParams, error) {
 		params.ListingOnly = true
 	}
 
+	name := c.Query("name")
+	if name != "" {
+		params.Name = &name
+	}
+
+	minStr := c.Query("min")
+	if minStr != "" {
+		min, err := strconv.ParseFloat(minStr, 64)
+		if err != nil {
+			return params, fmt.Errorf("min param is not valid")
+		}
+		params.PriceMin = &min
+	}
+
+	maxStr := c.Query("max")
+	if maxStr != "" {
+		max, err := strconv.ParseFloat(maxStr, 64)
+		if err != nil {
+			return params, fmt.Errorf("max param is not valid")
+		}
+		params.PriceMax = &max
+	}
+
 	program := c.Query("program")
 	if program != "" {
 		params.Program = &program

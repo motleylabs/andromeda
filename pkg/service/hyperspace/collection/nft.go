@@ -60,6 +60,24 @@ func getNFTParams(input *types.NFTParams) *common.StatParams {
 		},
 	}
 
+	// set name
+	var nameCond *common.NameParam
+	if input.Name != nil {
+		nameCond = &common.NameParam{
+			Operation: "FUZZY",
+			Value:     *input.Name,
+		}
+	}
+
+	// set price
+	var priceFilter *common.PriceFilter
+	if input.PriceMin != nil || input.PriceMax != nil {
+		priceFilter = &common.PriceFilter{
+			Min: input.PriceMin,
+			Max: input.PriceMax,
+		}
+	}
+
 	// set marketplace program condition
 	var marketplaceProgramCondition *common.MarketPlaceProgramCondition
 	if input.Program != nil {
@@ -88,6 +106,8 @@ func getNFTParams(input *types.NFTParams) *common.StatParams {
 			ProjectIDs:                  &projectIDs,
 			MarketPlaceProgramCondition: marketplaceProgramCondition,
 			ListingType:                 listingType,
+			Name:                        nameCond,
+			PriceFilter:                 priceFilter,
 		},
 		OrderBy:        getNFTOrderField(input),
 		PaginationInfo: getNFTPaginationInfo(input),
@@ -101,8 +121,6 @@ func getNFTOrderField(input *types.NFTParams) *common.OrderConfig {
 	case "timestamp":
 		orderFieldName = "lowest_listing_block_timestamp"
 	}
-
-	fmt.Println(orderFieldName)
 
 	return &common.OrderConfig{
 		FieldName: orderFieldName,

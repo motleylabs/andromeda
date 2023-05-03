@@ -114,6 +114,24 @@
                     },
                     {
                         "type": "string",
+                        "description": "NFT name",
+                        "name": "name",
+                        "in": "query"
+                    },
+                    {
+                        "type": "number",
+                        "description": "Minimum listing price",
+                        "name": "min",
+                        "in": "query"
+                    },
+                    {
+                        "type": "number",
+                        "description": "Maximum listing price",
+                        "name": "max",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
                         "description": "Sort By (lowest_listing_block_timestamp)",
                         "name": "sort_by",
                         "in": "query",
