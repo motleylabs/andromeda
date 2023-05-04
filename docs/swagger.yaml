@@ -454,6 +454,18 @@ paths:
         in: query
         name: auction_house
         type: string
+      - description: NFT name
+        in: query
+        name: name
+        type: string
+      - description: Minimum listing price
+        in: query
+        name: min
+        type: number
+      - description: Maximum listing price
+        in: query
+        name: max
+        type: number
       - description: Sort By (lowest_listing_block_timestamp)
         in: query
         name: sort_by

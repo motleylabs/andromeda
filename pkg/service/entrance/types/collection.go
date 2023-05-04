@@ -95,11 +95,14 @@ type TimeSeriesParams struct {
 type NFTParams struct {
 	Address      string           `json:"collection" example:"8xBMPGAj5NzAwRmdfEcksDcZyexr87AAmD6LWwKG7Dqq"`
 	Attributes   []AttributeInput `json:"attributes,omitempty"`
-	SortBy       string           `json:"sortBy" example:"timestamp|listing"`
+	SortBy       string           `json:"sortBy" example:"timestamp|price"`
 	Order        string           `json:"order" example:"asc|desc"`
 	Limit        int              `json:"limit" example:"10"`
 	Offset       int              `json:"offset" example:"0"`
 	ListingOnly  bool             `json:"listingOnly,omitempty"`
 	Program      *string          `json:"program,omitempty" example:"RwDDvPp7ta9qqUwxbBfShsNreBaSsKvFcHzMxfBC3Ki"`
 	AuctionHouse *string          `json:"auctionHouse,omitempty" example:"6hW2rVdPUD5qn1amEvN3K9zkvgsCA34LqCvTPcpamQHc"`
+	Name         *string          `json:"name"`
+	PriceMin     *float64         `json:"priceMin"`
+	PriceMax     *float64         `json:"priceMax"`
 }

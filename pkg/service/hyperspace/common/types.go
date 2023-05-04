@@ -35,6 +35,16 @@ type MarketPlaceProgramCondition struct {
 	MarketPlacePrograms []MarketPlaceProgram `json:"marketplace_programs"`
 }
 
+type NameParam struct {
+	Value     string `json:"value"`
+	Operation string `json:"operation"`
+}
+
+type PriceFilter struct {
+	Min *float64 `json:"min,omitempty"`
+	Max *float64 `json:"max,omitempty"`
+}
+
 type Condition struct {
 	ProjectID                   *string                      `json:"project_id,omitempty"`
 	ProjectIDs                  *[]ProjectIDItem             `json:"project_ids,omitempty"`
@@ -42,6 +52,8 @@ type Condition struct {
 	ActionType                  *string                      `json:"action_type,omitempty"`
 	MarketPlaceProgramCondition *MarketPlaceProgramCondition `json:"marketplace_program_condition,omitempty"`
 	ListingType                 *string                      `json:"listing_type,omitempty"`
+	Name                        *NameParam                   `json:"name,omitempty"`
+	PriceFilter                 *PriceFilter                 `json:"price_filter,omitempty"`
 }
 
 type ActivityCondition struct {
