@@ -18,7 +18,8 @@
     ],
     "nfts": [
         "collections/nfts?address=undergroundsociety&sort_by=lowest_listing_price&order=desc&limit=10&offset=0",
-        "collections/nfts?address=claynosaurz&sort_by=lowest_listing_block_timestamp&order=desc&limit=10&offset=0"
+        "collections/nfts?address=claynosaurz&sort_by=lowest_listing_block_timestamp&order=desc&limit=10&offset=0",
+        "collections/nfts?limit=10&offset=0&min=50&max=100&address=claynosaurz&sort_by=lowest_listing_block_timestamp&order=desc&name=%2390"
     ],
     "listings": [
         "collections/nfts?address=undergroundsociety&sort_by=lowest_listing_block_timestamp&order=desc&limit=10&offset=0&program=RwDDvPp7ta9qqUwxbBfShsNreBaSsKvFcHzMxfBC3Ki&auction_house=6hW2rVdPUD5qn1amEvN3K9zkvgsCA34LqCvTPcpamQHc&listing_only=true"

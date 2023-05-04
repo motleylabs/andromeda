@@ -52,8 +52,8 @@ type Condition struct {
 	ActionType                  *string                      `json:"action_type,omitempty"`
 	MarketPlaceProgramCondition *MarketPlaceProgramCondition `json:"marketplace_program_condition,omitempty"`
 	ListingType                 *string                      `json:"listing_type,omitempty"`
-	Name                        *NameParam                   `json:"name"`
-	PriceFilter                 *PriceFilter                 `json:"price_filter"`
+	Name                        *NameParam                   `json:"name,omitempty"`
+	PriceFilter                 *PriceFilter                 `json:"price_filter,omitempty"`
 }
 
 type ActivityCondition struct {
