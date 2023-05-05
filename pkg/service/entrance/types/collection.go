@@ -37,6 +37,9 @@ type Collection struct {
 	Image                     string            `json:"image"`
 	Symbol                    string            `json:"symbol"`
 	Slug                      string            `json:"slug"`
+	Twitter                   *string           `json:"twitter"`
+	Discord                   *string           `json:"discord"`
+	Website                   *string           `json:"website"`
 	Statistics                *Statistics       `json:"statistics,omitempty"`
 	Attributes                []AttributeOutput `json:"attributes"`
 }

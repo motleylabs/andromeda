@@ -981,6 +981,9 @@ const docTemplate = `{
                 "description": {
                     "type": "string"
                 },
+                "discord": {
+                    "type": "string"
+                },
                 "id": {
                     "type": "string"
                 },
@@ -1002,7 +1005,13 @@ const docTemplate = `{
                 "symbol": {
                     "type": "string"
                 },
+                "twitter": {
+                    "type": "string"
+                },
                 "verifiedCollectionAddress": {
+                    "type": "string"
+                },
+                "website": {
                     "type": "string"
                 }
             }
