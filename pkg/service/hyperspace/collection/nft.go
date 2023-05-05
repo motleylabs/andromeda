@@ -122,6 +122,8 @@ func getNFTOrderField(input *types.NFTParams) *common.OrderConfig {
 		orderFieldName = "lowest_listing_block_timestamp"
 	case "price":
 		orderFieldName = "lowest_listing_price"
+	case "marketplace":
+		orderFieldName = "lowest_listing_marketplace_program_id"
 	default:
 		orderFieldName = input.SortBy
 	}
