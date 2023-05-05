@@ -145,6 +145,9 @@ type Project struct {
 	Attributes                *[]Attribute `json:"project_attributes"`
 	ProjectSlug               string       `json:"project_slug"`
 	VerifiedCollectionAddress string       `json:"mcc_id"`
+	Twitter                   *string      `json:"twitter"`
+	Discord                   *string      `json:"discord"`
+	Website                   *string      `json:"website"`
 }
 
 type ProjectSnapshotsRes struct {
