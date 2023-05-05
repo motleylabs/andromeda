@@ -2,6 +2,7 @@ package utils
 
 import (
 	"andromeda/pkg/service/entrance/types"
+	"encoding/base64"
 	"encoding/json"
 	"fmt"
 	"strconv"
@@ -84,7 +85,12 @@ func GetNFTParams(c *gin.Context) (types.NFTParams, error) {
 
 	name := c.Query("name")
 	if name != "" {
-		params.Name = &name
+		rawDecodedText, err := base64.StdEncoding.DecodeString(name)
+		if err != nil {
+			return params, fmt.Errorf("name param is not valid")
+		}
+		nameStr := string(rawDecodedText)
+		params.Name = &nameStr
 	}
 
 	minStr := c.Query("min")
