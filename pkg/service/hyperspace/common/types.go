@@ -41,8 +41,9 @@ type NameParam struct {
 }
 
 type PriceFilter struct {
-	Min *float64 `json:"min,omitempty"`
-	Max *float64 `json:"max,omitempty"`
+	Min   *float64 `json:"min,omitempty"`
+	Max   *float64 `json:"max,omitempty"`
+	Field string   `json:"field"`
 }
 
 type Condition struct {

@@ -73,8 +73,9 @@ func getNFTParams(input *types.NFTParams) *common.StatParams {
 	var priceFilter *common.PriceFilter
 	if input.PriceMin != nil || input.PriceMax != nil {
 		priceFilter = &common.PriceFilter{
-			Min: input.PriceMin,
-			Max: input.PriceMax,
+			Min:   input.PriceMin,
+			Max:   input.PriceMax,
+			Field: "lowest_listing_price",
 		}
 	}
 
