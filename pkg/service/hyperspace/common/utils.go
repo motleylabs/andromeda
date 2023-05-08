@@ -208,12 +208,13 @@ func ConvertProjectStat(projectStat *ProjectStat, solPrice float64) *types.Colle
 
 	attributes := []types.AttributeOutput{}
 	stat := types.Statistics{
-		Volume1D:  GetLamportsFromUSDIntPointer(projectStat.Volume1Day, solPrice),
-		Listed1D:  GetFromIntPointer(projectStat.Listed1Day),
-		Floor1D:   GetLamportsFromPointer(projectStat.FloorPrice1Day),
-		Holders:   holders,
-		MarketCap: fmt.Sprintf("%d", int64(math.Round(marketCap/solPrice*LAMPORTS_PER_SOL))),
-		Supply:    projectStat.Project.Supply,
+		Volume1D:     GetLamportsFromUSDIntPointer(projectStat.Volume1Day, solPrice),
+		Listed1D:     GetFromIntPointer(projectStat.Listed1Day),
+		Floor1D:      GetLamportsFromPointer(projectStat.FloorPrice1Day),
+		Holders:      holders,
+		MarketCap:    fmt.Sprintf("%f", marketCap),
+		MarketCapSol: fmt.Sprintf("%d", int64(math.Round(marketCap/solPrice*LAMPORTS_PER_SOL))),
+		Supply:       projectStat.Project.Supply,
 	}
 
 	var collection types.Collection
