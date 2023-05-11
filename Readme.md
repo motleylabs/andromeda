@@ -60,5 +60,4 @@ go clean && go test -v ./...
 You can build this project to run the following command:
 ```
 go build -o andromeda ./app/main.go
-
 ```
