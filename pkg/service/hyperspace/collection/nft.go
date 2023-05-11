@@ -30,7 +30,7 @@ func GetNFTs(params *types.NFTParams) (*types.NFTRes, error) {
 	}
 
 	nftsRes := types.NFTRes{
-		HasNextPage: nftRes.PaginationInfo.HasNextPage,
+		HasNextPage: nftRes.PaginationInfo.HasNextPage && len(nftRes.MarketPlaceSnapshots) == params.Limit,
 		NFTs:        convertNFTSnapshots(nftRes.MarketPlaceSnapshots),
 	}
 
