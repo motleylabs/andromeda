@@ -80,6 +80,7 @@ func convertStatistics(stats []common.ProjectStat, solPrice float64) []types.Tre
 			Image:                     stats[index].Project.ImgURL,
 			Slug:                      stats[index].Project.ProjectSlug,
 			VerifiedCollectionAddress: stats[index].Project.VerifiedCollectionAddress,
+			IsVerified:                stats[index].Project.IsVerified,
 		}
 	}
 
