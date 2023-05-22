@@ -15,7 +15,7 @@ func GetHits(params *types.SearchParams, store *persistence.InMemoryStore) (*typ
 	client := search.NewClient(common.ALGOLIA_APP_ID, common.ALGOLIA_API_KEY)
 
 	indexName := "volume_1d_desc"
-	if params.Mode == "user" {
+	if params.Mode == "profile" {
 		indexName = "users_index"
 	}
 	index := client.InitIndex(indexName)
@@ -34,32 +34,35 @@ func GetHits(params *types.SearchParams, store *persistence.InMemoryStore) (*typ
 	}
 
 	searchRes := types.SearchRes{
-		Results:     convertRecords(records, solPrice, store),
+		Results:     convertRecords(records, solPrice, params.Mode, store),
 		HasNextPage: len(records) == params.Limit,
 	}
 
 	return &searchRes, nil
 }
 
-func convertRecords(records []types.FoundObj, solPrice float64, store *persistence.InMemoryStore) []types.ObjInfo {
+func convertRecords(records []types.FoundObj, solPrice float64, mode string, store *persistence.InMemoryStore) []types.ObjInfo {
 	objects := make([]types.ObjInfo, len(records))
 
 	for index := range records {
+
 		var volume1D *string
-		if records[index].Volume != nil {
-			volume := common.GetLamportsFromUSDIntPointer(records[index].Volume, solPrice)
-			volume1D = &volume
-		}
+		if mode == "collection" {
+			if records[index].Volume != nil {
+				volume := common.GetLamportsFromUSDIntPointer(records[index].Volume, solPrice)
+				volume1D = &volume
+			}
 
-		curSlug := records[index].ProjectSlug
-		curID := records[index].ProjectID
+			curSlug := records[index].ProjectSlug
+			curID := records[index].ProjectID
 
-		if curSlug == nil || curID == nil {
-			continue
-		}
+			if curSlug == nil || curID == nil {
+				continue
+			}
 
-		if err := store.Set(*curSlug, *curID, -1); err != nil {
-			continue
+			if err := store.Set(*curSlug, *curID, -1); err != nil {
+				continue
+			}
 		}
 
 		objects[index] = types.ObjInfo{
