@@ -2,11 +2,35 @@ package controllers
 
 import (
 	"andromeda/internal/api/utils"
+	"andromeda/pkg/service/entrance/types"
+	"context"
+	"encoding/json"
+	"fmt"
 	"log"
 	"net/http"
+	"net/url"
+	"os"
+	"time"
 
+	"github.com/ably/ably-go/ably"
 	"github.com/gin-gonic/gin"
+	"github.com/gorilla/websocket"
 )
+
+type WsServer struct {
+	clients    map[*WsClient]bool
+	register   chan *WsClient
+	unregister chan *WsClient
+	broadcast  chan []byte
+}
+
+// Client represents the websocket client at the server
+type WsClient struct {
+	// The actual websocket connection.
+	conn     *websocket.Conn
+	wsServer *WsServer
+	send     chan []byte
+}
 
 type Collection struct{}
 
@@ -188,4 +212,191 @@ func (ctrl Collection) GetActivities(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, activityRes)
+}
+
+// NewWebsocketServer creates a new WsServer type
+func (ctrl Collection) NewWebsocketServer() *WsServer {
+	return &WsServer{
+		clients:    make(map[*WsClient]bool),
+		register:   make(chan *WsClient),
+		unregister: make(chan *WsClient), broadcast: make(chan []byte),
+	}
+}
+
+// Run our websocket server, accepting various requests
+func (server *WsServer) Run() {
+	for {
+		select {
+
+		case client := <-server.register:
+			server.registerClient(client)
+
+		case client := <-server.unregister:
+			server.unregisterClient(client)
+
+		case message := <-server.broadcast:
+			server.broadcastToClients(message)
+
+		}
+	}
+}
+
+func (server *WsServer) broadcastToClients(message []byte) {
+	for client := range server.clients {
+		client.send <- message
+	}
+}
+
+func (server *WsServer) registerClient(client *WsClient) {
+	server.clients[client] = true
+}
+
+func (server *WsServer) unregisterClient(client *WsClient) {
+	if _, ok := server.clients[client]; ok {
+		delete(server.clients, client)
+	}
+}
+
+func newClient(conn *websocket.Conn, wsServer *WsServer) *WsClient {
+	return &WsClient{
+		conn:     conn,
+		wsServer: wsServer,
+	}
+}
+
+var upgrader = websocket.Upgrader{
+	ReadBufferSize:  1024,
+	WriteBufferSize: 1024,
+	// CheckOrigin:     func(r *http.Request) bool { return true },
+}
+
+const (
+	// Max wait time when writing message to peer
+	writeWait = 10 * time.Second
+
+	// Max time till next pong from peer
+	pongWait = 10 * time.Second
+
+	// Send ping interval, must be less then pong wait time
+	pingPeriod = (pongWait * 5) / 10
+
+	// Maximum message size allowed from peer.
+	maxMessageSize = 10000
+)
+
+func (client *WsClient) disconnect() {
+	if client.send != nil {
+		close(client.send)
+	}
+
+	client.wsServer.unregister <- client
+	client.conn.Close()
+	// fmt.Println("WEBSOCKET CLOSED")
+}
+
+func (client *WsClient) readPump() {
+	defer func() {
+		client.disconnect()
+	}()
+
+	client.conn.SetReadLimit(maxMessageSize)
+	client.conn.SetReadDeadline(time.Now().Add(pongWait))
+	client.conn.SetPongHandler(func(string) error { client.conn.SetReadDeadline(time.Now().Add(pongWait)); return nil })
+
+	// Start endless read loop, waiting for messages from client
+	for {
+		_, jsonMessage, err := client.conn.ReadMessage()
+		if err != nil {
+			if websocket.IsUnexpectedCloseError(err, websocket.CloseGoingAway, websocket.CloseAbnormalClosure) {
+				log.Printf("unexpected close error: %v", err)
+			}
+			break
+		}
+
+		client.wsServer.broadcast <- jsonMessage
+	}
+}
+
+func (ctrl Collection) GetWs(wsServer *WsServer, c *gin.Context) {
+	conn, err := upgrader.Upgrade(c.Writer, c.Request, nil)
+	if err != nil {
+		log.Println(err)
+		return
+	}
+
+	client := newClient(conn, wsServer)
+	params, err := utils.GetWebsocketParams(c)
+	// fmt.Println(params)
+
+	if err != nil {
+		log.Printf("Collection Websocket >> Util GetWebsocketParams; %s", err.Error())
+		utils.SendError(c, http.StatusBadRequest, err.Error())
+		return
+	}
+	ablyKey := os.Getenv("ABLY_KEY")
+	var transportParams url.Values = url.Values{}
+	//Heartbeats enable Ably to identify clients that abruptly disconnect from the service, such as where an internet connection drops out or a client changes networks.
+	transportParams.Add("heartbeatInterval", "10000") // 10 sec ( default is 15 sec)
+
+	ablyClient, err := ably.NewRealtime(ably.WithKey(ablyKey), ably.WithTransportParams(transportParams))
+	if err != nil {
+		panic(err)
+	}
+
+	ablyClient.Connect()
+	//* That 'firehose' channel may need to be put in env
+	channel := ablyClient.Channels.Get("firehose")
+
+	unsubscribe, err := channel.SubscribeAll(context.Background(), func(msg *ably.Message) {
+
+		for {
+			client.conn.SetWriteDeadline(time.Now().Add(writeWait))
+			// fmt.Println("Pinging!")
+
+			if err := client.conn.WriteMessage(websocket.PingMessage, nil); err != nil {
+				// fmt.Println("UNSUBSCRIBED!")
+				channel.OffAll()
+				ablyClient.Close()
+				return
+			}
+
+			var res *types.AblyResponseType
+
+			err = json.Unmarshal([]byte(msg.Data.(string)), &res)
+			if err != nil {
+				fmt.Println("Ably stream data transformation error!")
+				fmt.Println(err)
+			}
+
+			// fmt.Println(res.Item.ProjectSlug)
+
+			if res.Item.ProjectID != params.CollectionID {
+				return
+			}
+
+			if res.Item.ProjectSlug == params.CollectionID {
+				// fmt.Println("=====NEW UPDATE FOUND======")
+				// fmt.Println(res.ActionType)
+				// fmt.Println(res.Item.TokenAddress)
+
+				// Write message back to browser
+				if err = client.conn.WriteJSON(res); err != nil {
+					return
+				}
+				return
+			}
+		}
+	})
+
+	go client.readPump()
+
+	wsServer.register <- client
+
+	// fmt.Println(len(wsServer.clients))
+
+	if err != nil {
+		unsubscribe()
+		// panic(err)
+		fmt.Println(err)
+	}
 }
