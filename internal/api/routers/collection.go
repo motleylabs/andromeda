@@ -8,6 +8,10 @@ import (
 
 func CollectionRouter(r *gin.RouterGroup) {
 	collectionController := new(controllers.Collection)
+	wsServer := collectionController.NewWebsocketServer()
+
+	// fmt.Println("______WEBSOCKET STARTED_____")
+	go wsServer.Run()
 
 	c := r.Group("/collections")
 	c.Use()
@@ -17,5 +21,8 @@ func CollectionRouter(r *gin.RouterGroup) {
 		c.GET("/nfts", collectionController.GetNFTs)
 		c.GET("/activities", collectionController.GetActivities)
 		c.GET("/:address", collectionController.GetDetail)
+		c.GET("/ws", func(ctx *gin.Context) {
+			collectionController.GetWs(wsServer, ctx)
+		})
 	}
 }
