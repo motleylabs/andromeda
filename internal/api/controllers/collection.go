@@ -267,7 +267,7 @@ func newClient(conn *websocket.Conn, wsServer *WsServer) *WsClient {
 var upgrader = websocket.Upgrader{
 	ReadBufferSize:  1024,
 	WriteBufferSize: 1024,
-	// CheckOrigin:     func(r *http.Request) bool { return true },
+	CheckOrigin:     func(r *http.Request) bool { return true }, //! Here should be changed on prod.
 }
 
 const (
