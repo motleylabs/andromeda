@@ -291,7 +291,7 @@ func (client *WsClient) disconnect() {
 
 	client.wsServer.unregister <- client
 	client.conn.Close()
-	// fmt.Println("WEBSOCKET CLOSED")
+	// fmt.Println("----------> WEBSOCKET CLOSED")
 }
 
 func (client *WsClient) readPump() {
@@ -354,7 +354,7 @@ func (ctrl Collection) GetWs(wsServer *WsServer, c *gin.Context) {
 			// fmt.Println("Pinging!")
 
 			if err := client.conn.WriteMessage(websocket.PingMessage, nil); err != nil {
-				// fmt.Println("UNSUBSCRIBED!")
+				// fmt.Println("----------> UNSUBSCRIBED!")
 				channel.OffAll()
 				ablyClient.Close()
 				return
@@ -370,11 +370,11 @@ func (ctrl Collection) GetWs(wsServer *WsServer, c *gin.Context) {
 
 			// fmt.Println(res.Item.ProjectSlug)
 
-			if res.Item.ProjectID != params.CollectionID {
+			if res.Item.ProjectID != params.CollectionID && res.Item.ProjectSlug != params.CollectionID {
 				return
 			}
 
-			if res.Item.ProjectSlug == params.CollectionID {
+			if res.Item.ProjectSlug == params.CollectionID || res.Item.ProjectID == params.CollectionID {
 				// fmt.Println("=====NEW UPDATE FOUND======")
 				// fmt.Println(res.ActionType)
 				// fmt.Println(res.Item.TokenAddress)
