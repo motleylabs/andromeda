@@ -8,10 +8,7 @@ import (
 
 func CollectionRouter(r *gin.RouterGroup) {
 	collectionController := new(controllers.Collection)
-	wsServer := collectionController.NewWebsocketServer()
-
-	// fmt.Println("______WEBSOCKET STARTED_____")
-	go wsServer.Run()
+	wsServer := collectionController.InitWS()
 
 	c := r.Group("/collections")
 	c.Use()
