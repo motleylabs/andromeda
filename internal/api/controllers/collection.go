@@ -22,6 +22,7 @@ type WsServer struct {
 	register   chan *WsClient
 	unregister chan *WsClient
 	broadcast  chan []byte
+	message    chan *ably.Message
 }
 
 // Client represents the websocket client at the server
@@ -219,7 +220,9 @@ func (ctrl Collection) NewWebsocketServer() *WsServer {
 	return &WsServer{
 		clients:    make(map[*WsClient]bool),
 		register:   make(chan *WsClient),
-		unregister: make(chan *WsClient), broadcast: make(chan []byte),
+		unregister: make(chan *WsClient),
+		broadcast:  make(chan []byte),
+		message:    make(chan *ably.Message),
 	}
 }
 
@@ -239,6 +242,40 @@ func (server *WsServer) Run() {
 
 		}
 	}
+}
+
+// Initialize our websocket server
+func (collectionController *Collection) InitWS() *WsServer {
+
+	ablyKey := os.Getenv("ABLY_KEY")
+	transportParams := url.Values{}
+	wsServer := collectionController.NewWebsocketServer()
+	// fmt.Println("CREATED NEW WS SERVER!")
+	go wsServer.Run()
+
+	//Heartbeats enable Ably to identify clients that abruptly disconnect from the service, such as where an internet connection drops out or a client changes networks.
+	transportParams.Add("heartbeatInterval", "10000") // 10 sec ( default is 15 sec)
+
+	ablyClient, err := ably.NewRealtime(ably.WithKey(ablyKey), ably.WithTransportParams(transportParams))
+	if err != nil {
+		panic(err)
+	}
+
+	ablyClient.Connect()
+
+	channel := ablyClient.Channels.Get("firehose")
+	unsubscribeAll, err := channel.SubscribeAll(context.Background(), func(msg *ably.Message) {
+		// fmt.Println(msg.ID)
+		wsServer.message <- msg
+	})
+
+	if err != nil {
+		err := fmt.Errorf("error subscribing to channel: %w", err)
+		fmt.Println(err)
+		unsubscribeAll()
+	}
+
+	return wsServer
 }
 
 func (server *WsServer) broadcastToClients(message []byte) {
@@ -275,23 +312,24 @@ const (
 	writeWait = 10 * time.Second
 
 	// Max time till next pong from peer
-	pongWait = 10 * time.Second
+	pongWait = 60 * time.Second
 
 	// Send ping interval, must be less then pong wait time
-	pingPeriod = (pongWait * 5) / 10
+	pingPeriod = (pongWait * 9) / 10
 
 	// Maximum message size allowed from peer.
 	maxMessageSize = 10000
 )
 
 func (client *WsClient) disconnect() {
+	client.wsServer.unregister <- client
+
 	if client.send != nil {
 		close(client.send)
 	}
 
-	client.wsServer.unregister <- client
 	client.conn.Close()
-	// fmt.Println("----------> WEBSOCKET CLOSED")
+	fmt.Println("----------> WEBSOCKET CLOSED")
 }
 
 func (client *WsClient) readPump() {
@@ -317,7 +355,49 @@ func (client *WsClient) readPump() {
 	}
 }
 
+func (client *WsClient) writePump(wsServer *WsServer, params types.WebsocketParams) {
+	ticker := time.NewTicker(pingPeriod)
+	defer func() {
+		ticker.Stop()
+		client.conn.Close()
+	}()
+
+	for {
+		client.conn.SetWriteDeadline(time.Now().Add(writeWait))
+		if err := client.conn.WriteMessage(websocket.PingMessage, []byte("pinging to : "+params.CollectionID)); err != nil {
+			// fmt.Println("----------> CLIENT DISCONNECTED!")
+			return
+		}
+
+		var err error
+		var res *types.AblyResponseType
+
+		msg := <-wsServer.message
+
+		err = json.Unmarshal([]byte(msg.Data.(string)), &res)
+		if err != nil {
+			fmt.Println("Ably stream data transformation error!")
+			fmt.Println(err)
+		}
+
+		if res.Item.ProjectSlug == params.CollectionID || res.Item.ProjectID == params.CollectionID {
+			// fmt.Println("=====NEW UPDATE FOUND======")
+			// fmt.Println(res.Item.ProjectSlug)
+			// fmt.Println(res.ActionType)
+			// fmt.Println(res.Item.TokenAddress)
+
+			// Write message back to browser
+			if err = client.conn.WriteJSON(res); err != nil {
+				fmt.Println(err)
+				return
+			}
+		}
+
+	}
+}
+
 func (ctrl Collection) GetWs(wsServer *WsServer, c *gin.Context) {
+
 	conn, err := upgrader.Upgrade(c.Writer, c.Request, nil)
 	if err != nil {
 		log.Println(err)
@@ -326,77 +406,20 @@ func (ctrl Collection) GetWs(wsServer *WsServer, c *gin.Context) {
 
 	client := newClient(conn, wsServer)
 	params, err := utils.GetWebsocketParams(c)
-	// fmt.Println(params)
+	fmt.Println(params)
 
 	if err != nil {
 		log.Printf("Collection Websocket >> Util GetWebsocketParams; %s", err.Error())
 		utils.SendError(c, http.StatusBadRequest, err.Error())
 		return
 	}
-	ablyKey := os.Getenv("ABLY_KEY")
-	var transportParams url.Values = url.Values{}
-	//Heartbeats enable Ably to identify clients that abruptly disconnect from the service, such as where an internet connection drops out or a client changes networks.
-	transportParams.Add("heartbeatInterval", "10000") // 10 sec ( default is 15 sec)
 
-	ablyClient, err := ably.NewRealtime(ably.WithKey(ablyKey), ably.WithTransportParams(transportParams))
-	if err != nil {
-		panic(err)
-	}
-
-	ablyClient.Connect()
-	//* That 'firehose' channel may need to be put in env
-	channel := ablyClient.Channels.Get("firehose")
-
-	unsubscribe, err := channel.SubscribeAll(context.Background(), func(msg *ably.Message) {
-
-		for {
-			client.conn.SetWriteDeadline(time.Now().Add(writeWait))
-			// fmt.Println("Pinging!")
-
-			if err := client.conn.WriteMessage(websocket.PingMessage, nil); err != nil {
-				// fmt.Println("----------> UNSUBSCRIBED!")
-				channel.OffAll()
-				ablyClient.Close()
-				return
-			}
-
-			var res *types.AblyResponseType
-
-			err = json.Unmarshal([]byte(msg.Data.(string)), &res)
-			if err != nil {
-				fmt.Println("Ably stream data transformation error!")
-				fmt.Println(err)
-			}
-
-			// fmt.Println(res.Item.ProjectSlug)
-
-			if res.Item.ProjectID != params.CollectionID && res.Item.ProjectSlug != params.CollectionID {
-				return
-			}
-
-			if res.Item.ProjectSlug == params.CollectionID || res.Item.ProjectID == params.CollectionID {
-				// fmt.Println("=====NEW UPDATE FOUND======")
-				// fmt.Println(res.ActionType)
-				// fmt.Println(res.Item.TokenAddress)
-
-				// Write message back to browser
-				if err = client.conn.WriteJSON(res); err != nil {
-					return
-				}
-				return
-			}
-		}
-	})
-
+	go client.writePump(wsServer, params)
 	go client.readPump()
 
 	wsServer.register <- client
 
-	// fmt.Println(len(wsServer.clients))
-
 	if err != nil {
-		unsubscribe()
-		// panic(err)
 		fmt.Println(err)
 	}
 }
