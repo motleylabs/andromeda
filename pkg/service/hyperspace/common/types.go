@@ -127,6 +127,7 @@ type MarketPlaceSnapshot struct {
 	Owner            *string                `json:"owner"`
 	MarketPlaceState *MarketPlaceState      `json:"market_place_state"`
 	ProjectSlug      string                 `json:"project_slug"`
+	ProjectName      *string                `json:"project_name"`
 }
 
 type Attribute struct {
