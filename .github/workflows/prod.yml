@@ -29,12 +29,3 @@ jobs:
           RPC_ENDPOINT: ${{ secrets.RPC_ENDPOINT }}
         run: |
           go clean -testcache && go test -v ./...
-
-      - name: deploy to heroku
-        uses: akhileshns/heroku-deploy@v3.12.13
-        if: ${{ github.ref == 'refs/heads/main' }}
-        with:
-          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
-          heroku_app_name: "motley-andromeda"
-          usedocker: false
-          heroku_email: "davidoliver5086@gmail.com"

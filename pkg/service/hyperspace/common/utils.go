@@ -136,6 +136,7 @@ func ConvertNFTSnapshot(snapshot *MarketPlaceSnapshot, isDetail bool, snapshotOw
 
 	nft := types.NFT{
 		ProjectID:     snapshot.ProjectID,
+		ProjectName:   snapshot.ProjectName,
 		Name:          &snapshot.Name,
 		Symbol:        snapshot.ProjectSlug,
 		Image:         snapshot.MetadataImg,

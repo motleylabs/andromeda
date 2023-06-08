@@ -26,6 +26,7 @@ type ActionInfo struct {
 
 type NFT struct {
 	ProjectID     string      `json:"projectId"`
+	ProjectName   *string     `json:"projectName"`
 	MintAddress   string      `json:"mintAddress"`
 	Symbol        string      `json:"symbol"`
 	URI           string      `json:"uri"`
