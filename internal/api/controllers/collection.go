@@ -10,12 +10,19 @@ import (
 	"net/http"
 	"net/url"
 	"os"
+	"sync"
 	"time"
 
 	"github.com/ably/ably-go/ably"
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/websocket"
 )
+
+type CollectionClient struct {
+	Client       *WsClient
+	CollectionID string
+	Disconnect   func()
+}
 
 type WsServer struct {
 	clients    map[*WsClient]bool
@@ -28,12 +35,15 @@ type WsServer struct {
 // Client represents the websocket client at the server
 type WsClient struct {
 	// The actual websocket connection.
-	conn     *websocket.Conn
-	wsServer *WsServer
-	send     chan []byte
+	conn       *websocket.Conn
+	wsServer   *WsServer
+	send       chan []byte
+	disconnect func()
 }
 
 type Collection struct{}
+
+var clientsMap sync.Map
 
 // GetTrends godoc
 //
@@ -265,7 +275,7 @@ func (collectionController *Collection) InitWS() *WsServer {
 
 	channel := ablyClient.Channels.Get("firehose")
 	unsubscribeAll, err := channel.SubscribeAll(context.Background(), func(msg *ably.Message) {
-		// fmt.Println(msg.ID)
+		// fmt.Println(msg.Name)
 		wsServer.message <- msg
 	})
 
@@ -294,10 +304,46 @@ func (server *WsServer) unregisterClient(client *WsClient) {
 	}
 }
 
-func newClient(conn *websocket.Conn, wsServer *WsServer) *WsClient {
-	return &WsClient{
+func newClient(conn *websocket.Conn, wsServer *WsServer, disconnect func()) *WsClient {
+	client := &WsClient{
 		conn:     conn,
 		wsServer: wsServer,
+		send:     make(chan []byte),
+	}
+
+	// Set the disconnect function
+	client.disconnect = func() {
+		disconnect()
+
+		if client.send != nil {
+			close(client.send)
+		}
+
+		client.wsServer.unregister <- client
+		client.conn.Close()
+	}
+
+	return client
+}
+
+func removeClient(collectionID string, client *WsClient) {
+	value, ok := clientsMap.Load(collectionID)
+	if !ok {
+		return
+	}
+
+	clients := value.([]*CollectionClient)
+	for i, c := range clients {
+		if c.Client == client {
+			clients = append(clients[:i], clients[i+1:]...)
+			break
+		}
+	}
+
+	if len(clients) > 0 {
+		clientsMap.Store(collectionID, clients)
+	} else {
+		clientsMap.Delete(collectionID)
 	}
 }
 
@@ -320,17 +366,6 @@ const (
 	// Maximum message size allowed from peer.
 	maxMessageSize = 10000
 )
-
-func (client *WsClient) disconnect() {
-	client.wsServer.unregister <- client
-
-	if client.send != nil {
-		close(client.send)
-	}
-
-	client.conn.Close()
-	fmt.Println("----------> WEBSOCKET CLOSED")
-}
 
 func (client *WsClient) readPump() {
 	defer func() {
@@ -360,19 +395,21 @@ func (client *WsClient) writePump(wsServer *WsServer, params types.WebsocketPara
 	defer func() {
 		ticker.Stop()
 		client.conn.Close()
+
 	}()
 
 	for {
-		client.conn.SetWriteDeadline(time.Now().Add(writeWait))
-		if err := client.conn.WriteMessage(websocket.PingMessage, []byte("pinging to : "+params.CollectionID)); err != nil {
-			// fmt.Println("----------> CLIENT DISCONNECTED!")
-			return
-		}
 
 		var err error
 		var res *types.AblyResponseType
 
 		msg := <-wsServer.message
+
+		client.conn.SetWriteDeadline(time.Now().Add(writeWait))
+		if err := client.conn.WriteMessage(websocket.PingMessage, []byte("pinging to : "+params.CollectionID)); err != nil {
+			fmt.Println("----------> CLIENT DISCONNECTED!")
+			return
+		}
 
 		err = json.Unmarshal([]byte(msg.Data.(string)), &res)
 		if err != nil {
@@ -380,17 +417,26 @@ func (client *WsClient) writePump(wsServer *WsServer, params types.WebsocketPara
 			fmt.Println(err)
 		}
 
-		if res.Item.ProjectSlug == params.CollectionID || res.Item.ProjectID == params.CollectionID {
-			// fmt.Println("=====NEW UPDATE FOUND======")
-			// fmt.Println(res.Item.ProjectSlug)
-			// fmt.Println(res.ActionType)
-			// fmt.Println(res.Item.TokenAddress)
+		// fmt.Println(res.Item.ProjectSlug)
 
-			// Write message back to browser
-			if err = client.conn.WriteJSON(res); err != nil {
-				fmt.Println(err)
+		if res.Item.ProjectSlug == params.CollectionID || res.Item.ProjectID == params.CollectionID {
+			fmt.Println("=====NEW UPDATE FOUND======")
+			fmt.Println(res.Item.ProjectSlug)
+
+			value, ok := clientsMap.Load(params.CollectionID)
+			if !ok {
 				return
 			}
+
+			clients := value.([]*CollectionClient)
+			for _, c := range clients {
+
+				if err = c.Client.conn.WriteJSON(res); err != nil {
+					fmt.Println(err)
+					return
+				}
+			}
+
 		}
 
 	}
@@ -404,14 +450,29 @@ func (ctrl Collection) GetWs(wsServer *WsServer, c *gin.Context) {
 		return
 	}
 
-	client := newClient(conn, wsServer)
 	params, err := utils.GetWebsocketParams(c)
 	fmt.Println(params)
-
 	if err != nil {
 		log.Printf("Collection Websocket >> Util GetWebsocketParams; %s", err.Error())
 		utils.SendError(c, http.StatusBadRequest, err.Error())
 		return
+	}
+
+	client := newClient(conn, wsServer, func() {})
+	client.disconnect = func() {
+		removeClient(params.CollectionID, client)
+	}
+
+	collectionClient := &CollectionClient{
+		Client:       client,
+		CollectionID: params.CollectionID,
+		Disconnect:   client.disconnect,
+	}
+
+	value, ok := clientsMap.LoadOrStore(collectionClient.CollectionID, []*CollectionClient{collectionClient})
+	if ok {
+		clientsMap.Store(collectionClient.CollectionID, append(value.([]*CollectionClient), collectionClient))
+		// return
 	}
 
 	go client.writePump(wsServer, params)
