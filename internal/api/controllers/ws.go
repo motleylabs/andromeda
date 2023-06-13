@@ -126,21 +126,10 @@ func (server *WsServer) unregisterClient(client *WsClient) {
 
 func newClient(conn *websocket.Conn, wsServer *WsServer, disconnect func()) *WsClient {
 	client := &WsClient{
-		conn:     conn,
-		wsServer: wsServer,
-		send:     make(chan []byte),
-	}
-
-	// Set the disconnect function
-	client.disconnect = func() {
-		disconnect()
-
-		if client.send != nil {
-			close(client.send)
-		}
-
-		client.wsServer.unregister <- client
-		client.conn.Close()
+		conn:       conn,
+		wsServer:   wsServer,
+		send:       make(chan []byte),
+		disconnect: disconnect,
 	}
 
 	return client
@@ -280,6 +269,13 @@ func (ctrl WS) GetWS(wsServer *WsServer, c *gin.Context) {
 	client := newClient(conn, wsServer, func() {})
 	client.disconnect = func() {
 		removeClient(params.CollectionID, client)
+
+		if client.send != nil {
+			close(client.send)
+		}
+
+		client.wsServer.unregister <- client
+		client.conn.Close()
 	}
 
 	collectionClient := &CollectionClient{
