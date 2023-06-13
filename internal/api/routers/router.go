@@ -10,6 +10,7 @@ func Initialize() *gin.Engine {
 	r := gin.Default()
 	r.Use(middlewares.CORS())
 	APIRouter(r)
+	WSRouter(r)
 
 	return r
 }
