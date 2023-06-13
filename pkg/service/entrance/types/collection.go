@@ -122,9 +122,9 @@ type AblyResponseType struct {
 		TokenAddress      string      `json:"token_address"`
 		ProjectID         string      `json:"project_id"`
 		FirstCreator      string      `json:"first_creator"`
-		MccID             any         `json:"mcc_id"`
+		MccID             *string     `json:"mcc_id"`
 		ProjectSlug       string      `json:"project_slug"`
-		CandyMachineID    any         `json:"candy_machine_id"`
+		CandyMachineID    *string     `json:"candy_machine_id"`
 		Name              string      `json:"name"`
 		RankEst           int         `json:"rank_est"`
 		MetaDataImg       string      `json:"meta_data_img"`
