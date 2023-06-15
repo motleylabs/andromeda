@@ -13,11 +13,12 @@ import (
 	"path/filepath"
 	"testing"
 
+	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 	assert "github.com/stretchr/testify/require"
 )
 
-var router = routers.Initialize()
+var router *gin.Engine
 var testCase map[string][]string
 
 func init() {
@@ -37,6 +38,8 @@ func init() {
 	if err := json.Unmarshal(data, &testCase); err != nil {
 		log.Fatalf("Test case file format is wrong")
 	}
+
+	router = routers.Initialize()
 
 	callPreliminaryAPI()
 }
