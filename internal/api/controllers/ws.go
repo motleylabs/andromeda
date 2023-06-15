@@ -5,7 +5,6 @@ import (
 	"andromeda/pkg/service/entrance/types"
 	"context"
 	"encoding/json"
-	"fmt"
 	"log"
 	"net/http"
 	"net/url"
@@ -80,14 +79,15 @@ func (ctrl *WS) InitWS() *WsServer {
 	ablyKey := os.Getenv("ABLY_KEY")
 	transportParams := url.Values{}
 	wsServer := ctrl.NewWebsocketServer()
-	// fmt.Println("CREATED NEW WS SERVER!")
+
 	go wsServer.Run()
 
-	//Heartbeats enable Ably to identify clients that abruptly disconnect from the service, such as where an internet connection drops out or a client changes networks.
+	// Heartbeats enable Ably to identify clients that abruptly disconnect from the service, such as where an internet connection drops out or a client changes networks.
 	transportParams.Add("heartbeatInterval", "10000") // 10 sec ( default is 15 sec)
 
 	ablyClient, err := ably.NewRealtime(ably.WithKey(ablyKey), ably.WithTransportParams(transportParams))
 	if err != nil {
+		log.Printf("WS InitWS >> Ably NewRealtime; %s", err.Error())
 		panic(err)
 	}
 
@@ -95,13 +95,11 @@ func (ctrl *WS) InitWS() *WsServer {
 
 	channel := ablyClient.Channels.Get("firehose")
 	unsubscribeAll, err := channel.SubscribeAll(context.Background(), func(msg *ably.Message) {
-		// fmt.Println(msg.Name)
 		wsServer.message <- msg
 	})
 
 	if err != nil {
-		err := fmt.Errorf("error subscribing to channel: %w", err)
-		fmt.Println(err)
+		log.Printf("WS InitWS >> Channel SubscribeAll; %s", err.Error())
 		unsubscribeAll()
 	}
 
@@ -216,21 +214,18 @@ func (client *WsClient) writePump(wsServer *WsServer, params types.WebsocketPara
 
 		client.conn.SetWriteDeadline(time.Now().Add(writeWait))
 		if err := client.conn.WriteMessage(websocket.PingMessage, []byte("pinging to : "+params.CollectionID)); err != nil {
-			fmt.Println("----------> CLIENT DISCONNECTED!")
+			// fmt.Println("----------> CLIENT DISCONNECTED!")
 			return
 		}
 
 		err = json.Unmarshal([]byte(msg.Data.(string)), &res)
 		if err != nil {
-			fmt.Println("Ably stream data transformation error!")
-			fmt.Println(err)
+			log.Printf("WS WritePump >> Ably stream data transformation error!; %s", err.Error())
 		}
 
-		// fmt.Println(res.Item.ProjectSlug)
-
 		if res.Item.ProjectSlug == params.CollectionID || res.Item.ProjectID == params.CollectionID {
-			fmt.Println("=====NEW UPDATE FOUND======")
-			fmt.Println(res.Item.ProjectSlug)
+			// fmt.Println("=====NEW UPDATE FOUND======")
+			// fmt.Println(res.Item.ProjectSlug)
 
 			value, ok := clientsMap.Load(params.CollectionID)
 			if !ok {
@@ -241,7 +236,7 @@ func (client *WsClient) writePump(wsServer *WsServer, params types.WebsocketPara
 			for _, c := range clients {
 
 				if err = c.Client.conn.WriteJSON(res); err != nil {
-					fmt.Println(err)
+					log.Printf("WS WritePump >> Client Conn WriteJSON; %s", err.Error())
 					return
 				}
 			}
@@ -255,13 +250,13 @@ func (ctrl WS) GetWS(wsServer *WsServer, c *gin.Context) {
 
 	conn, err := upgrader.Upgrade(c.Writer, c.Request, nil)
 	if err != nil {
-		log.Println(err)
+		log.Printf("WS GetWS >> Upgrader Upgrade; %s", err.Error())
 		return
 	}
 
 	params, err := utils.GetWebsocketParams(c)
 	if err != nil {
-		log.Printf("Collection Websocket >> Util GetWebsocketParams; %s", err.Error())
+		log.Printf("WS GetWS >> Util GetWebsocketParams; %s", err.Error())
 		utils.SendError(c, http.StatusBadRequest, err.Error())
 		return
 	}
@@ -294,8 +289,4 @@ func (ctrl WS) GetWS(wsServer *WsServer, c *gin.Context) {
 	go client.readPump()
 
 	wsServer.register <- client
-
-	if err != nil {
-		fmt.Println(err)
-	}
 }
