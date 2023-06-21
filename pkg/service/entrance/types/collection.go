@@ -115,7 +115,7 @@ type WebsocketParams struct {
 	CollectionID string `json:"collection_id" example:"target collectionSlug"`
 }
 
-type AblyResponseType struct {
+type AblyWSData struct {
 	TokenAddress string `json:"token_address"`
 	ActionType   string `json:"action_type"`
 	Item         struct {
@@ -136,4 +136,9 @@ type AblyResponseType struct {
 		CreatorRoyalty    int         `json:"creator_royalty"`
 		NftStandard       string      `json:"nft_standard"`
 	} `json:"item"`
+}
+
+type LiveDataResponse struct {
+	MintAddress string `json:"mintAddress"`
+	ActionType  string `json:"actionType"`
 }

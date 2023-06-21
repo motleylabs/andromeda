@@ -208,7 +208,7 @@ func (client *WsClient) writePump(wsServer *WsServer, params types.WebsocketPara
 	for {
 
 		var err error
-		var res *types.AblyResponseType
+		var wsData *types.AblyWSData
 
 		msg := <-wsServer.message
 
@@ -218,14 +218,14 @@ func (client *WsClient) writePump(wsServer *WsServer, params types.WebsocketPara
 			return
 		}
 
-		err = json.Unmarshal([]byte(msg.Data.(string)), &res)
+		err = json.Unmarshal([]byte(msg.Data.(string)), &wsData)
 		if err != nil {
 			log.Printf("WS WritePump >> Ably stream data transformation error!; %s", err.Error())
 		}
 
-		if res.Item.ProjectSlug == params.CollectionID || res.Item.ProjectID == params.CollectionID {
+		if wsData.Item.ProjectSlug == params.CollectionID || wsData.Item.ProjectID == params.CollectionID {
 			// fmt.Println("=====NEW UPDATE FOUND======")
-			// fmt.Println(res.Item.ProjectSlug)
+			// fmt.Println(wsData.Item.ProjectSlug)
 
 			value, ok := clientsMap.Load(params.CollectionID)
 			if !ok {
@@ -234,6 +234,12 @@ func (client *WsClient) writePump(wsServer *WsServer, params types.WebsocketPara
 
 			clients := value.([]*CollectionClient)
 			for _, c := range clients {
+
+				// generate the live data
+				res := types.LiveDataResponse{
+					MintAddress: wsData.TokenAddress,
+					ActionType:  wsData.ActionType,
+				}
 
 				if err = c.Client.conn.WriteJSON(res); err != nil {
 					log.Printf("WS WritePump >> Client Conn WriteJSON; %s", err.Error())
