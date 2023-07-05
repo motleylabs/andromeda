@@ -135,10 +135,14 @@ type AblyWSData struct {
 		IsProjectVerified bool        `json:"is_project_verified"`
 		CreatorRoyalty    int         `json:"creator_royalty"`
 		NftStandard       string      `json:"nft_standard"`
+		MarketPlaceState  struct {
+			Price *float64 `json:"price"`
+		} `json:"market_place_state"`
 	} `json:"item"`
 }
 
 type LiveDataResponse struct {
-	MintAddress string `json:"mintAddress"`
-	ActionType  string `json:"actionType"`
+	MintAddress string   `json:"mintAddress"`
+	ActionType  string   `json:"actionType"`
+	Price       *float64 `json:"price"`
 }

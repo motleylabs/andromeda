@@ -239,6 +239,11 @@ func (client *WsClient) writePump(wsServer *WsServer, params types.WebsocketPara
 				res := types.LiveDataResponse{
 					MintAddress: wsData.TokenAddress,
 					ActionType:  wsData.ActionType,
+					Price:       nil,
+				}
+
+				if wsData.Item.MarketPlaceState.Price != nil {
+					res.Price = wsData.Item.MarketPlaceState.Price
 				}
 
 				if err = c.Client.conn.WriteJSON(res); err != nil {
