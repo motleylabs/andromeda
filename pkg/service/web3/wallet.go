@@ -2,7 +2,7 @@ package web3
 
 import (
 	"context"
-	"fmt"
+	"log"
 	"os"
 
 	bin "github.com/gagliardetto/binary"
@@ -37,7 +37,7 @@ func GetTokensByOwner(address string) ([]string, error) {
 		dec := bin.NewBinDecoder(data)
 		err := dec.Decode(&tokAcc)
 		if err != nil {
-			fmt.Println(err)
+			log.Printf("Wallet GetTokensByOwner >> %s", err.Error())
 			continue
 		}
 		if tokAcc.Amount > 0 {

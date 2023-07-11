@@ -27,6 +27,7 @@ jobs:
           PROVIDER: ${{ secrets.PROVIDER }}
           API_KEY: ${{ secrets.API_KEY }}
           RPC_ENDPOINT: ${{ secrets.RPC_ENDPOINT }}
+          ABLY_KEY: ${{ secrets.ABLY_KEY }}
         run: |
           go clean -testcache && go test -v ./...
 
