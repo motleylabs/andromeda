@@ -3,12 +3,14 @@ module andromeda
 go 1.21
 
 require (
+	github.com/ably/ably-go v1.2.13
 	github.com/algolia/algoliasearch-client-go/v3 v3.30.1
 	github.com/davecgh/go-spew v1.1.1
 	github.com/gagliardetto/binary v0.7.9
 	github.com/gagliardetto/solana-go v1.8.3
 	github.com/gin-contrib/cache v1.2.0
 	github.com/gin-gonic/gin v1.9.1
+	github.com/gorilla/websocket v1.5.0
 	github.com/joho/godotenv v1.5.1
 	github.com/lestrrat-go/file-rotatelogs v2.4.0+incompatible
 	github.com/stretchr/testify v1.8.4
@@ -94,4 +96,5 @@ require (
 	google.golang.org/protobuf v1.31.0 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
+	nhooyr.io/websocket v1.8.7 // indirect
 )

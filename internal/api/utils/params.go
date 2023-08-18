@@ -218,3 +218,10 @@ func GetSearchParams(c *gin.Context) (types.SearchParams, error) {
 
 	return params, nil
 }
+
+func GetWebsocketParams(c *gin.Context) (types.WebsocketParams, error) {
+	var params types.WebsocketParams
+	params.CollectionID = c.Query("collection_id")
+
+	return params, nil
+}

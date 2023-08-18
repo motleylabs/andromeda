@@ -110,3 +110,39 @@ type NFTParams struct {
 	PriceMin     *float64         `json:"priceMin"`
 	PriceMax     *float64         `json:"priceMax"`
 }
+
+type WebsocketParams struct {
+	CollectionID string `json:"collection_id" example:"target collectionSlug"`
+}
+
+type AblyWSData struct {
+	TokenAddress string `json:"token_address"`
+	ActionType   string `json:"action_type"`
+	Item         struct {
+		TokenAddress      string      `json:"token_address"`
+		ProjectID         string      `json:"project_id"`
+		FirstCreator      string      `json:"first_creator"`
+		MccID             *string     `json:"mcc_id"`
+		ProjectSlug       string      `json:"project_slug"`
+		CandyMachineID    *string     `json:"candy_machine_id"`
+		Name              string      `json:"name"`
+		RankEst           int         `json:"rank_est"`
+		MetaDataImg       string      `json:"meta_data_img"`
+		MetaDataURI       string      `json:"meta_data_uri"`
+		Attributes        interface{} `json:"attributes"`
+		ProjectName       string      `json:"project_name"`
+		ProjectImage      string      `json:"project_image"`
+		IsProjectVerified bool        `json:"is_project_verified"`
+		CreatorRoyalty    int         `json:"creator_royalty"`
+		NftStandard       string      `json:"nft_standard"`
+		MarketPlaceState  struct {
+			Price *float64 `json:"price"`
+		} `json:"market_place_state"`
+	} `json:"item"`
+}
+
+type LiveDataResponse struct {
+	MintAddress string   `json:"mintAddress"`
+	ActionType  string   `json:"actionType"`
+	Price       *float64 `json:"price"`
+}
